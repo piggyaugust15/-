@@ -1,0 +1,602 @@
+<template>
+  <div id="articlepage">
+    <div class="container">
+      <div class="text">
+        <div class="title">
+          <h1>{{ info.articleTitle }}</h1>
+        </div>
+        <div class="type">
+          <span
+            >文章类型:
+            <dict-tag
+              :options="dict.type.article_type"
+              :value="info.articleType"
+              class="dicttag"
+            ></dict-tag>
+          </span>
+          <span
+            >文章分类:
+            <dict-tag
+              :options="dict.type.article_category"
+              :value="info.articleCategory"
+              class="dicttag"
+            ></dict-tag>
+          </span>
+        </div>
+        <a
+          class="link"
+          v-if="info.articleType !== '1' && info.originalUrl !== null"
+          :href="info.originalUrl"
+          >原创链接: <span class="blue">{{ info.originalUrl }}</span></a
+        >
+        <div class="time">
+          <span class="create">创建于:{{ info.createTime }} </span>
+          <span class="update"> 修改于:{{ info.updateTime }}</span>
+        </div>
+        <div class="content" v-html="info.articleContent"></div>
+        <CommentDiv :type="2"></CommentDiv>
+        <CommentList :type="2"></CommentList>
+        <!-- <div class="commentDiv">
+          <h2 class="commenttitle">评论</h2>
+          <div class="mycommentbox">
+            <div>
+              <el-input
+                id="input"
+                type="textarea"
+                :rows="2"
+                placeholder="请输入内容"
+                v-model="textarea"
+                class="input"
+                :autosize="{ minRows: 3, maxRows: 4 }"
+                resize="none"
+              >
+              </el-input>
+            </div>
+            <button @click="submitcomment()">发表评论</button>
+          </div>
+          <div class="emoji">
+            <el-col>
+              <el-button
+                type="text"
+                size="mini"
+                @click.stop="showDialog = !showDialog"
+                >添加表情</el-button
+              >
+              <div class="emojibanner">
+                <VEmojiPicker v-show="showDialog" @select="selectEmoji" />
+              </div>
+            </el-col>
+          </div>
+          <ul>
+            <li v-for="(item, index) in commentList" :key="index">
+              <div class="leftbox"><img :src="item.avatar" alt="" /></div>
+              <div class="rightbox">
+                <span class="name">{{ item.name }} · </span>
+                <span class="time">{{ item.time }}</span>
+                <span class="content">{{ item.content }}</span>
+                <span
+                  class="thumbsUp"
+                  @click="handleThumbsUp(item)"
+                  :class="[{ hasThumbup: item.ifThumb }]"
+                  ><i class="el-icon-thumb" aria-hidden="true"></i
+                  >{{ item.thumbsUp }}</span
+                >
+                <span class="reply"
+                  ><i class="el-icon-chat-line-round" aria-hidden="true"></i
+                  >回复</span
+                >
+                <div class="line"></div>
+              </div>
+            </li>
+          </ul>
+        </div> -->
+      </div>
+      <div class="profile">
+        <div class="about">
+          <h3>关于作者</h3>
+        </div>
+        <div class="avatar">
+          <div class="img" @click="gotouser()">
+            <img :src="url + user.avatar" alt="" />
+          </div>
+          <div class="detail">
+            <div class="name">{{ user.nickName }}</div>
+            <div class="intro">{{ user.intro }}</div>
+          </div>
+        </div>
+        <div>
+          <div class="userdetail">
+            <div>
+              <p>浏览量</p>
+              <p class="number">{{ visitor.visitorView }}</p>
+            </div>
+            <div>
+              <p>点赞数</p>
+              <p class="number">{{ visitor.visitorLike }}</p>
+            </div>
+            <div>
+              <p>文章数</p>
+              <p class="number">{{ visitor.visitorArticle }}</p>
+            </div>
+          </div>
+          <div class="userdetail">
+            <div>
+              <p>原创</p>
+              <p class="number">{{ visitor.original }}</p>
+            </div>
+            <div>
+              <p>订阅</p>
+              <p class="number">{{ visitor.visitorSubscribe }}</p>
+            </div>
+            <div>
+              <p>收藏</p>
+              <p class="number">{{ visitor.visitorCollect }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="like" :class="{ isHide: isHide }">
+        <div class="buttonList">
+          <button class="thumbup" @click="addLike(info.articleId)">
+            <i class="el-icon-caret-top icon"></i>
+            赞同
+            {{ info.articleLike }}
+          </button>
+          <button class="thumbdown">
+            <i class="el-icon-caret-bottom icon"></i>
+          </button>
+          <span class="comment inline"
+            ><i class="el-icon-chat-line-round"></i> 评论</span
+          >
+          <span class="share inline"
+            ><i class="el-icon-s-promotion"></i> 分享</span
+          >
+          <span class="fav inline" @click="addCollect(info.articleId)"
+            ><i class="el-icon-star-off"> 收藏</i></span
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import {
+  getArticleDetail,
+  addArticleLike,
+  addArticleCollect,
+  addArticleView,
+  addArticleViewByAnonymous,
+} from "@/api/article/article";
+import { VEmojiPicker } from "v-emoji-picker";
+import CommentDiv from "@/touristComponents/components/CommentDiv";
+import CommentList from "@/touristComponents/components/CommentList";
+export default {
+  dicts: ["article_state", "article_type", "article_category"],
+  data() {
+    return {
+      url: process.env.VUE_APP_BASE_API,
+      info: {},
+      user: {},
+      visitor: {},
+      oldScrollTop: 0,
+      isHide: false,
+
+      loading: true,
+      textarea: "",
+      showDialog: false,
+      imgList: [
+        {
+          src: "https://axwwgrkdco.cloudimg.io/v7/__gmpics__/984b4267233a471db0008d185ce94c0e?w=63&org_if_sml=1",
+        },
+        {
+          src: "https://axwwgrkdco.cloudimg.io/v7/__gmpics__/b9601d9a934941a298fdaf1b94c212b7?w=63&org_if_sml=1",
+        },
+        {
+          src: "https://axwwgrkdco.cloudimg.io/v7/__gmpics__/984b4267233a471db0008d185ce94c0e?w=63&org_if_sml=1",
+        },
+      ],
+      commentList: [
+        {
+          name: "Chas神",
+          avatar:
+            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+          content: "城堡",
+          time: "2022-04-03 22:27",
+          thumbsUp: 1,
+          source: "浪花一朵朵~",
+          ifThumb: false,
+        },
+        {
+          name: "Chas神",
+          avatar:
+            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+          content: "帅哥",
+          time: "2022-04-03 22:27",
+          thumbsUp: 1,
+          source: "浪花一朵朵~",
+          ifThumb: false,
+        },
+        {
+          name: "Chas神",
+          avatar:
+            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
+          content: "啊啊啊啊 啊",
+          time: "2022-04-03 22:27",
+          thumbsUp: 1,
+          source: "浪花一朵朵~",
+          ifThumb: false,
+        },
+      ],
+    };
+  },
+  methods: {
+    handleScroll() {
+      let scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      // 滚动条滚动的距离
+      let scrollStep = scrollTop - this.oldScrollTop;
+      // 更新——滚动前，滚动条距文档顶部的距离
+      this.oldScrollTop = scrollTop;
+      if (scrollStep > 0) {
+        this.isHide = false;
+      } else {
+        this.isHide = true;
+      }
+    },
+    selectEmoji(emoji) {
+      // 选择emoji后调用的函数
+      let input = document.getElementById("input");
+      let startPos = input.selectionStart;
+      let endPos = input.selectionEnd;
+      let resultText =
+        input.value.substring(0, startPos) +
+        emoji.data +
+        input.value.substring(endPos);
+      input.value = resultText;
+      input.focus();
+      input.selectionStart = startPos + emoji.data.length;
+      input.selectionEnd = startPos + emoji.data.length;
+      this.text = resultText;
+    },
+    submitcomment() {
+      if (this.textarea == "") {
+        this.$message.error("评论内容不能为空哈");
+      }
+    },
+    handleThumbsUp(item) {
+      if (!item.ifThumb) {
+        item.thumbsUp++;
+        item.ifThumb = !item.ifThumb;
+        //axios请求已经点赞
+      } else {
+        item.thumbsUp--;
+        item.ifThumb = !item.ifThumb;
+        //axios请求取消点赞
+      }
+    },
+    gotouser() {
+      this.$router.push({
+        path: "/frontHome/user",
+        query: {
+          id: this.user.userId,
+        },
+      });
+    },
+    addLike(articleId) {
+      addArticleLike(articleId).then((response) => {
+        this.$modal.msgSuccess(response.msg);
+      });
+    },
+    addCollect(articleId) {
+      addArticleCollect(articleId).then((response) => {
+        this.$modal.msgSuccess(response.msg);
+      });
+    },
+  },
+  mounted() {
+    //this.$route.query.id
+    getArticleDetail(this.$route.query.id).then((response) => {
+      console.log(response);
+      this.info = response.data;
+      this.user = response.data.user;
+      this.visitor = response.data.visitor;
+      // 如果没有登录 就不用增加浏览量
+      if (this.$store.state.user.token === "") {
+        addArticleView(this.info.articleId);
+      } else {
+        addArticleViewByAnonymous(this.info.articleId);
+      }
+    });
+
+    window.addEventListener("scroll", this.handleScroll);
+    console.log(this.$store);
+    if (
+      this.$route.path == "/Attractionspage" ||
+      this.$route.path == "/Attractionspage"
+    ) {
+    }
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
+  components: {
+    VEmojiPicker,
+    CommentDiv,
+    CommentList,
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+$bluecolor: #00aeec;
+li {
+  list-style: none;
+}
+#articlepage {
+  padding-top: 60px;
+  .container {
+    position: relative;
+    width: 1340px;
+    margin: 0 auto;
+    // background-color: red;
+    display: flex;
+    padding: 10px;
+    .text {
+      padding: 10px;
+      width: 1000px;
+      // background-color: yellow;
+      .type {
+        text-align: left;
+        color: rgb(111, 111, 111);
+        font-size: 13px;
+        padding: 5px 0px;
+
+        .dicttag {
+          display: inline-block;
+          margin-right: 10px;
+          color: #175199;
+        }
+      }
+      .time {
+        text-align: left;
+        color: rgb(111, 111, 111);
+        font-size: 13px;
+        display: block;
+        padding: 5px 0px;
+        .create {
+          margin-right: 10px;
+        }
+      }
+      .link {
+        text-align: left;
+        color: rgb(111, 111, 111);
+        font-size: 13px;
+        display: block;
+        padding: 5px 0px;
+        .blue {
+          color: #0066ff;
+        }
+      }
+      .content {
+        margin-top: 30px;
+        padding-bottom: 45px;
+      }
+      .commentDiv {
+        padding-top: 20px;
+        .commenttitle {
+          font-family: "Noto Serif SC", serif !important;
+          font-weight: 700;
+          font-size: 28px;
+          line-height: 1;
+          padding-bottom: 30px;
+        }
+        .mycommentbox {
+          display: flex;
+          .input {
+            width: 650px;
+          }
+          button {
+            flex: 1;
+            margin-left: 10px;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+        .emoji {
+          position: relative;
+          .emojibanner {
+            position: absolute;
+            top: 25px;
+            left: 0;
+          }
+        }
+        ul {
+          margin-top: 40px;
+          li {
+            // background-color: $bluecolor;
+            display: flex;
+            flex: 0 0 32%;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            // align-items: center;
+            justify-content: space-between;
+            .leftbox {
+              width: 50px;
+              text-align: center;
+              img {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+              }
+            }
+            .rightbox {
+              padding-top: 5px;
+              padding-left: 15px;
+              flex: 1;
+              // background-color: blue;
+              .name {
+                color: #505050;
+                font: {
+                  size: 13px;
+                  family: PingFangSC-Medium, sans-serif;
+                }
+              }
+              .time {
+                color: #505050;
+                font: {
+                  size: 13px;
+                  family: PingFangSC-Medium, sans-serif;
+                }
+              }
+              .thumbsUp {
+                display: inline-block;
+                margin-right: 30px;
+                color: #505050;
+
+                &:hover {
+                  cursor: pointer;
+                }
+                font: {
+                  size: 12px;
+                }
+                i {
+                  font-size: 15px;
+                  padding-right: 10px;
+                }
+              }
+              .hasThumbup {
+                color: $bluecolor;
+              }
+              .reply {
+                color: #505050;
+                font: {
+                  size: 12px;
+                }
+                i {
+                  font-size: 15px;
+                  padding-right: 10px;
+                }
+              }
+              .content {
+                display: block;
+                padding-top: 10px;
+                padding-bottom: 15px;
+                color: #212121;
+              }
+              .line {
+                border: 1px solid #f4f4f4;
+                margin-top: 15px;
+                margin-bottom: 10px;
+              }
+              .source {
+                font-size: 12px;
+                color: #757575;
+                text-overflow: ellipsis;
+                overflow: hidden;
+              }
+            }
+          }
+        }
+      }
+    }
+    .profile {
+      // width: 220px;
+      // background-color: green;
+      padding: 10px;
+      margin-left: 10px;
+      .avatar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        .img {
+          width: 60px;
+          height: 60px;
+          border-radius: 10px;
+          overflow: hidden;
+          cursor: pointer;
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+        .detail {
+          width: 220px;
+          height: 60px;
+          margin-left: 10px;
+
+          .name {
+            font-weight: 700px;
+            font-size: 20px;
+            margin-bottom: 5px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .intro {
+            font-size: 14px;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+      .userdetail {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        color: #8590a6;
+        .number {
+          color: black;
+          font: {
+            weight: 700;
+          }
+        }
+      }
+    }
+    .like {
+      position: fixed;
+      height: 45px;
+      width: 1000px;
+      bottom: 0;
+      padding: 10px;
+      background-color: #fff;
+      transition: all 0.3s ease-in-out;
+      .buttonList {
+        display: flex;
+        align-items: center;
+        color: #8590a6;
+        button {
+          text-align: center;
+          display: inline-block;
+          height: 30px;
+          border: none;
+          cursor: pointer;
+          border-radius: 3px;
+          color: #056de8;
+          margin-right: 10px;
+          &:hover {
+            background-color: #dae9fc;
+          }
+        }
+        span {
+          margin-right: 10px;
+        }
+      }
+    }
+    .isHide {
+      bottom: -60px;
+      background-color: rgba(255, 255, 255, 0.294);
+    }
+    .content {
+      text-indent: 2em;
+    }
+  }
+}
+</style>
