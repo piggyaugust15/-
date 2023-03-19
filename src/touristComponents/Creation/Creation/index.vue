@@ -67,7 +67,7 @@
       <el-main
         ><div class="routerview">
           <transition name="fade" mode="out-in">
-            <router-view> </router-view>
+            <router-view > </router-view>
           </transition></div
       ></el-main>
     </el-container>

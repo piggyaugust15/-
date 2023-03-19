@@ -116,9 +116,9 @@ export function getArticleDetail(articleId) {
 }
 
 // 获取用户文章列表  分页
-export function getArticleList() {
+export function getArticleList(id) {
   return request({
-    url: '/article/getAllArticle',
+    url: '/article/getAllArticle/'+id,
     method: 'post',
     // params: query
   })

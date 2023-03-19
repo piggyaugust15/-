@@ -50,7 +50,7 @@
             </router-link>
           </li>
         </ul>
-        <span class="username">{{ $store.state.user.name }}</span>
+        <span class="username" @click="gotoProfile">{{ $store.state.user.name }}</span>
 
         <InfoDrawer
           :drawerTitle="drawer.drawerTitle"
@@ -110,6 +110,11 @@ export default {
         this.isHide = true;
       }
     },
+    gotoProfile(){
+  this.$router.push({
+    path :'/frontHome/user',
+  })
+    }
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
@@ -215,6 +220,11 @@ li {
   line-height: 40px;
   right: 90px;
   top: 10px;
+  .img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 #Header .avatar .login,
 #Header .avatar .register {
