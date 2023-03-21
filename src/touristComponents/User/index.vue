@@ -1,6 +1,6 @@
 <template>
   <div id="user">
-    <div class="container">
+    <div class="container" v-loading="loading">
       <div class="profile">
         <div class="background">
           <img :src="$store.state.front.url + user.backgroundImage" alt="" />
@@ -22,8 +22,12 @@
           <button class="editprofile" @click="editProfile()" v-if="this.isShow">
             编辑个人资料
           </button>
-          <button class="subscribe" @click="handlesubscribe()" v-else>
+          <button class="subscribe" @click="handlesubscribe()" v-else-if="!this.user.ifConcern">
             关注
+          </button>
+          <button class="hasSubscribe" @click="handlesubscribe()" v-else-if="this.user.ifConcern">
+            <i class="el-icon-more"></i>
+            已关注
           </button>
           <el-dialog
             title="修改个人资料"
@@ -119,11 +123,12 @@
         <div class="bottom">
           <div class="tab">
             <el-tabs v-model="activeName">
-              <el-tab-pane label="文章" name="first">
+              <el-tab-pane name="first">
+                <span slot="label"><i class="el-icon-s-order"></i> 文章</span>
                 <div v-if="this.article.length>0">
                   <li v-for="(item, index) in article" :key="index" >
                     <div class="infobox">
-                      <div class="top">
+                      <div class="top" @click="gotoarticle(item)">
                         <div class="tag article">文章</div>
                         <span class="title">{{ item.articleTitle }}</span>
                       </div>
@@ -160,11 +165,66 @@
                     </div>
                   </li>
                 </div>
-
                 <el-empty description="这里暂时还没有文章哦"  v-else ></el-empty>
               </el-tab-pane>
-              <el-tab-pane label="文创" name="second">配置管理</el-tab-pane>
-              <el-tab-pane label="收藏" name="third">角色管理</el-tab-pane>
+              <el-tab-pane  name="second">
+                <span slot="label"><i class="el-icon-s-opportunity"></i> 文创</span>
+                <div v-if="this.cul.length>0">
+                  <li v-for="(item, index) in cul" :key="index" >
+                    <div class="infobox">
+                      <div class="top" @click="gotocreation(item)">
+                        <div class="tag creation">文创</div>
+                        <span class="title">{{ item.culCreativityTitle }}</span>
+                      </div>
+                      <div class="box">
+                        <div class="leftbox">
+                          <img
+                              :src="$store.state.front.url + item.culCreativityImage.split(',')[0]"
+                              alt=""
+                          />
+                        </div>
+                        <div class="rightbox">
+                        <span v-html="item.culCreativityIntro" class="content">
+                        </span>
+                        </div>
+                      </div>
+                      <div class="buttonList">
+                        <button class="thumbup">
+                          <i class="el-icon-caret-top icon"></i> 赞同
+                          {{ item.culCreativityLike }}
+                        </button>
+                        <button class="thumbdown">
+                          <i class="el-icon-caret-bottom icon"></i>
+                        </button>
+                        <span class="comment inline"
+                        ><i class="el-icon-chat-line-round"></i> 评论</span
+                        >
+                        <span class="share inline"
+                        ><i class="el-icon-s-promotion"></i> 分享</span
+                        >
+                        <span class="fav inline"
+                        ><i class="el-icon-star-off"> 收藏</i></span
+                        >
+                      </div>
+                    </div>
+                  </li>
+                </div>
+                <el-empty description="这里暂时还没有文创哦"  v-else ></el-empty>
+              </el-tab-pane>
+              <el-tab-pane  name="third">
+                <span slot="label"><i class="el-icon-star-on"></i> 收藏</span>
+
+                <favList></favList>
+              </el-tab-pane>
+              <el-tab-pane  name="fourth">
+                <span slot="label"><i class="el-icon-success"></i> 关注</span>
+                <fansList :type="1"></fansList>
+              </el-tab-pane>
+
+              <el-tab-pane name="fifth">
+                <span slot="label"><i class="el-icon-user-solid"></i> 粉丝</span>
+                <fansList :type="0"></fansList>
+              </el-tab-pane>
             </el-tabs>
           </div>
           <div class="data">
@@ -180,7 +240,7 @@
                 <p class="yesterday">昨日数据</p>
               </div>
             </div>
-            <button @click="gotocreation()">
+            <button @click="gotoCreation">
               <i class="el-icon-s-promotion"></i> 进入创作中心
             </button>
           </div>
@@ -192,19 +252,24 @@
 
 <script>
 import { getArticleList } from "@/api/article/article";
-import { getUserInfo, changeBacImg,getUserProfile,changeUserProfile } from "@/api/user/user";
+import { getUserInfo, changeBacImg,getUserProfile,changeUserProfile,handleSubscribe } from "@/api/user/user";
 import { getDyTypeset } from "@/api/system/typeset.js";
+import {getCulList} from '@/api/sights/cul_creativity.js'
 import store from "@/store";
+import favList from "@/touristComponents/User/favList";
+import fansList from "@/touristComponents/User/fansList";
 export default {
   dicts: ["sys_user_sex"],
   data() {
     return {
+      loading:true,
       flag:this.$route.query.id,
       editLoading:true,
       // url: process.env.VUE_APP_BASE_API,
       isShow:true,
       activeName: "first",
       article: [],
+      cul:[],
       user: {},
       dialogFormVisible: false,
       dialogEditVisible: false,
@@ -236,14 +301,29 @@ export default {
     };
   },
   methods: {
-    gotocreation() {
-      this.$router.push("/frontHome/creation/index");
+    gotoCreation(){
+      this.$router.push('/frontHome/creation/index')
+    },
+    gotocreation(item) {
+      this.$router.push({
+        path:"/frontHome/culcreation/",
+        query:{
+          id:item.culCreativityId
+        }
+      });
+    },
+    gotoarticle(item){
+      this.$router.push({
+        path:"/frontHome/articlepage",
+        query:{
+          id:item.articleId
+        }
+      });
     },
     openEditBackGround() {
       this.dialogEditVisible = true;
       getDyTypeset(1, 9).then((response) => {
         this.edit.list = response.data[0].typesetImage.split(",");
-        console.log("123", response);
       });
     },
     getInfo() {
@@ -253,13 +333,15 @@ export default {
       getUserInfo(this.flag).then((response) => {
         this.user = response.data;
         this.isShow=response.ifSelf;
+        this.loading=false;
+        // console.log(response)
       });
     },
     changeBackImg() {
       this.dialogEditVisible = false;
       let background = this.edit.background;
       changeBacImg(background).then((response) => {
-        if (response.code == 200) {
+        if (response.code === 200) {
           this.$message({
             message: response.msg,
             type: "success",
@@ -296,21 +378,41 @@ export default {
       })
     },
     handlesubscribe(){
-
+      handleSubscribe(this.$route.query.id).then((res)=>{
+        if(res.code===200){
+          this.$message({
+            type:'success',
+            message:res.msg,
+          })
+          this.user.ifConcern=!this.user.ifConcern;
+        }else{
+          this.message.err(res.msg)
+        }
+      })
     },
     getUerArticleList(){
-      if(this.flag===undefined){
-        this.flag=-1;
-      }
+      // if(this.flag===undefined){
+      //   this.flag=-1;
+      // }
       getArticleList(this.flag).then((response) => {
         this.article = response.rows;
+      });
+    },
+    getCulList(){
+      // if(this.flag===undefined){
+      //   this.flag=-1;
+      // }
+      getCulList(this.flag).then((response) => {
+        this.cul = response.rows;
       });
     }
   },
   mounted() {
       this.getInfo();
       this.getUerArticleList();
+      this.getCulList();
   },
+  components:{favList,fansList}
 };
 </script>
 
@@ -359,7 +461,7 @@ li {
         height: 160px;
         left: 20px;
         top: -30px;
-        background-color: #060a09;
+        background-color: #999999;
         border-radius: 10px;
         border: 4px solid #fff;
         img {
@@ -377,7 +479,7 @@ li {
           font-weight: 700;
         }
       }
-      .editprofile,.subscribe {
+      .editprofile,.subscribe,.hasSubscribe {
         position: absolute;
         right: 20px;
         bottom: 20px;
@@ -388,6 +490,11 @@ li {
         color: #409eff;
         cursor: pointer;
         background-color: #e6f0fd;
+      }
+      .hasSubscribe{
+        color: #6d757a;
+      background-color: #e5e9ef;
+        border: none;
       }
       .edit {
         ::v-deep.el-radio-group {
@@ -415,6 +522,7 @@ li {
           border-bottom: 1px solid #d6d6d6;
           padding: 5px;
           padding-bottom: 15px;
+          cursor: pointer;
           .infobox {
             cursor: pointer;
             .top {

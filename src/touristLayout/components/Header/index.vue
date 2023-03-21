@@ -170,6 +170,12 @@ li {
   width: 80%;
   height: 100%;
   margin: 0 auto;
+  .username{
+    cursor: pointer;
+    &:hover{
+      color: rgb(0, 123, 255);
+    }
+  }
 }
 #Header.isHide {
   top: -60px;

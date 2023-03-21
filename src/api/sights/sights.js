@@ -149,7 +149,7 @@ export function getViewRank() {
   })
 }
 //收藏景点
-export function collectSightsId(sightsId) {
+export function favSights(sightsId) {
   return request({
     url: '/sights/collect/' + sightsId,
     method: 'get',
@@ -165,7 +165,7 @@ export function reverseSightsCollection(sightsId) {
   })
 }
 //获取用户景点 收藏记录
-export function getCollection() {
+export function getFavSights() {
   return request({
     url: '/sights/collect',
     method: 'post'

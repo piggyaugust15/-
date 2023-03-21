@@ -176,58 +176,15 @@ export default {
   data() {
     return {
       url: process.env.VUE_APP_BASE_API,
+      // isFav:,
       info: {},
       user: {},
       visitor: {},
       oldScrollTop: 0,
       isHide: false,
-
       loading: true,
       textarea: "",
       showDialog: false,
-      imgList: [
-        {
-          src: "https://axwwgrkdco.cloudimg.io/v7/__gmpics__/984b4267233a471db0008d185ce94c0e?w=63&org_if_sml=1",
-        },
-        {
-          src: "https://axwwgrkdco.cloudimg.io/v7/__gmpics__/b9601d9a934941a298fdaf1b94c212b7?w=63&org_if_sml=1",
-        },
-        {
-          src: "https://axwwgrkdco.cloudimg.io/v7/__gmpics__/984b4267233a471db0008d185ce94c0e?w=63&org_if_sml=1",
-        },
-      ],
-      commentList: [
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          content: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          content: "帅哥",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          content: "啊啊啊啊 啊",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-        },
-      ],
     };
   },
   methods: {
@@ -299,7 +256,7 @@ export default {
   mounted() {
     //this.$route.query.id
     getArticleDetail(this.$route.query.id).then((response) => {
-      console.log(response);
+      console.log('detail',response);
       this.info = response.data;
       this.user = response.data.user;
       this.visitor = response.data.visitor;
@@ -312,7 +269,6 @@ export default {
     });
 
     window.addEventListener("scroll", this.handleScroll);
-    console.log(this.$store);
     if (
       this.$route.path == "/Attractionspage" ||
       this.$route.path == "/Attractionspage"

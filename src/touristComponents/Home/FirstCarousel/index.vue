@@ -88,7 +88,7 @@
           </div>
         </el-popover>
       </div>
-      <el-carousel class="carousel">
+      <el-carousel class="carousel" :interval="5000">
         <el-carousel-item v-for="(item, index) in Images" :key="index">
           <div class="box">
             <div class="img"><img :src="url + item" alt="" /></div>

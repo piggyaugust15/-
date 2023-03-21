@@ -15,6 +15,7 @@
       :file-list="fileList"
       :on-preview="handlePictureCardPreview"
       :class="{ hide: this.fileList.length >= this.limit }"
+      :multiple="mutiple"
     >
       <i class="el-icon-plus"></i>
     </el-upload>
@@ -71,6 +72,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    mutiple:{
+      type:Boolean,
+      default:false,
+    }
   },
   data() {
     return {

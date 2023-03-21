@@ -1,5 +1,5 @@
 <template>
-  <div class="main">
+  <div id="commentdiv">
     <div class="commentDiv">
       <h2 class="commenttitle">评论</h2>
       <div class="mycommentbox">
@@ -118,7 +118,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 $bluecolor: #00aeec;
-.main {
+#commentdiv {
   .commentDiv {
     padding-top: 20px;
     .commenttitle {

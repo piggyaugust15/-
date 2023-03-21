@@ -84,7 +84,7 @@ export function createArticle(data) {
 }
 
 // 获取用户收藏列表
-export function readArticleCollect() {
+export function getFavArticle() {
   return request({
     url: '/article/collect/getAll',
     method: 'get'

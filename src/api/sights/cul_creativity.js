@@ -99,3 +99,25 @@ export function create(data) {
     data: data
   })
 }
+//获得用户文创列表
+export function getCulList(id) {
+  return request({
+    url: '/creativity/getAllCul/'+id,
+    method: 'post',
+  })
+}
+
+export function createCul(data) {
+  return request({
+    url: '/creativity/create',
+    method: 'post',
+    data:data
+  })
+}
+//获得资料卡文创收藏
+export function getFavCul() {
+  return request({
+    url: '/creativity/collect/getAll',
+    method: 'get',
+  })
+}

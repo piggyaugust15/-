@@ -28,3 +28,24 @@ export function changeUserProfile(data) {
         data:data
     })
 }
+
+export function handleSubscribe(id) {
+    return request({
+        url: '/inter/add/'+id,
+        method: 'get',
+    })
+}
+
+export function getFansList() {
+    return request({
+        url: '/inter/showFans',
+        method: 'get',
+    })
+}
+
+export function getSubList() {
+    return request({
+        url: '/inter/showConcerns',
+        method: 'get',
+    })
+}

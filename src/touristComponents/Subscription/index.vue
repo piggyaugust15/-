@@ -34,7 +34,7 @@
       </div>
       <div class="convention">
         <span class="title">投稿公约</span>
-        <router-link to="/Creation/convention"
+        <router-link to="/frontHome/Creation/convention"
           ><div class="img">
             <img src="@/assets/images/biliconvention.webp" alt="" /></div
         ></router-link>

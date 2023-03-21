@@ -1,6 +1,6 @@
 <template>
   <div id="CommentList">
-    <ul v-if="list.lenth > 0">
+    <ul v-if="list.length > 0">
       <li v-for="(item, index) in list" :key="index" class="Commentli">
         <div class="content">
           <div class="left_box">
@@ -213,7 +213,7 @@ export default {
     },
     getInfo() {
       getParentComment(this.request).then((response) => {
-        console.log(response);
+        console.log('data',response);
         this.total = response.total;
         response.rows.map((item, index) => {
           this.list.push(Object.assign({}, item, { content: "" }));
@@ -269,6 +269,7 @@ li {
   list-style: none;
 }
 #CommentList {
+  padding-top: 50px;
   width: 100%;
   .Commentli {
     width: 100%;

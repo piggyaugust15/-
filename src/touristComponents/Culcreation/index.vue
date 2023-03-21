@@ -21,38 +21,6 @@
             要在马里士他路上找到文东记一点也不难，店面的明亮招牌和门前不绝的人龙将引领您到达。老闆最初在牛车水的小摊档摆卖，现已扩展至八间店子，而这家于1983年开业的则是品牌首家店铺。其招牌海南鸡广受老饕欢迎，更有三种大小选择；此外，煮炒菜式也做得不俗。若不想排队，宜避开繁忙时间。
           </p>
         </div>
-        <!-- <div class="commentDiv">
-          <h2 class="commenttitle">评论</h2>
-          <div class="mycommentbox">
-            <div>
-              <el-input
-                id="input"
-                type="textarea"
-                :rows="2"
-                placeholder="请输入内容"
-                v-model="ruleForm.commentContent"
-                class="input"
-                :autosize="{ minRows: 3, maxRows: 4 }"
-                resize="none"
-              >
-              </el-input>
-            </div>
-            <button @click="submitcomment()">发表评论</button>
-          </div>
-          <div class="emoji">
-            <el-col>
-              <el-button
-                type="text"
-                size="mini"
-                @click.stop="showDialog = !showDialog"
-                >添加表情</el-button
-              >
-              <div class="emojibanner">
-                <VEmojiPicker v-show="showDialog" @select="selectEmoji" />
-              </div>
-            </el-col>
-          </div>
-        </div> -->
         <CommentDiv :type="1"></CommentDiv>
         <CommentList :type="1"></CommentList>
       </div>

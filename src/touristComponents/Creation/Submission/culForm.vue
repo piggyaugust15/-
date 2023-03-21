@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { createArticle } from "@/api/article/article.js";
+import { createCul } from "@/api/sights/cul_creativity.js";
 export default {
   dicts: [
     "cul_creativity_type",
@@ -86,7 +86,6 @@ export default {
       culCreationForm: {
         culCreativityTitle: "",
         culCreativityContent: "",
-        culCreativityCover: "",
         status: "",
         culCreativityCategory: "",
         culCreativityType: "",
@@ -132,10 +131,10 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          console.log(this.ruleForm);
-          createArticle(this.ruleForm).then((res) => {
+          console.log(this.culCreationForm);
+          createCul(this.culCreationForm).then((res) => {
             console.log(res);
-            if (res.code == 200) {
+            if (res.code === 200) {
               this.$message({
                 message: res.msg,
                 type: "success",
