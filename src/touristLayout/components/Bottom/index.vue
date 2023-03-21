@@ -36,8 +36,11 @@
       </ul>
     </div>
     <div class="logobox">
-      <router-link to="/Home">Silk Road Collection</router-link>
-      <span>© 2022 SilkRoad Collection.CN All Rights Reserved</span>
+      <div>
+        <img src="@/assets/images/Logo.png" alt="">
+      </div>
+<!--      <router-link to="/Home">Silk Road Collection</router-link>-->
+      <div class="rights">© 2022 SilkRoad Collection.CN All Rights Reserved</div>
     </div>
   </div>
 </template>
@@ -70,7 +73,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 a {
   text-decoration: none;
   color: #333333;
@@ -113,6 +116,14 @@ a:hover {
 #bottom .logobox {
   float: right;
   margin-top: 16px;
+  img{
+    width: 455px;
+    height: 117.5px;
+  }
+  .rights{
+    margin-top: 15px  ;
+    text-align: center;
+  }
 }
 #bottom .logobox a {
   text-align: right;

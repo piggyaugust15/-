@@ -44,6 +44,7 @@
                       v-for="(item, index) in article.searchReturns"
                       :key="index"
                       class="have"
+                      @click="gotoArticle(item.articleId)"
                     >
                       <span v-html="item.articleTitle"></span>
                       <!-- {{ item.articleTitle }} -->
@@ -61,6 +62,7 @@
                       v-for="(item, index) in creation.searchReturns"
                       :key="index"
                       class="have"
+                      @click="gotoCul(item.culCreativityId)"
                     >
                       <span v-html="item.culCreativityTitle"></span>
                     </li>
@@ -77,6 +79,7 @@
                       v-for="(item, index) in attraction.searchReturns"
                       :key="index"
                       class="have"
+                      @click="gotoSights(item.sightsId)"
                     >
                       <span v-html="item.sightsName"></span>
                     </li>
@@ -103,7 +106,6 @@
 import { getDyTypeset } from "@/api/system/typeset";
 import { searchSights } from "@/api/search/search.js";
 export default {
-  name: "FullScreenSwiper",
   data() {
     return {
       url: process.env.VUE_APP_BASE_API,
@@ -145,6 +147,24 @@ export default {
     },
   },
   methods: {
+    gotoArticle(id){
+      this.$router.push({
+        path: this.article.route,
+        query: { id: id },
+      });
+    },
+    gotoCul(id){
+      this.$router.push({
+        path: this.creation.route,
+        query: { id: id },
+      });
+    },
+    gotoSights(id){
+      this.$router.push({
+        path: this.attraction.route,
+        query: { id: id },
+      });
+    },
     hotsearch() {}, // 热搜建议
     suggestsearch(keywords) {
       searchSights(keywords).then((response) => {

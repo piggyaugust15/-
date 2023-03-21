@@ -176,7 +176,6 @@ export default {
     getFavSights(){
       getFavSights().then((res)=>{
         this.sights=res.rows;
-        console.log('sights',res)
       })
     },
     getFavArticle(){

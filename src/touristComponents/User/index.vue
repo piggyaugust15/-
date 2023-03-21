@@ -6,7 +6,7 @@
           <img :src="$store.state.front.url + user.backgroundImage" alt="" />
           <button class="uploadimg" @click="openEditBackGround()" v-if="this.isShow">
             <i class="el-icon-camera-solid"></i>
-            上传封面照片
+            修改资料背景
           </button>
         </div>
         <div class="detail">
@@ -355,7 +355,6 @@ export default {
     editProfile(){
       this.dialogFormVisible = true;
       getUserProfile().then((response)=>{
-        console.log('edit',response)
         this.form=response.data;
         this.editLoading=false;
       })
@@ -508,7 +507,7 @@ li {
         }
       }
       .editBImg {
-        width: 150px;
+        width: 400px;
         height: 100px;
       }
     }

@@ -194,6 +194,7 @@ li {
                 background-color: #67c23a;
               }
               .title {
+                text-align: left;
                 display: inline-block;
                 font-size: 25px;
                 transition: all 0.1s ease-in-out;

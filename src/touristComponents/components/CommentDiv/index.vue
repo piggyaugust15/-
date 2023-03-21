@@ -20,15 +20,24 @@
       </div>
       <div class="emoji">
         <el-col>
-          <el-button
-            type="text"
-            size="mini"
-            @click.stop="showDialog = !showDialog"
-            >添加表情</el-button
+
+          <el-popover
+              :placement="bottom-end"
+              trigger="hover"
+              :popper-options="{ boundariesElement: 'body', removeOnDestroy: true }"
           >
-          <div class="emojibanner">
-            <VEmojiPicker v-show="showDialog" @select="selectEmoji" />
-          </div>
+            <div >
+              <VEmojiPicker  @select="selectEmoji" />
+            </div>
+            <el-button slot="reference" size="mini" type="text">添加表情</el-button>
+<!--            <el-button-->
+<!--                type="text"-->
+<!--                size="mini"-->
+<!--                @click.stop="showDialog = true"-->
+<!--            >添加表情</el-button-->
+<!--            >-->
+          </el-popover>
+
         </el-col>
       </div>
     </div>
@@ -141,14 +150,8 @@ $bluecolor: #00aeec;
         }
       }
     }
-    .emoji {
-      z-index: 1;
-      position: relative;
-      .emojibanner {
-        position: absolute;
-        top: 25px;
-        left: 0;
-      }
+    .emoji-picker{
+      height: 200px;
     }
     ul {
       margin-top: 40px;

@@ -36,16 +36,16 @@ export function handleSubscribe(id) {
     })
 }
 
-export function getFansList() {
+export function getFansList(id) {
     return request({
-        url: '/inter/showFans',
+        url: '/inter/showFans/'+id,
         method: 'get',
     })
 }
 
-export function getSubList() {
+export function getSubList(id) {
     return request({
-        url: '/inter/showConcerns',
+        url: '/inter/showConcerns/'+id,
         method: 'get',
     })
 }

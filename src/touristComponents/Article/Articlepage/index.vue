@@ -33,7 +33,7 @@
           <span class="create">创建于:{{ info.createTime }} </span>
           <span class="update"> 修改于:{{ info.updateTime }}</span>
         </div>
-        <div class="content" v-html="info.articleContent"></div>
+        <div class="content markdown-body" v-html="info.articleContent" ></div>
         <CommentDiv :type="2"></CommentDiv>
         <CommentList :type="2"></CommentList>
         <!-- <div class="commentDiv">
@@ -171,6 +171,7 @@ import {
 import { VEmojiPicker } from "v-emoji-picker";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
+import {marked} from 'marked'
 export default {
   dicts: ["article_state", "article_type", "article_category"],
   data() {
@@ -259,6 +260,7 @@ export default {
       console.log('detail',response);
       this.info = response.data;
       this.user = response.data.user;
+      this.info.articleContent = marked(this.info.articleContent);
       this.visitor = response.data.visitor;
       // 如果没有登录 就不用增加浏览量
       if (this.$store.state.user.token === "") {
@@ -486,7 +488,7 @@ li {
           margin-left: 10px;
 
           .name {
-            font-weight: 700px;
+            font-weight: 700;
             font-size: 20px;
             margin-bottom: 5px;
             overflow: hidden;

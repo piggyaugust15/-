@@ -16,9 +16,9 @@
           </p>
         </div>
         <div class="text">
-          <h2 class="productiontitle">米其林指南的观点</h2>
+          <h2 class="productiontitle">关于</h2>
           <p class="text">
-            要在马里士他路上找到文东记一点也不难，店面的明亮招牌和门前不绝的人龙将引领您到达。老闆最初在牛车水的小摊档摆卖，现已扩展至八间店子，而这家于1983年开业的则是品牌首家店铺。其招牌海南鸡广受老饕欢迎，更有三种大小选择；此外，煮炒菜式也做得不俗。若不想排队，宜避开繁忙时间。
+            {{info.culCreativityContent}}
           </p>
         </div>
         <CommentDiv :type="1"></CommentDiv>

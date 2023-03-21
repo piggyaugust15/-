@@ -44,6 +44,7 @@
                   v-for="(item, index) in article.searchReturns"
                   :key="index"
                   class="have"
+                  @click="gotoArticle(item.articleId)"
                 >
                   <span v-html="item.articleTitle"></span>
                   <!-- {{ item.articleTitle }} -->
@@ -60,6 +61,7 @@
                   v-for="(item, index) in creation.searchReturns"
                   :key="index"
                   class="have"
+                  @click="gotoCul(item.culCreativityId)"
                 >
                   <span v-html="item.culCreativityTitle"></span>
                 </li>
@@ -75,6 +77,7 @@
                   v-for="(item, index) in attraction.searchReturns"
                   :key="index"
                   class="have"
+                  @click="gotoSights(item.sightsId)"
                 >
                   <span v-html="item.sightsName"></span>
                 </li>
@@ -126,15 +129,34 @@ export default {
         this.creation = {};
         this.attraction = {};
       }
+      console.log(this.input);
       this.suggestsearch(this.input);
     },
   },
   methods: {
+    gotoArticle(id){
+      this.$router.push({
+        path: this.article.route,
+        query: { id: id },
+      });
+    },
+    gotoCul(id){
+      this.$router.push({
+        path: this.creation.route,
+        query: { id: id },
+      });
+    },
+    gotoSights(id){
+      this.$router.push({
+        path: this.attraction.route,
+        query: { id: id },
+      });
+    },
     hotsearch() {}, // 热搜建议
     suggestsearch(keywords) {
-      if (this.input != "") {
+      if (this.input !== undefined||' '||'') {
         searchSights(keywords).then((response) => {
-          console.log(response);
+          console.log('suggest',response);
           this.attraction = response.data[0];
           this.creation = response.data[1];
           this.article = response.data[2];
