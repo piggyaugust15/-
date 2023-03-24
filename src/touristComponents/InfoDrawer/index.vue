@@ -1,9 +1,8 @@
 <template>
   <div id="Drawer">
     <div @click="drawer = true" type="primary" style="margin-left: 16px">
-      <el-badge is-dot class="item"
-        ><slot name="btn" class="avatar"></slot
-      ></el-badge>
+      <slot name="btn" class="avatar"></slot
+      >
     </div>
     <el-drawer
       :title="title"

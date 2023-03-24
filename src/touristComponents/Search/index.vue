@@ -4,7 +4,7 @@
       placement="bottom"
       width="400"
       trigger="click"
-      v-model="showPopover"
+      v-model.trim="showPopover"
     >
       <el-input
         placeholder="请输入内容"
@@ -121,7 +121,7 @@ export default {
   },
   watch: {
     input: function () {
-      if (this.input != "") {
+      if (this.input !== "") {
         this.title = "搜索建议";
       } else {
         this.title = "热搜榜";

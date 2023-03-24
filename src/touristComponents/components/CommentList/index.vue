@@ -28,8 +28,7 @@
                 </div>
                 {{ item.rating }}分&nbsp;&nbsp;超棒
               </div> -->
-              <div class="text">
-                {{ item.commentContent }}
+              <div class="text" v-html="item.commentContent">
               </div>
               <div class="bottom_div">
                 <span class="time">{{ item.createTime }}</span>
@@ -115,8 +114,8 @@
                   >{{ item.user.nickName }}
                   <i class="el-icon-caret-right"> {{ item.fatherName }}</i>
                 </span>
-                <div class="text">
-                  {{ item.commentContent }}
+                <div class="text" v-html="item.commentContent">
+
                 </div>
                 <div class="bottom_div">
                   <span class="time">{{ item.createTime }}</span>
@@ -150,6 +149,7 @@
 import { getParentComment } from "@/api/system/comment.js";
 import { getSecondComment } from "@/api/system/comment.js";
 import { submitComment } from "@/api/system/comment.js";
+import {emoji} from "emoji";
 export default {
   name: "CommentList",
   data() {
@@ -251,10 +251,14 @@ export default {
       setTimeout(() => {
         _this.secondComment = {};
       }, 500);
-    },
+    },haha(){
+      var emoji = require('emoji');
+      console.log('😎', emoji.unifiedToHTML('😎'));
+    }
   },
   mounted() {
     this.getInfo();
+    this.haha();
   },
   beforeDestroy() {
     window.removeEventListener("click", () => {}, true);

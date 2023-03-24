@@ -6,7 +6,6 @@
           <li
             v-for="(item, index) in list"
             :key="index"
-            @click="gotoarticle(item)"
           >
             <div class="infobox">
               <div class="top">
@@ -22,11 +21,12 @@
                 <div class="tag sights" v-if="item.multipleType == 'SIGHTS'">
                   景点
                 </div>
-                <span class="title" v-html="item.multipleName"></span>
+                <span class="title" v-html="item.multipleName" @click="gotoarticle(item)"></span>
               </div>
               <div class="box">
                 <div class="leftbox">
                   <img :src="url + item.multipleImage" alt="" />
+<!--                  .split(',')[0]-->
                 </div>
                 <div class="rightbox">
                   <span v-html="item.multipleContent" class="content"> </span>
@@ -128,7 +128,7 @@ export default {
         this.list = response.data;
         // this.total = response.total;
         this.loading = false;
-        console.log(response);
+        console.log('list',response);
       });
     },
     gotoarticle(item) {

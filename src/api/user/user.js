@@ -49,3 +49,10 @@ export function getSubList(id) {
         method: 'get',
     })
 }
+//获得订阅界面个人信息
+export function getSubscriptionInfo() {
+    return request({
+        url: '/person/create/intro',
+        method: 'get',
+    })
+}

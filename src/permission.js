@@ -38,7 +38,6 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       //放行到 主页
       next({ path: '/frontHome/home' })
-
       // 加载完成
       NProgress.done()
 
@@ -66,7 +65,8 @@ router.beforeEach((to, from, next) => {
           })
       } else {
         //获得到角色的话直接放行
-        console.log("xx",store.getters.roles.indexOf("common"))
+
+        console.log("xx",store.getters.roles.indexOf("admin"))
         console.log("xxx",store.getters.roles)
         //放行
         next()
@@ -80,6 +80,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // 这个后面的 redirect=${to.fullPath} 其实是 记录信息  因为可能是从其他地方来登录的 解决这个login之后就会返回之前的地方
       next(`/login?redirect=${to.fullPath}`)  //否则全部重定向到登录页
+      // next('/frontHome')
       NProgress.done()
     }
   }

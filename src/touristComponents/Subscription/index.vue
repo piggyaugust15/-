@@ -1,63 +1,66 @@
 <template>
-  <div id="subscription">
+  <div id="subscription" style="overflow:auto" v-infinite-scroll="getSubscriptionList" class="infinite-list">
     <div class="left">
       <div class="profile">
         <div class="background">
-          <img src="@/assets/images/profilebackground.webp" alt="" />
+          <img :src="$store.state.front.url+user.backgroundImage" alt="" />
         </div>
         <div class="info">
-          <div class="avatar">
-            <img src="@/assets/images/avatar.webp" alt="" />
+          <div class="avatar" @click="$router.push('/frontHome/user')">
+            <img :src="$store.state.front.url+user.avatar" alt="" />
           </div>
-          <div class="name">{{ profile.name }}</div>
+          <div class="name">{{ user.nickName }}</div>
           <div class="tags">
             <a class="tags_item">
               <div class="number">
-                {{ profile.subscribeNumber }}
+                {{ parseInt(user.visitor.visitorArticle) + parseInt(user.visitor.visitorCul)}}
               </div>
-              <div class="chinese">订阅</div></a
+              <div class="chinese">投稿</div></a
             >
             <a class="tags_item">
               <div class="number">
-                {{ profile.fans }}
+                {{ user.visitor.visitorView }}
               </div>
-              <div class="chinese">关注</div>
+              <div class="chinese">浏览量</div>
             </a>
             <a class="tags_item">
               <div class="number">
-                {{ profile.manuscriptNumber }}
+                {{ user.visitor.visitorFans }}
               </div>
-              <div class="chinese">投稿</div></a
+              <div class="chinese">粉丝</div></a
             >
           </div>
         </div>
       </div>
       <div class="convention">
-        <span class="title">投稿公约</span>
+        <span class="title">创作公约</span>
         <router-link to="/frontHome/Creation/convention"
           ><div class="img">
-            <img src="@/assets/images/biliconvention.webp" alt="" /></div
+            <img src="@/assets/images/4.jpg" alt="" /></div
         ></router-link>
       </div>
     </div>
-
-    <div class="subcriptionList">
-      <ul>
+    <div class="subcriptionList " v-loading="loading"
+    >
+      <ul
+          v-if="subscriptionList.length>0"
+          class="infinite-list"
+      >
         <li v-for="(item, index) in subscriptionList" :key="index">
           <div class="leftbox">
-            <img :src="item.avatar" alt="" />
+            <img :src="$store.state.front.url+item.user.avatar" alt="" />
           </div>
           <div class="rightbox">
-            <span class="name">{{ item.name }}</span>
-            <span class="time">{{ item.time }}</span>
-            <span class="richtext">{{ item.richtext }}</span>
-            <div class="manuscript" @click="gotoCulcreation()">
-              <div class="img">
-                <img :src="item.cover" alt="" />
+            <span class="name" @click="$router.push({path:'/frontHome/user',query:{id:item.userId}})">{{ item.user.nickName }}</span>
+            <span class="time">{{ item.createTime }}</span>
+            <span class="richtext">{{ item.culCreativityIntro }}</span>
+            <div class="manuscript" @click="gotoCulcreation(item.culCreativityId)">
+              <div class="img" >
+                <img :src="$store.state.front.url+item.culCreativityImage.split(',')[0]" alt="" />
                 <div class="cover"></div>
               </div>
               <div class="data">
-                <span class="title">{{ item.title }}</span>
+                <span class="title">{{ item.culCreativityTitle }}</span>
                 <span class="introduction">{{ item.introduction }}</span>
                 <div class="viewcomment">
                   <span class="tag"
@@ -71,6 +74,11 @@
           </div>
         </li>
       </ul>
+      <div class="empty" v-else>
+        <ul>
+          <li><el-empty description="描述文字" ></el-empty></li>
+        </ul>
+      </div>
     </div>
     <div class="right">
       <span class="title">话题</span>
@@ -97,189 +105,21 @@
 </template>
 
 <script>
+import { getSubscriptionInfo} from '@/api/user/user.js'
+import {getSubscriptionList} from '@/api/subscription/subscription.js'
 export default {
   data() {
     return {
-      subscriptionList: [
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          richtext: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-          cover:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          title: "美军出动53辆油罐车再次盗运叙石油",
-          view: 6982,
-          comment: 9,
-          introduction:
-            "据叙利亚通讯社消息，当地时间14日，美国在叙利亚非法驻军同当地反对派武装合作，盗运叙利亚石油。据消息人士称，此次美军出动53辆油罐车，满载从叙利亚哈塞克省盗运的石油，运往美军在伊拉克的基地。",
-        },
-      ],
-      profile: {
-        avatar: "@/assets/images/avatar.webp",
-        background: "@/assets/images/profilebackground.webp",
-        name: "浩然是个大魔王",
-        subscribeNumber: 142,
-        fans: 1,
-        manuscriptNumber: 6,
+      loading:true,
+      count: 0,
+      pageNum:1,
+      user:{
+        visitor:{
+
+        }
       },
+      currentList:[],
+      subscriptionList: [],
       topicList: [
         {
           name: "官宣！《黑神话：悟空》2024夏发售",
@@ -300,14 +140,37 @@ export default {
     };
   },
   methods: {
-    gotoCulcreation() {
-      this.$router.push({ path: "/frontHome/culcreation" });
+    load () {
+      this.count += 2
+    },
+    gotoCulcreation(id) {
+      this.$router.push({ path: "/frontHome/culcreation" ,query:{id:id}});
+    },
+    getSubscriptionInfo(){
+      getSubscriptionInfo().then((res)=>{
+        this.user=res.data;
+        console.log(res)
+      })
+    },
+    getSubscriptionList(){
+
+      console.log(this.pageNum)
+      getSubscriptionList({pageSize:5,pageNum:this.pageNum}).then((res)=>{
+        console.log('123',res)
+        this.subscriptionList=this.subscriptionList.concat(res.rows)
+        this.pageNum++;
+        this.loading=false;
+      })
     },
   },
   watch: {
     "this.$route.path"() {
       console.log(this.$route.path);
     },
+  },
+  mounted(){
+    this.getSubscriptionInfo();
+    this.getSubscriptionList()
   },
 };
 </script>
@@ -321,16 +184,21 @@ li {
   list-style: none;
 }
 #subscription {
-  padding-top: 60px;
+  padding-top: 70px;
   display: flex;
   font-family: $font;
-  /*background-image: url("../../assets/images/pageBg.png"); 下面删了no-repeat*/
-  background-image: url("../../assets/images/background.png");
-  background-size: 100% 100%;
+  height: 100%;
+  background-image: url("../../assets/images/1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
   background-attachment: fixed;
   justify-content: center;
   margin: 0 auto;
+  //height: 100vh;
   .left {
+    position: sticky;
+    top: 0px;
+    height: 100%;
     width: 244px;
     flex-shrink: 0;
     .profile {
@@ -409,8 +277,6 @@ li {
       }
     }
     .convention {
-      position: sticky;
-      top: 70px;
       background-color: #fff;
       border-radius: 4px;
       width: 100%;
@@ -425,7 +291,7 @@ li {
       }
       .img {
         width: 100%;
-        height: 100px;
+        height: 132px;
         border-radius: 4px;
         overflow: hidden;
         img {
@@ -503,8 +369,11 @@ li {
     }
   }
   .subcriptionList {
+    //width: 630px;
     padding: 0px 10px 0px 10px;
     ul {
+      //overflow:visible;
+      height: 100vh;
       li {
         display: flex;
         padding: 10px;
@@ -531,6 +400,10 @@ li {
               size: 16px;
             }
             letter-spacing: 0;
+            cursor: pointer;
+            &:hover{
+              color:$bluecolor;
+            }
           }
           .time {
             display: block;
@@ -650,6 +523,17 @@ li {
             opacity: 1;
           }
         }
+      }
+    }
+    .empty{
+      width: 100%;
+      li{
+        display: block;
+        height: 640px;
+      }
+      .infinite-list{
+        width: 500px;
+        overflow-y: scroll;
       }
     }
   }

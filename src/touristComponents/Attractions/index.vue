@@ -1,7 +1,7 @@
 <template>
   <div id="Acttractions">
     <!-- <Header></Header> -->
-    <TitleSwiper></TitleSwiper>
+    <TitleSwiper class=""></TitleSwiper>
     <div class="main">
       <el-container>
         <el-header class="header">
@@ -216,10 +216,11 @@ export default {
 
 <style lang="scss" scoped>
 #Acttractions {
+  //width: 1340px;
   height: 0px;
 }
 #Acttractions .main {
-  width: 80%;
+  width: 1340px;
   margin: 0 auto;
 }
 .eventswiper {
@@ -265,7 +266,7 @@ export default {
   /* 声明一个容器 */
   display: grid;
   /*  声明列的宽度  */
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   /*  声明行间距和列间距  */
   grid-gap: 40px;
   grid-column-gap: 20px;

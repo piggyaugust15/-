@@ -99,7 +99,7 @@
                 </div>
               </div>
               <div class="Comment">
-                <!-- <CommentDiv :type="0"></CommentDiv> -->
+<!--                 <CommentDiv :type="0"></CommentDiv>-->
                 <el-tabs tab-position="top" style="height: 200px">
                   <el-tab-pane label="智能排序">
                     <CommentList :type="0"></CommentList>

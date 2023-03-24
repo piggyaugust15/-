@@ -50,18 +50,33 @@
             </router-link>
           </li>
         </ul>
-        <span class="username" @click="gotoProfile">{{ $store.state.user.name }}</span>
+        <li>
+          <span class="username" @click="gotoProfile">{{ $store.state.user.name }}</span>
+        </li>
+        <li>
+          <InfoDrawer
+              :drawerTitle="drawer.drawerTitle"
+              :direction="drawer.direction"
+          >
+<!--            <el-avatar-->
 
-        <InfoDrawer
-          :drawerTitle="drawer.drawerTitle"
-          :direction="drawer.direction"
-        >
-          <el-avatar
-            slot="btn"
-            :src="$store.state.user.avatar"
-            id="avatar"
-          ></el-avatar>
-        </InfoDrawer>
+<!--                :src="$store.state.user.avatar"-->
+<!--            ></el-avatar>-->
+            <div id="avatar" slot="btn">
+
+              <el-popover
+                  placement="top-start"
+                  title="标题"
+                  width="200"
+                  trigger="hover"
+                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
+<!--                <el-button >hover 激活</el-button>-->
+                <img :src="$store.state.user.avatar" alt="" slot="reference">
+              </el-popover>
+            </div>
+            >
+          </InfoDrawer>
+        </li>
       </div>
     </div>
   </div>
@@ -224,6 +239,8 @@ li {
   text-align: center;
   height: 40px;
   line-height: 40px;
+  //align-items: center;
+  justify-content: center;
   right: 90px;
   top: 10px;
   .img{
@@ -269,12 +286,41 @@ li {
   margin: 0 auto;
 }
 #Header ul li .text {
-  margin: -20px auto;
+  margin:  auto;
 }
 #Header #avatar:hover {
   cursor: pointer;
 }
 .username {
   color: #333;
+}
+#avatar{
+  position: relative;
+  width: 100px;
+  height: 100px;
+  .list{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 200px;
+    background-color: red;
+  }
+  img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: all ease .3s;
+    z-index: 1;
+  }
+  &:hover img{
+    margin-top: 10px;
+    margin-right: 30px;
+    width: 80px;
+    height: 80px;
+  }
 }
 </style>

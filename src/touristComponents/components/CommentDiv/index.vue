@@ -13,6 +13,7 @@
             class="input"
             :autosize="{ minRows: 3, maxRows: 4 }"
             resize="none"
+            ref="input"
           >
           </el-input>
         </div>
@@ -22,7 +23,7 @@
         <el-col>
 
           <el-popover
-              :placement="bottom-end"
+              placement="auto bottom"
               trigger="hover"
               :popper-options="{ boundariesElement: 'body', removeOnDestroy: true }"
           >
@@ -30,12 +31,6 @@
               <VEmojiPicker  @select="selectEmoji" />
             </div>
             <el-button slot="reference" size="mini" type="text">添加表情</el-button>
-<!--            <el-button-->
-<!--                type="text"-->
-<!--                size="mini"-->
-<!--                @click.stop="showDialog = true"-->
-<!--            >添加表情</el-button-->
-<!--            >-->
           </el-popover>
 
         </el-col>
@@ -50,6 +45,7 @@ import { submitComment } from "@/api/system/comment.js";
 export default {
   data() {
     return {
+      input:'',
       showDialog: false,
       imgList: [],
       ruleForm: {
@@ -86,15 +82,17 @@ export default {
       input.focus();
       input.selectionStart = startPos + emoji.data.length;
       input.selectionEnd = startPos + emoji.data.length;
-      this.text = resultText;
+      this.ruleForm.commentContent = resultText;
+      console.log(this.ruleForm.commentContent)
     },
     submitcomment() {
-      if (this.textarea == "") {
+      if (this.textarea === "") {
         this.$message.error("评论内容不能为空哈");
       } else {
         submitComment(this.ruleForm).then((res) => {
+          console.log(this.ruleForm)
           console.log(res);
-          if (res.code == 200) {
+          if (res.code === 200) {
             this.$message({
               message: "评论成功，待管理员审核~",
               type: "success",
