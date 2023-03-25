@@ -51,6 +51,9 @@ import DictData from '@/components/DictData'
 // 全局引入dataV
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios, axios)
 Vue.use(mavonEditor);
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
@@ -63,6 +66,7 @@ Vue.prototype.selectDictLabels = selectDictLabels
 Vue.prototype.download = download
 Vue.prototype.handleTree = handleTree
 Vue.prototype.$echarts = echarts
+Vue.prototype.$axios = axios
 
 // 全局组件挂载
 Vue.component('DictTag', DictTag)

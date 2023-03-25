@@ -138,6 +138,22 @@ export default {
       });
     },
   },
+  watch:{
+    $route(to, from,next) {
+      console.log(this.$route.query.keywords)
+      if (this.$route.query.keywords) {
+        this.search(this.$route.query.keywords);
+      }
+    }
+  },
+  // beforeRouteUpdate(to, from, next) {
+  //   console.log(to)
+  //   console.info("==当前路由id==" + this.$route.query.keywords);
+  //   if (this.$route.query.keywords) {
+  //     console.info("加载页面数据");
+  //   }
+  //   next();
+  // },
   mounted() {},
   created() {
     //this.queryParams.keywords = this.$route.query.keywords;

@@ -203,6 +203,11 @@ export const constantRoutes = [
         component: (resolve) => require(['@/touristComponents/Article/Articlepage/index'], resolve),
         meta: { title: '文章详情' }
       },
+      {
+        path: '/frontHome/map',
+        component: (resolve) => require(['@/touristComponents/Map/index.vue'], resolve),
+        hidden: true,
+      },
       {//文创
         path: 'creation',
         component: (resolve) => require(['@/touristComponents/Creation/Creation/index'], resolve),
@@ -305,6 +310,7 @@ export const constantRoutes = [
       component: (resolve) => require(['@/touristComponents/Food/FoodDetail'], resolve),
     }]
   },
+
   // {
   //   path: '/frontHome/culcreation',
   //   hidden: true,

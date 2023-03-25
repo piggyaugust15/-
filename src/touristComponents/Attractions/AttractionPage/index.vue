@@ -164,6 +164,15 @@ export default {
     CommentDiv,
     CommentList,
   },
+  watch:{
+    $route(to, from,next) {
+      console.log(this.$route.query)
+      getSightsInfo(this.$route.query.id).then((response) => {
+        this.sights = response.data;
+        this.imgList = this.sights.sightsImage.split(",");
+      });
+    }
+  },
   methods: {
     handlefav() {
       if (this.fav.isactive) {

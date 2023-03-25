@@ -14,3 +14,11 @@ export function searchAll(query) {
     // params: query
   })
 }
+
+export function hotSearch() {
+  return request({
+    url: '/hotSights/getTop',
+    method: 'get',
+    // params: query
+  })
+}

@@ -2,7 +2,7 @@
   <div id="Header" :class="{ isHide: isHide }">
     <div class="header">
       <div class="logo">
-        <img src="@/assets/images/Logo.png" alt="" />
+        <img src="@/assets/images/Logo3.png" alt="" />
       </div>
       <div class="nav_div">
         <router-link to="/frontHome/home">主页</router-link>
@@ -15,6 +15,7 @@
         <router-link to="/frontHome/bulletins" active-class="active"
           >公告</router-link
         >
+        <router-link to="/frontHome/map">地图</router-link>
       </div>
       <div class="search" v-if="this.$route.path != '/frontHome/home'">
         <Search></Search>

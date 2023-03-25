@@ -31,7 +31,18 @@
         <div class="title tagbox">
           <div>{{ title }}</div>
           <ul v-if="this.title == '热搜榜'">
-            <li v-if="this.hotSearch.length >= 1"></li>
+            <div v-if="this.hotSearch.length >= 1" class="hotsearch">
+              <li
+                  v-for="(item, index) in hotSearch"
+                  :key="index"
+                  class="have"
+                  @click="hotgotoSights(item.sightsId)"
+              >
+                <span class="number">{{index+1}}</span>
+                <span v-html="item.sightsName"></span>
+                <span class="hotrate">{{item.sightsHot}}</span>
+              </li>
+            </div>
             <li v-else class="null">暂无热搜</li>
           </ul>
         </div>
@@ -46,7 +57,7 @@
                   class="have"
                   @click="gotoArticle(item.articleId)"
                 >
-                  <span v-html="item.articleTitle"></span>
+                  <span v-html="item.articleTitle" class="name"></span>
                   <!-- {{ item.articleTitle }} -->
                 </li>
               </div>
@@ -92,7 +103,7 @@
 </template>
 
 <script>
-import { searchSights } from "@/api/search/search.js";
+import { searchSights,hotSearch } from "@/api/search/search.js";
 export default {
   data() {
     return {
@@ -129,7 +140,6 @@ export default {
         this.creation = {};
         this.attraction = {};
       }
-      console.log(this.input);
       this.suggestsearch(this.input);
     },
   },
@@ -152,11 +162,15 @@ export default {
         query: { id: id },
       });
     },
-    hotsearch() {}, // 热搜建议
+    hotsearch() {
+      hotSearch().then((response)=>{
+        this.hotSearch=response.data;
+        console.log('hot',response)
+      })
+    }, // 热搜建议
     suggestsearch(keywords) {
       if (this.input !== undefined||' '||'') {
         searchSights(keywords).then((response) => {
-          console.log('suggest',response);
           this.attraction = response.data[0];
           this.creation = response.data[1];
           this.article = response.data[2];
@@ -179,7 +193,16 @@ export default {
         this.showPopover = false;
       }
     },
+    hotgotoSights(id){
+      this.$router.push({
+        path: "/frontHome/attractions/attraction/",
+        query: { id: id },
+      });
+}
   },
+  mounted(){
+    this.hotsearch()
+  }
 };
 </script>
 
@@ -212,5 +235,32 @@ li {
 }
 .tagbox {
   padding-bottom: 10px;
+  .hotsearch{
+    li{
+      display: flex;
+      text-align: left;
+      align-items: center;
+      .name{
+        display: block;
+        height: 100%;
+      }
+      .number{
+        width: 40px;
+        font-size:20px
+      }
+      .hotrate{
+        margin-left: 10px;
+        font-size: 12px;
+        color: #505050;
+      }
+    }
+    li:nth-child(1),
+    li:nth-child(2),
+    li:nth-child(3){
+      .number{
+        color: #ca3838;
+      }
+    }
+  }
 }
 </style>

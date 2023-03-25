@@ -37,7 +37,7 @@
     </div>
     <div class="logobox">
       <div>
-        <img src="@/assets/images/Logo.png" alt="">
+        <img src="@/assets/images/Logo3.png" alt="">
       </div>
 <!--      <router-link to="/Home">Silk Road Collection</router-link>-->
       <div class="rights">© 2022 SilkRoad Collection.CN All Rights Reserved</div>
@@ -88,6 +88,7 @@ a:hover {
   padding-bottom: 45px;
   margin: 0 auto;
   padding: 0px 40px 100px 40px;
+  font-family: "Noto Serif SC", serif !important;
 }
 #bottom .relatedLink {
   margin-right: 100px;
