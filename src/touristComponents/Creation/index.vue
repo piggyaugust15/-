@@ -2,7 +2,7 @@
   <div id="index">
     <div class="top">
       <el-container>
-        <el-aside width="741px">
+        <el-aside width="500px">
           <div id="carousel">
             <el-carousel indicator-position="outside" class="carousel">
               <el-carousel-item v-for="item in carouselList" :key="item.id">
@@ -230,9 +230,9 @@ li {
 .top {
   width: 100%;
   #carousel {
-    width: 741px;
+    width: 500px;
     .carousel {
-      width: 741px;
+      width: 500px;
       border-radius: 5px;
     }
     ::v-deep .el-carousel__container {

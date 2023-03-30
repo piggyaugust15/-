@@ -53,6 +53,7 @@ import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import BaiduMap from 'vue-baidu-map'
 Vue.use(VueAxios, axios)
 Vue.use(mavonEditor);
 // 全局方法挂载
@@ -83,6 +84,9 @@ Vue.use(dataV)
 Vue.use(directive)
 Vue.use(plugins)
 Vue.use(VueMeta)
+Vue.use(BaiduMap, {
+  ak: 'qOODeQG4eQRtkrNor1lFe4rLS6sWEhDt'
+})
 DictData.install()
 
 /**

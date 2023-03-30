@@ -16,7 +16,7 @@
       </div>
     </el-backtop>
     <!-- <transition name="fade" mode="out-in"> -->
-    <router-view  />
+    <router-view  :key="this.$route.fullPath"/>
     <!-- </transition> -->
   </div>
 </template>

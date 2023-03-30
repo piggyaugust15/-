@@ -5,7 +5,7 @@
         <h3>与《丝路荟萃》一起发现更多美好的文旅体验</h3>
         <el-popover
           placement="bottom"
-          width="550"
+          width="600"
           trigger="click"
           v-model="showPopover"
           popper-class="my-popover"
@@ -30,8 +30,19 @@
           <div class="searchbox">
             <div class="title tagbox">
               <div>{{ title }}</div>
-              <ul v-if="this.title == '热搜榜'">
-                <li v-if="this.hotSearch.length >= 1"></li>
+              <ul v-if="this.title == '热搜榜'" v-loading="hotsearchLoading">
+                <div v-if="this.hotSearch.length >= 1" class="hotsearch">
+                  <li
+                      v-for="(item, index) in hotSearch"
+                      :key="index"
+                      class="have"
+                      @click="hotgotoSights(item.sightsId)"
+                  >
+                    <span class="number">{{index+1}}</span>
+                    <span v-html="item.sightsName"></span>
+                    <span class="hotrate">{{item.sightsHot}}</span>
+                  </li>
+                </div>
                 <li v-else class="null">暂无热搜</li>
               </ul>
             </div>
@@ -104,7 +115,7 @@
 
 <script>
 import { getDyTypeset } from "@/api/system/typeset";
-import { searchSights } from "@/api/search/search.js";
+import {hotSearch, searchSights} from "@/api/search/search.js";
 export default {
   data() {
     return {
@@ -115,6 +126,7 @@ export default {
       title: "热搜榜",
       input: "",
       hotSearch: [],
+      hotsearchLoading:true,
       suggestSearch: {},
       article: {
         route: "",
@@ -165,7 +177,17 @@ export default {
         query: { id: id },
       });
     },
-    hotsearch() {}, // 热搜建议
+    hotsearch() {
+      hotSearch().then((response)=>{
+        this.hotSearch=response.data;
+        this.hotsearchLoading=false;
+      })
+    }, // 热搜建议
+    hotgotoSights(id){
+      this.$router.push({
+        path: "/frontHome/attractions/attraction/",
+        query: { id: id },
+      })},
     suggestsearch(keywords) {
       searchSights(keywords).then((response) => {
         this.attraction = response.data[0];
@@ -192,8 +214,6 @@ export default {
   },
   mounted() {
     getDyTypeset(0, 0).then((response) => {
-      console.log("数据1", response);
-      console.log(response.data);
       this.Images = response.data[0].typesetImage.split(",");
     });
   },
@@ -230,7 +250,7 @@ input::-webkit-input-placeholder {
       position: absolute;
       left: 15%;
       top: 30%;
-      width: 550px;
+      width: 600px;
       height: 60px;
       z-index: 3;
       h3 {
@@ -311,6 +331,35 @@ input::-webkit-input-placeholder {
   overflow: scroll;
   overflow-x: hidden;
   transition: all 0.3s ease-in-out;
+  ul{
+    .hotsearch{
+      li{
+        display: flex;
+        text-align: left;
+        align-items: center;
+        .name{
+          display: block;
+          height: 100%;
+        }
+        .number{
+          width: 40px;
+          font-size:20px
+        }
+        .hotrate{
+          margin-left: 10px;
+          font-size: 12px;
+          color: #505050;
+        }
+      }
+      li:nth-child(1),
+      li:nth-child(2),
+      li:nth-child(3){
+        .number{
+          color: #ca3838;
+        }
+      }
+    }
+  }
 }
 .tag {
   font-size: 14px;

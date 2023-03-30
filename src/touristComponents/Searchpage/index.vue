@@ -25,7 +25,7 @@
               </div>
               <div class="box">
                 <div class="leftbox">
-                  <img :src="url + item.multipleImage" alt="" />
+                  <img :src="url + item.multipleImage.split(',')[0]" alt="" />
 <!--                  .split(',')[0]-->
                 </div>
                 <div class="rightbox">

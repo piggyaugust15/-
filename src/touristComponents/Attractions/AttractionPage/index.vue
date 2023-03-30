@@ -139,6 +139,7 @@ import Maintext from "../../New/Maintext";
 import { getSights, getSightsInfo } from "@/api/sights/sights.js";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
+import {addview,hit} from '@/api/hot/hotSights'
 export default {
   name: "Attractionspage",
   data() {
@@ -166,11 +167,7 @@ export default {
   },
   watch:{
     $route(to, from,next) {
-      console.log(this.$route.query)
-      getSightsInfo(this.$route.query.id).then((response) => {
-        this.sights = response.data;
-        this.imgList = this.sights.sightsImage.split(",");
-      });
+      this.getSightsInfo();
     }
   },
   methods: {
@@ -206,13 +203,18 @@ export default {
           break;
       }
     },
+    getSightsInfo(){
+      getSightsInfo(this.$route.query.id).then((response) => {
+        addview(this.$route.query.id);
+        hit(this.$route.query.id);
+        this.sights = response.data;
+        this.imgList = this.sights.sightsImage.split(",");
+      });
+    }
   },
   mounted() {
     console.log(this.$route.query);
-    getSightsInfo(this.$route.query.id).then((response) => {
-      this.sights = response.data;
-      this.imgList = this.sights.sightsImage.split(",");
-    });
+    this.getSightsInfo();
   },
 };
 </script>

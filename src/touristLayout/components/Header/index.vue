@@ -19,6 +19,7 @@
       </div>
       <div class="search" v-if="this.$route.path != '/frontHome/home'">
         <Search></Search>
+
       </div>
 
       <div class="avatar">
@@ -60,7 +61,6 @@
               :direction="drawer.direction"
           >
 <!--            <el-avatar-->
-
 <!--                :src="$store.state.user.avatar"-->
 <!--            ></el-avatar>-->
             <div id="avatar" slot="btn">
@@ -74,6 +74,7 @@
 <!--                <el-button >hover 激活</el-button>-->
                 <img :src="$store.state.user.avatar" alt="" slot="reference">
               </el-popover>
+
             </div>
             >
           </InfoDrawer>
@@ -87,6 +88,7 @@
 import Drawer from "@/touristComponents/Drawer";
 import InfoDrawer from "@/touristComponents/InfoDrawer";
 import Search from "@/touristComponents/Search";
+import Audio from "@/components/Audio";
 export default {
   name: "Header",
   data() {
@@ -145,7 +147,7 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
 
-  components: { Drawer, Search, InfoDrawer },
+  components: { Drawer, Search, InfoDrawer,Audio },
 };
 </script>
 <style lang="scss" scoped>

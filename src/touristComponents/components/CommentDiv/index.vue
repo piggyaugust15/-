@@ -143,8 +143,13 @@ $bluecolor: #00aeec;
       button {
         flex: 1;
         margin-left: 10px;
+        background-color: #7fd6f5;
+        border: none;
+        border-radius: 5px;
+        color: #fff;
         &:hover {
           cursor: pointer;
+          background-color: #00aeec;
         }
       }
     }

@@ -441,8 +441,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="景点图片">
-          <imageUpload v-model="form.culCreativityImage" />
+        <el-form-item label="文创图片">
+          <imageUpload v-model="form.culCreativityImage" :file-size="10"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

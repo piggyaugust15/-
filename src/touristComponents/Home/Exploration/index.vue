@@ -4,7 +4,7 @@
       <h3>探索丝路荟萃推荐文创名单</h3>
     </div>
     <div class="card">
-      <div class="item" v-for="(item, index) in list" :key="index">
+      <div class="item" v-for="(item, index) in list" :key="index" @click="gotoCulcreation(item.typesetRoute)">
         <div class="img">
           <img
             :src="$store.state.front.url + item.typesetImage.split(',')[0]"
@@ -46,6 +46,12 @@ export default {
         item.islike = 0;
       }
     },
+    gotoCulcreation(id){
+      this.$router.push({
+        path:"/frontHome/culcreation",
+        query: { id: id },
+      });
+    }
   },
   mounted() {
     getHomeThreeCulCreation().then((response) => {

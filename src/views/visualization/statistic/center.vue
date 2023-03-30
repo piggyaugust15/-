@@ -25,7 +25,7 @@
       </div>
       <div class="percent">
         <div class="item bg-color-black">
-          <span>今日任务通过率</span>
+          <span>文章通过率</span>
           <CenterChart
             :id="rate[0].id"
             :tips="rate[0].tips"
@@ -33,7 +33,7 @@
           />
         </div>
         <div class="item bg-color-black">
-          <span>今日任务达标率</span>
+          <span>文创通过率</span>
           <CenterChart
             :id="rate[1].id"
             :tips="rate[1].tips"
@@ -50,15 +50,16 @@
 
 <script>
   import CenterChart from '@/components/echart/center/centerChartRate'
-
+  import {getData,getMedium} from "@/api/visualization/visualization.js"
   export default {
     data() {
       return {
+        timer:'',
         titleItem: [
           {
-            title: '今年累计任务建次数',
+            title: '今日累计发布',
             number: {
-              number: [120],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -68,9 +69,9 @@
             }
           },
           {
-            title: '本月累计任务次数',
+            title: '本月累计发布',
             number: {
-              number: [18],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -80,9 +81,9 @@
             }
           },
           {
-            title: '今日累计任务次数',
+            title: '今年累计发布',
             number: {
-              number: [2],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -92,9 +93,9 @@
             }
           },
           {
-            title: '今年失败任务次数',
+            title: '今年总驳回',
             number: {
-              number: [14],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -104,9 +105,9 @@
             }
           },
           {
-            title: '今年成功任务次数',
+            title: '今年总通过',
             number: {
-              number: [106],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -116,9 +117,9 @@
             }
           },
           {
-            title: '今年达标任务个数',
+            title: '在线用户人数',
             number: {
-              number: [100],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -175,16 +176,18 @@
           unit: '人'
         },
         water: {
-          data: [24, 45],
+          data: [],
           shape: 'roundRect',
           formatter: '{value}%',
-          waveNum: 3
+          waveNum: 6,
+          colors:['#00BAFF', '#3DE7C9']
+
         },
         // 通过率和达标率的组件复用数据
         rate: [
           {
             id: 'centerRate1',
-            tips: 60,
+            tips: 0,
             colorData: {
               textStyle: '#3fc0fb',
               series: {
@@ -198,7 +201,7 @@
           },
           {
             id: 'centerRate2',
-            tips: 40,
+            tips: 0,
             colorData: {
               textStyle: '#67e0e3',
               series: {
@@ -215,12 +218,59 @@
     },
     components: {
       CenterChart
+    },
+    methods:{
+      getData(){
+         this.timer = setInterval(() => {
+          getData().then((response)=>{
+            const { water } = this
+            let data = []
+            data.push(response.server.mem.used)
+            data.push(response.server.cpu.used)
+            this.rate[0].tips = response.articleRate
+            this.rate[1].tips = response.culRate;
+            this.water.data = data;
+            data=[]
+            this.rate = {...this.rate}
+            this.water = {...this.water}
+          })
+           this.getMedium();
+        }, 5000)
+    },
+      getMedium(){
+        getMedium().then((response)=>{
+          console.log("xxx",response)
+          const {titleItem} = this
+          this.titleItem[0].number.number=[parseInt(response.DAY)];
+          this.titleItem[0].number = {...this.titleItem[0].number}
+          this.titleItem[1].number.number=[parseInt(response.MONTH)];
+          this.titleItem[1].number={...this.titleItem[1].number}
+          this.titleItem[2].number.number=[parseInt(response.YEAR)];
+          this.titleItem[2].number={...this.titleItem[2].number}
+          this.titleItem[3].number.number=[parseInt(response.YEARNO)];
+          this.titleItem[3].number={...this.titleItem[3].number}
+          this.titleItem[4].number.number=[parseInt(response.YEAROK)];
+          this.titleItem[4].number={...this.titleItem[4].number}
+          this.titleItem[5].number.number=[response.onLineNum];
+          this.titleItem[5].number={...this.titleItem[5].number}
+
+          this.titleItem = {...this.titleItem}
+        })
+      }
+    },
+    mounted() {
+      this.getData();
+      this.getMedium();
+    },
+    beforeDestroy() {
+      clearInterval(this.timer);
     }
   }
 </script>
 
 <style lang="scss" scoped>
   #center {
+    width: 510px;
     display: flex;
     flex-direction: column;
     .up {
@@ -241,6 +291,7 @@
       }
     }
     .down {
+      margin-top: 50px;
       padding: 6px 4px;
       padding-bottom: 0;
       width: 100%;

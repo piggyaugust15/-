@@ -36,6 +36,7 @@
 
 <script>
   import CenterLeft1Chart from '@/components/echart/centerLeft/centerLeft1Chart/index'
+  import {getLeftPie} from '@/api/visualization/visualization'
   export default {
     data() {
       return {
@@ -97,6 +98,9 @@
     },
     mounted() {
       this.changeTiming()
+      getLeftPie().then((response)=>{
+        console.log('left',response)
+      })
     },
     methods: {
       changeTiming() {
@@ -110,7 +114,7 @@
           item.number = { ...item.number }
         })
       }
-    }
+    },
   }
 </script>
 

@@ -45,7 +45,7 @@
       <template> </template>
     </el-skeleton> -->
     <div class="card">
-      <div class="item" v-for="(item, index) in list" :key="index">
+      <div class="item" v-for="(item, index) in list" :key="index" @click="gotoSights(item.typesetRoute)">
         <div class="img">
           <img
             :src="$store.state.front.url + item.typesetImage.split(',')[0]"
@@ -97,7 +97,14 @@ export default {
       // ],
     };
   },
-  methods: {},
+  methods: {
+    gotoSights(id){
+      this.$router.push({
+        path:"/frontHome/attractions/attraction",
+        query: { id: id },
+      });
+    }
+  },
   mounted() {
     getHomeThreeSights().then((response) => {
       // setTimeout(() => (this.loading = false), 2000);

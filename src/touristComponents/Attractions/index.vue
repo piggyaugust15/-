@@ -19,7 +19,7 @@
           </button>
         </el-header>
         <el-main>
-          <div class="wrapper">
+          <div class="wrapper" v-loading="loading">
             <div
               class="item"
               v-for="(item, index) in ListInfo"
@@ -27,13 +27,13 @@
               @click="gotoAttraction(item.sightsId)"
             >
               <div class="img">
-                <img :src="item.sightsImage" alt="" />
+                <img :src="$store.state.front.url+item.sightsImage.split(',')[0]" alt="" />
                 <div class="mask"></div>
               </div>
               <div class="text">
-                <span class="intro">{{ item.sightsTitle }}</span>
+                <span class="intro">{{ item.sightsName }}</span>
                 <span class="location">
-                  <i class="el-icon-map-location"></i>{{ item.location }}</span
+                  <i class="el-icon-map-location"></i>{{ item.sightsLocation }}</span
                 >
               </div>
             </div>
@@ -53,69 +53,14 @@ import ComponentTitle from "../components/ComponentsTitle";
 import TitleSwiper from "../components/TitleSwiper";
 import CategoryLink from "../components/CategoryLink";
 import ViewTemplate from "../components/ViewTemplate";
+import {getAttractionList} from '@/api/attraction/attraction.js'
 export default {
   name: "Acttractions",
   data() {
     return {
+      loading:true,
       rotate: false,
-      ListInfo: [
-        {
-          sightsId: "003",
-          sightsImage:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          sightsTitle: "清华大学学位评定委员会2022年第四次全体会议举行",
-          location: "Beijing",
-        },
-        {
-          sightsId: "004",
-          sightsImage:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          sightsTitle: "清华大学学位评定委员会2022年第四次全体会议举行",
-          location: "Beijing",
-        },
-        {
-          sightsId: "005",
-          sightsImage:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          sightsTitle: "清华大学学位评定委员会2022年第四次全体会议举行",
-          location: "Beijing",
-        },
-        {
-          sightsId: "mvOqQBlXBP7YufhHvHxh3",
-          sightsImage:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          sightsTitle: "清华大学学位评定委员会2022年第四次全体会议举行",
-          location: "Beijing",
-        },
-        {
-          sightsId: "002",
-          sightsImage:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          sightsTitle: "清华大学学位评定委员会2022年第四次全体会议举行",
-          location: "Beijing",
-        },
-        {
-          sightsId: "003",
-          sightsImage:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          sightsTitle: "清华大学学位评定委员会2022年第四次全体会议举行",
-          location: "Beijing",
-        },
-        {
-          sightsId: "004",
-          sightsImage:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          sightsTitle: "清华大学学位评定委员会2022年第四次全体会议举行",
-          location: "Beijing",
-        },
-        {
-          sightsId: "005",
-          sightsImage:
-            "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-          sightsTitle: "清华大学学位评定委员会2022年第四次全体会议举行",
-          location: "Beijing",
-        },
-      ],
+      ListInfo: [],
       CategoryLinkInfo: [
         {
           id: "001",
@@ -187,14 +132,21 @@ export default {
   methods: {
     refresh() {
       this.rotate = !this.rotate;
-      console.log(this.rotate);
+      this.loading=true;
+      this.getAttractionList();
     },
     gotoAttraction(value) {
       this.$router.push({
         path: "/frontHome/attractions/attraction/",
-        query: { sightsId: value },
+        query: { id: value },
       });
     },
+    getAttractionList(){
+      getAttractionList().then((response)=>{
+        this.ListInfo=response.data
+        this.loading=false;
+      })
+    }
     // gotoLink(value) {
     //   if (this.type === "News") {
     //     this.$router.push({ path: "/Newspage", query: { id: value } });
@@ -204,6 +156,9 @@ export default {
     //     this.$router.push({ path: "/Bulletinspage", query: { id: value } });
     //   }
     // },
+  },
+  mounted(){
+    this.getAttractionList();
   },
   components: {
     ComponentTitle,
