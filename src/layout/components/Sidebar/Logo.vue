@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      title: 'Chas管理系统',
+      title: '丝路荟萃管理系统',
       logo: logoImg
     }
   }

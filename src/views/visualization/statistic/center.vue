@@ -229,6 +229,7 @@
       getData(){
         getData().then((response)=>{
           let data = []
+          console.log('center',response)
           data.push(response.server.mem.used)
           data.push(response.server.cpu.used)
           this.rate[0].tips = response.articleRate
@@ -259,6 +260,7 @@
     },
     mounted() {
       this.Time()
+      // this.getData();
       // this.getData();
       // this.getMedium();
     },

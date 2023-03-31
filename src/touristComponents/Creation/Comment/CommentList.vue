@@ -15,7 +15,7 @@
       </el-table-column>
       <el-table-column label="用户" width="100">
         <template slot-scope="scope">
-          <el-popover trigger="hover" placement="top" class="popover">
+          <el-popover trigger="hover" placement="top" class="popover" >
             <p>用户: {{ scope.row.user.nickName }}</p>
             <div class="img">
               <img
@@ -170,12 +170,15 @@ $bluecolor: #00aeec;
   el-popover {
     width: 50px;
     height: 50px;
-    ::v-deep .img {
+    .img {
       width: 50px;
       height: 50px;
+      img{
+
+      }
       .avatar {
-        width: 100%;
-        height: 100%;
+        width: 50px;
+        height: 50px;
         object-fit: cover;
       }
     }

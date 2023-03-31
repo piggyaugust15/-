@@ -106,6 +106,7 @@
     methods: {
       getLeftPie(){
         getLeftPie().then((response)=>{
+          console.log('left',response)
           this.articlePie = response.data.articlePie
           this.culPie = response.data.culPie
           this.numberData[0].number.number=[parseInt(response.data.sum)]
