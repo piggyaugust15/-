@@ -5,34 +5,35 @@
       <div class="mycommentbox">
         <div>
           <el-input
-            id="input"
-            type="textarea"
-            :rows="2"
-            placeholder="请输入内容"
-            v-model="ruleForm.commentContent"
-            class="input"
-            :autosize="{ minRows: 3, maxRows: 4 }"
-            resize="none"
-            ref="input"
+              id="input"
+              type="textarea"
+              :rows="2"
+              placeholder="请输入内容"
+              v-model="ruleForm.commentContent"
+              class="input"
+              :autosize="{ minRows: 3, maxRows: 4 }"
+              resize="none"
+              ref="input"
           >
           </el-input>
         </div>
         <button @click="submitcomment()">发表评论</button>
       </div>
-      <div class="emoji" v-if="this.type===0">
-        <el-col>
-          <el-popover
-              placement="auto bottom"
-              trigger="hover"
-              :popper-options="{ boundariesElement: 'body', removeOnDestroy: true }"
-          >
-            <div >
-              <VEmojiPicker  @select="selectEmoji" />
-            </div>
-            <el-button slot="reference" size="mini" type="text">添加表情</el-button>
-          </el-popover>
-        </el-col>
-      </div>
+<!--      <div class="emoji">-->
+<!--        <el-col>-->
+<!--          <el-popover-->
+<!--              placement="auto bottom"-->
+<!--              trigger="hover"-->
+<!--              :popper-options="{ boundariesElement: 'body', removeOnDestroy: true }"-->
+<!--          >-->
+<!--            <div >-->
+<!--              <VEmojiPicker  @select="selectEmoji" />-->
+<!--            </div>-->
+<!--            <el-button slot="reference" size="mini" type="text">添加表情</el-button>-->
+<!--          </el-popover>-->
+
+<!--        </el-col>-->
+<!--      </div>-->
     </div>
   </div>
 </template>
@@ -73,9 +74,9 @@ export default {
       let startPos = input.selectionStart;
       let endPos = input.selectionEnd;
       let resultText =
-        input.value.substring(0, startPos) +
-        emoji.data +
-        input.value.substring(endPos);
+          input.value.substring(0, startPos) +
+          emoji.data +
+          input.value.substring(endPos);
       input.value = resultText;
       input.focus();
       input.selectionStart = startPos + emoji.data.length;

@@ -9,25 +9,52 @@
   export default {
     data () {
       return {
+        time:'',
         cdata: {
-          xData: ["data1", "data2", "data3", "data4", "data5", "data6"],
+          xData: ["文章收藏", "文章点赞", "文章浏览", "文创收藏", "文创点赞", "文创浏览"],
           seriesData: [
-            { value: 10, name: "data1" },
-            { value: 5, name: "data2" },
-            { value: 15, name: "data3" },
-            { value: 25, name: "data4" },
-            { value: 20, name: "data5" },
-            { value: 35, name: "data6" }
+            { value: 0, name: "文章收藏" },
+            { value: 0, name: "文章点赞" },
+            { value: 0, name: "文章浏览" },
+            { value: 0, name: "文创收藏" },
+            { value: 0, name: "文创点赞" },
+            { value: 0, name: "文创浏览" }
           ]
-        }
+        },
+      }
+    },
+    props:{
+      articlePie:{
+        type:Object,
+        required:true,
+      },
+      culPie:{
+        type:Object,
+        required:true,
       }
     },
     components: {
       Chart,
     },
-    mounted () {
+    watch:{
+      articlePie:{
+        deep:true,
+        immediate:true,
+        handler(newItem,oldItem){
+          this.cdata.seriesData[0].value = newItem.articleCollect;
+          this.cdata.seriesData[1].value = newItem.articleLike;
+          this.cdata.seriesData[2].value = newItem.articleView;
+        }
+      },
+      culPie:{
+        deep:true,
+        immediate:true,
+        handler(newItem,oldItem){
+          this.cdata.seriesData[3].value = newItem.culCreativityCollection;
+          this.cdata.seriesData[4].value = newItem.culCreativityLike;
+          this.cdata.seriesData[5].value = newItem.culCreativityView;
+        }
+      }
     },
-    methods: {
-    }
   }
 </script>

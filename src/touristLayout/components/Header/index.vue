@@ -64,17 +64,14 @@
 <!--                :src="$store.state.user.avatar"-->
 <!--            ></el-avatar>-->
             <div id="avatar" slot="btn">
-
               <el-popover
-                  placement="top-start"
-                  title="标题"
-                  width="200"
+                  placement="bottom"
+                  width="100"
                   trigger="hover"
                   content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-<!--                <el-button >hover 激活</el-button>-->
+                <el-button divided @click.native="logout">退出登录</el-button>
                 <img :src="$store.state.user.avatar" alt="" slot="reference">
               </el-popover>
-
             </div>
             >
           </InfoDrawer>
@@ -132,6 +129,17 @@ export default {
   this.$router.push({
     path :'/frontHome/user',
   })
+    },
+    async logout() {
+      this.$confirm('确定注销并退出系统吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$store.dispatch('LogOut').then(() => {
+          location.href = '/index';
+        })
+      }).catch(() => {});
     }
   },
   mounted() {
@@ -242,7 +250,7 @@ li {
   text-align: center;
   height: 40px;
   line-height: 40px;
-  //align-items: center;
+  align-items: center;
   justify-content: center;
   right: 90px;
   top: 10px;
@@ -279,7 +287,7 @@ li {
 }
 #Header ul li .icon_box {
   position: relative;
-  height: 50px;
+  //height: 50px;
   text-align: center;
   margin-top: -10px;
   margin-right: 15px;
@@ -299,8 +307,8 @@ li {
 }
 #avatar{
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 50px;
+  height: 50px;
   .list{
     position: absolute;
     right: 0;
@@ -309,21 +317,15 @@ li {
     background-color: red;
   }
   img{
-    position: absolute;
-    top: 0;
-    left: 0;
+    //position: absolute;
+    //top: 0;
+    //left: 0;
     width: 50px;
     height: 50px;
     border-radius: 50%;
     object-fit: cover;
     transition: all ease .3s;
     z-index: 1;
-  }
-  &:hover img{
-    margin-top: 10px;
-    margin-right: 30px;
-    width: 80px;
-    height: 80px;
   }
 }
 </style>

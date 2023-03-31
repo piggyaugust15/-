@@ -1,5 +1,5 @@
 <template>
-  <div class="block">
+  <div id="block">
     <div class="header">
       <ul>
         <li v-for="(item, index) in imgList" :key="index" class="imgli">
@@ -139,7 +139,7 @@ p {
   font-weight: normal;
   color: #191919;
 }
-.block {
+#block {
   width: 100%;
   padding-top: 60px;
   padding-bottom: 20px;
@@ -182,16 +182,23 @@ p {
           line-height: 1;
         }
         .info {
+          text-indent: 2em;
           font-style: normal;
           font-stretch: normal;
-          line-height: 1;
+          line-height: 30px;
           padding-top: 10px;
+          font-size: 17px;
         }
         padding-bottom: 20px;
         border-bottom: 1px solid #979797;
         margin-bottom: 40px;
       }
       .text {
+        .text{
+          text-indent: 2em;
+          line-height: 30px;
+          font-size: 17px;
+        }
         .productiontitle {
           font-family: "Noto Serif SC", serif !important;
           font-weight: 700;

@@ -16,13 +16,13 @@
       </div>
     </div>
     <div class="down">
-      <div class="ranking bg-color-black">
-        <span>
-          <icon name="chart-pie" class="text-icon"></icon>
-        </span>
-        <span class="fs-xl text mx-2 mb-1 pl-3">年度负责人组件达标榜</span>
-        <dv-scroll-ranking-board class="dv-scr-rank-board mt-1" :config="ranking" />
-      </div>
+<!--      <div class="ranking bg-color-black">-->
+<!--        <span>-->
+<!--          <icon name="chart-pie" class="text-icon"></icon>-->
+<!--        </span>-->
+<!--        <span class="fs-xl text mx-2 mb-1 pl-3">年度负责人组件达标榜</span>-->
+<!--        <dv-scroll-ranking-board class="dv-scr-rank-board mt-1" :config="ranking" />-->
+<!--      </div>-->
       <div class="percent">
         <div class="item bg-color-black">
           <span>文章通过率</span>
@@ -220,27 +220,27 @@
       CenterChart
     },
     methods:{
-      getData(){
-         this.timer = setInterval(() => {
-          getData().then((response)=>{
-            const { water } = this
-            let data = []
-            data.push(response.server.mem.used)
-            data.push(response.server.cpu.used)
-            this.rate[0].tips = response.articleRate
-            this.rate[1].tips = response.culRate;
-            this.water.data = data;
-            data=[]
-            this.rate = {...this.rate}
-            this.water = {...this.water}
-          })
+      Time(){
+        this.timer = setInterval(() => {
+           this.getData();
            this.getMedium();
         }, 5000)
     },
+      getData(){
+        getData().then((response)=>{
+          let data = []
+          data.push(response.server.mem.used)
+          data.push(response.server.cpu.used)
+          this.rate[0].tips = response.articleRate
+          this.rate[1].tips = response.culRate;
+          this.water.data = data;
+          data=[]
+          this.rate = {...this.rate}
+          this.water = {...this.water}
+        })
+      },
       getMedium(){
         getMedium().then((response)=>{
-          console.log("xxx",response)
-          const {titleItem} = this
           this.titleItem[0].number.number=[parseInt(response.DAY)];
           this.titleItem[0].number = {...this.titleItem[0].number}
           this.titleItem[1].number.number=[parseInt(response.MONTH)];
@@ -253,14 +253,14 @@
           this.titleItem[4].number={...this.titleItem[4].number}
           this.titleItem[5].number.number=[response.onLineNum];
           this.titleItem[5].number={...this.titleItem[5].number}
-
           this.titleItem = {...this.titleItem}
         })
       }
     },
     mounted() {
-      this.getData();
-      this.getMedium();
+      this.Time()
+      // this.getData();
+      // this.getMedium();
     },
     beforeDestroy() {
       clearInterval(this.timer);
@@ -298,6 +298,7 @@
       display: flex;
       height: 255px;
       justify-content: space-between;
+      align-items: center;
       .bg-color-black {
         border-radius: 5px;
       }
@@ -312,6 +313,7 @@
         width: 40%;
         display: flex;
         flex-wrap: wrap;
+        //margin: 0 auto;
         .item {
           width: 50%;
           height: 120px;

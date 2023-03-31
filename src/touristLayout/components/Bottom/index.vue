@@ -40,7 +40,7 @@
         <img src="@/assets/images/Logo3.png" alt="">
       </div>
 <!--      <router-link to="/Home">Silk Road Collection</router-link>-->
-      <div class="rights">© 2022 SilkRoad Collection.CN All Rights Reserved</div>
+      <div class="rights">© 2022 Travel The Silk Road.CN All Rights Reserved</div>
     </div>
   </div>
 </template>

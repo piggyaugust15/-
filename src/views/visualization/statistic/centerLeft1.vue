@@ -6,12 +6,12 @@
           <icon name="chart-bar" class="text-icon"></icon>
         </span>
         <div class="d-flex">
-          <span class="fs-xl text mx-2">名字</span>
+          <span class="fs-xl text mx-2">本日数据</span>
           <dv-decoration-3 class="dv-dec-3" />
         </div>
       </div>
       <div class="d-flex jc-center">
-        <CenterLeft1Chart />
+        <CenterLeft1Chart :article-pie="articlePie" :cul-pie="culPie"/>
       </div>
       <!-- 4个主要的数据 -->
       <div class="bottom-data">
@@ -21,12 +21,12 @@
           :key="index"
         >
           <div class="d-flex">
-            <span class="coin">这是符号</span>
+<!--            <span class="coin">个</span>-->
             <dv-digital-flop class="dv-digital-flop" :config="item.number" />
           </div>
           <p class="text" style="text-align: center;">
             {{ item.text }}
-            <span class="colorYellow">(单位)</span>
+            <span class="colorYellow">(个)</span>
           </p>
         </div>
       </div>
@@ -40,10 +40,11 @@
   export default {
     data() {
       return {
+        timer:'',
         numberData: [
           {
             number: {
-              number: [15],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -51,11 +52,11 @@
                 fontSize: 24
               }
             },
-            text: '这是内容1'
+            text: '发布总数'
           },
           {
             number: {
-              number: [1144],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -63,11 +64,11 @@
                 fontSize: 24
               }
             },
-            text: '这是内容2'
+            text: '驳回数量'
           },
           {
             number: {
-              number: [361],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -75,12 +76,11 @@
                 fontSize: 24
               }
             },
-            text: '这是内容3'
+            text: '已经审核'
           },
-
           {
             number: {
-              number: [157],
+              number: [],
               toFixed: 1,
               textAlign: 'left',
               content: '{nt}',
@@ -88,33 +88,59 @@
                 fontSize: 24
               }
             },
-            text: '这是内容4'
+            text: '仍未审核'
           }
-        ]
+        ],
+        articlePie:{},
+        culPie:{},
       }
     },
     components: {
       CenterLeft1Chart
     },
     mounted() {
+      this.Time()
       this.changeTiming()
-      getLeftPie().then((response)=>{
-        console.log('left',response)
-      })
+      this.getLeftPie()
     },
     methods: {
+      getLeftPie(){
+        getLeftPie().then((response)=>{
+          this.articlePie = response.data.articlePie
+          this.culPie = response.data.culPie
+          this.numberData[0].number.number=[parseInt(response.data.sum)]
+          this.numberData[0].number = {...this.numberData[0].number}
+          this.numberData[1].number.number=[parseInt(response.data.failed)]
+          this.numberData[1].number = {...this.numberData[1].number}
+          this.numberData[2].number.number=[parseInt(response.data.judged)]
+          this.numberData[2].number = {...this.numberData[2].number}
+          this.numberData[3].number.number=[parseInt(response.data.unJudge)]
+          this.numberData[3].number = {...this.numberData[3].number}
+          this.numberData = {...this.numberData}
+        })
+      },
+      Time(){
+        this.timer = setInterval(()=>{
+          this.getLeftPie();
+        },5000)
+      }
+      ,
       changeTiming() {
         setInterval(() => {
           this.changeNumber()
         }, 3000)
       },
       changeNumber() {
-        this.numberData.forEach((item, index) => {
+        let list = Array.prototype.slice.call(this.numberData);
+        list.forEach((item, index) => {
           item.number.number[0] += ++index
           item.number = { ...item.number }
         })
       }
     },
+    beforeDestroy() {
+      clearInterval(this.timer);
+    }
   }
 </script>
 

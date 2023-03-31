@@ -273,7 +273,7 @@ li {
   list-style: none;
 }
 #CommentList {
-  padding-top: 50px;
+  padding-top: 30px;
   width: 100%;
   .Commentli {
     width: 100%;

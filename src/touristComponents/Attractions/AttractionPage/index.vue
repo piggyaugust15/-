@@ -99,7 +99,7 @@
                 </div>
               </div>
               <div class="Comment">
-<!--                 <CommentDiv :type="0"></CommentDiv>-->
+                 <AttractionCommentDiv :type="0"></AttractionCommentDiv>
                 <el-tabs tab-position="top" style="height: 200px">
                   <el-tab-pane label="智能排序">
                     <CommentList :type="0"></CommentList>
@@ -139,6 +139,7 @@ import Maintext from "../../New/Maintext";
 import { getSights, getSightsInfo } from "@/api/sights/sights.js";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
+import AttractionCommentDiv from "@/touristComponents/components/AttractionCommentDiv";
 import {addview,hit} from '@/api/hot/hotSights'
 export default {
   name: "Attractionspage",
@@ -163,7 +164,7 @@ export default {
     RecommendList,
     // Comment,
     CommentDiv,
-    CommentList,
+    CommentList,AttractionCommentDiv
   },
   watch:{
     $route(to, from,next) {
@@ -230,7 +231,7 @@ export default {
     list-style: none;
   }
   width: 100%;
-  margin-top: 60px;
+  margin-top: 80px;
   color: #333;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC,
     Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial,
@@ -381,6 +382,9 @@ export default {
       }
       .mainBody {
         padding-right: 30px;
+      }
+      .Comment{
+        padding-right: 10px;
       }
     }
     .right_box {
