@@ -190,7 +190,7 @@ export default {
           });
           break;
         case "hotel":
-          this.$router.push({ path: "/RecommendHotel" });
+          this.$router.push({ path: "/frontHome/attraction/hotel" });
           break;
       }
     },

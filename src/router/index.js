@@ -299,7 +299,12 @@ export const constantRoutes = [
     children: [{
       path: 'food',//path: 'food/:sight(\\d+)',
       component: (resolve) => require(['@/touristComponents/Food'], resolve),
-    }]
+    },
+      {
+        path: 'hotel',
+        component: (resolve) => require(['@/touristComponents/Hotel'], resolve),
+      }
+    ]
   },
   {
     path: '/frontHome/food',
