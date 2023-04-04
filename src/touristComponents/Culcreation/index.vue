@@ -182,10 +182,10 @@ p {
           line-height: 1;
         }
         .info {
-          text-indent: 2em;
           font-style: normal;
           font-stretch: normal;
           line-height: 30px;
+          text-indent: 2em;
           padding-top: 10px;
           font-size: 17px;
         }

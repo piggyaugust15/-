@@ -79,23 +79,13 @@
               <div class="mainBody">
                 <div class="para">
                   <h1>介绍</h1>
-                  <span>{{ sights.sightsIntro }}</span>
+                  <div class="info" v-html="sights.sightsIntro"></div>
                 </div>
-                <div class="para">
-                  <h1></h1>
-                  <span></span>
-                </div>
-                <div class="para"></div>
-                <div class="para"></div>
-                <div class="para"></div>
-                <div class="para"></div>
                 <div class="para">
                   <h1>必看贴士</h1>
-                  <ul>
-                    <li v-for="(item, index) in sights.bulletin" :key="index">
-                      {{ index + 1 }}. {{ item.bulletinContent }}
-                    </li>
-                  </ul>
+                    <div v-for="(item, index) in sights.bulletin" :key="index" v-html="item.bulletinContent" class="info">
+<!--                      {{ index + 1 }}. {{ item.bulletinContent }}-->
+                    </div>
                 </div>
               </div>
               <div class="Comment">
@@ -152,7 +142,7 @@ export default {
       },
       comment: 5188,
       imgList: [],
-      activeName: "first",
+      activeName: "second",
       NearbyAttractions: "NearbyAttractions",
       RecommendAttractions: "RecommendAttractions",
     };
@@ -222,6 +212,7 @@ export default {
 
 <style lang="scss" scoped>
 #Attractionspage {
+ $font:"AvenirNext-DemiBold", "Helvetica Neue Medium", sans-serif;
   a {
     text-decoration: none;
     color: #349eff;
@@ -233,16 +224,17 @@ export default {
   width: 100%;
   margin-top: 80px;
   color: #333;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC,
-    Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+
   .main {
     width: 1340px;
     margin: 0 auto;
+    font-family: $font;
     .tags {
       display: flex;
       align-items: center;
       margin-bottom: 20px;
+      font-family: $font;
+
       li {
         width: 74px;
         height: 28px;
@@ -268,6 +260,18 @@ export default {
         p {
           transition: background-color 0.3s, color 0.3s;
           color: #61666d;
+          font-family: $font;
+        }
+      }
+    }
+    .mainText{
+      .mainBody{
+        .para{
+          .info{
+            line-height: 30px;
+            text-indent: 2em;
+            font-family: $font;
+          }
         }
       }
     }
@@ -278,6 +282,7 @@ export default {
     opacity: 0.75;
     line-height: 150px;
     margin: 0;
+    font-family: $font;
   }
   .el-carousel__item img {
     display: block;
@@ -288,6 +293,7 @@ export default {
   .newstitle {
     height: 300px;
     width: 100%;
+    font-family: $font;
     .leftText {
       display: inline-block;
       padding-right: 15px;

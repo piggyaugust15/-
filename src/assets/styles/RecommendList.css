@@ -35,13 +35,13 @@
     font-size: 14px;
     font-weight: 700;
     color: #409EFF;
-    margin-top: 15px;
+    /*margin-top: 15px;*/
 }
 
 #RecommendList .Info .comment {
     display: inline-block;
     margin-left: 10px;
-    margin-top: 15px;
+    /*margin-top: 15px;*/
     font-size: 14px;
 }
 

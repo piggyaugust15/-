@@ -163,19 +163,19 @@ export default {
             },
             indicator: [
               {
-                name: '脸帅',
+                name: '文章',
                 max: newData.maxData
               },
               {
-                name: '可爱',
+                name: '文创',
                 max: 10
               },
               {
-                name: '牛牛',
+                name: '收藏',
                 max: 12
               },
               {
-                name: '嘻嘻',
+                name: '发布',
                 max: 3.5
               }
             ]
@@ -197,7 +197,7 @@ export default {
             data: newData.weekCateGory
           },
           yAxis: {
-            name: '憨憨',
+            name: '审核',
             nameLocation: 'end',
             nameGap : 24,
             nameTextStyle : {
@@ -232,7 +232,7 @@ export default {
               data: [
                 {
                   value: newData.radarDataAvg[6],
-                  name: '平均帅气指标',
+                  name: '平均指标',
                   itemStyle: {
                     normal: {
                       color: '#f8d351'
@@ -256,7 +256,7 @@ export default {
                 },
                 {
                   value: newData.radarData[6],
-                  name: '我的帅气指标',
+                  name: '综合指标',
                   itemStyle: {
                     normal: {
                       color: '#43dfa2'

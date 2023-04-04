@@ -71,7 +71,7 @@
             src: "https://dimg03.c-ctrip.com/images/ww0n1f000001godx06B20_R_228_10000.png",
             feature: "游乐场",
             rating: 4.7,
-            comment: 3352,
+            comment: 22,
           },
           {
             id: "002",
@@ -79,7 +79,7 @@
             src: "https://youimg1.c-ctrip.com/target/0102r12000a2pb9ayA915_D_140_114.jpg?proc=autoorient",
             feature: "游乐场",
             rating: 4.7,
-            comment: 3352,
+            comment: 11,
           },
           {
             id: "003",
@@ -87,7 +87,7 @@
             src: "https://youimg1.c-ctrip.com/target/100k0u000000jguly8D69_D_140_114.jpg?proc=autoorient",
             feature: "城堡教堂",
             rating: 4.7,
-            comment: 3352,
+            comment: 2,
           },
           {
             id: "004",
@@ -95,7 +95,7 @@
             src: "https://youimg1.c-ctrip.com/target/10030u000000j8z43BAF4_D_140_114.jpg?proc=autoorient",
             feature: "游船观光",
             rating: 4.7,
-            comment: 3352,
+            comment: 1,
           },
           {
             id: "005",
@@ -103,7 +103,7 @@
             src: "https://youimg1.c-ctrip.com/target/fd/tg/g4/M06/07/CB/CggYHlXJUymAcJfXAAXD6rTuhCg853_D_140_114.jpg?proc=autoorient",
             feature: "游山玩水",
             rating: 4.7,
-            comment: 3352,
+            comment: 3,
           },
         ],
       };

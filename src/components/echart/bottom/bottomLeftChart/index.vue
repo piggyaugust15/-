@@ -12,8 +12,8 @@ export default {
     return{
       cdata:{
         category: [
-          "池池",
-          "季季"
+          "文创",
+          "文章"
         ],
         lineData: [
           520,

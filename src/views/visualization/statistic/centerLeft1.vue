@@ -44,9 +44,9 @@
         numberData: [
           {
             number: {
-              number: [],
+              number: [32],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 24
@@ -56,9 +56,9 @@
           },
           {
             number: {
-              number: [],
+              number: [3],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 24
@@ -68,9 +68,9 @@
           },
           {
             number: {
-              number: [],
+              number: [32],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 24
@@ -80,9 +80,9 @@
           },
           {
             number: {
-              number: [],
+              number: [0],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 24
@@ -99,9 +99,9 @@
       CenterLeft1Chart
     },
     mounted() {
-      this.Time()
-      this.changeTiming()
-      this.getLeftPie()
+      // this.Time()
+      // this.changeTiming()
+      // this.getLeftPie()
     },
     methods: {
       getLeftPie(){
@@ -157,6 +157,9 @@
     .bg-color-black {
       height: $box-height - 30px;
       border-radius: 10px;
+    }
+    .d-flex{
+      text-align: center;
     }
     .text {
       color: #c3cbde;

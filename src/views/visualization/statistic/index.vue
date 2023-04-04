@@ -67,12 +67,17 @@
               <center />
             </div>
             <!-- 中间 -->
-            <div>
-              <centerRight2 />
-            </div>
-            <div>
+<!--            <div>-->
+<!--              <centerRight2 />-->
+<!--            </div>-->
+            <div style="margin-left: 17px">
               <dv-border-box-13>
                 <centerRight1 />
+              </dv-border-box-13>
+            </div>
+            <div style="margin-left: 17px">
+              <dv-border-box-13>
+                <centerRight3 />
               </dv-border-box-13>
             </div>
           </div>
@@ -99,6 +104,7 @@ import centerLeft2 from "./centerLeft2";
 import center from "./center";
 import centerRight1 from "./centerRight1";
 import centerRight2 from "./centerRight2";
+import centerRight3 from "./centerRight3";
 import { formatTime } from "../../../utils/echartMixin/index.js";
 export default {
   mixins: [drawMixin],
@@ -121,6 +127,7 @@ export default {
     center,
     centerRight1,
     centerRight2,
+    centerRight3
   },
   mounted() {
     this.timeFn();

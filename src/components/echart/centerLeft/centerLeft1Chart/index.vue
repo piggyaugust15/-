@@ -13,12 +13,12 @@
         cdata: {
           xData: ["文章收藏", "文章点赞", "文章浏览", "文创收藏", "文创点赞", "文创浏览"],
           seriesData: [
-            { value: 0, name: "文章收藏" },
-            { value: 0, name: "文章点赞" },
-            { value: 0, name: "文章浏览" },
-            { value: 0, name: "文创收藏" },
-            { value: 0, name: "文创点赞" },
-            { value: 0, name: "文创浏览" }
+            { value: 20, name: "文章收藏" },
+            { value: 45, name: "文章点赞" },
+            { value: 160, name: "文章浏览" },
+            { value: 4, name: "文创收藏" },
+            { value: 5, name: "文创点赞" },
+            { value: 7, name: "文创浏览" }
           ]
         },
       }
@@ -36,25 +36,25 @@
     components: {
       Chart,
     },
-    watch:{
-      articlePie:{
-        deep:true,
-        immediate:true,
-        handler(newItem,oldItem){
-          this.cdata.seriesData[0].value = newItem.articleCollect;
-          this.cdata.seriesData[1].value = newItem.articleLike;
-          this.cdata.seriesData[2].value = newItem.articleView;
-        }
-      },
-      culPie:{
-        deep:true,
-        immediate:true,
-        handler(newItem,oldItem){
-          this.cdata.seriesData[3].value = newItem.culCreativityCollection;
-          this.cdata.seriesData[4].value = newItem.culCreativityLike;
-          this.cdata.seriesData[5].value = newItem.culCreativityView;
-        }
-      }
-    },
+    // watch:{
+    //   articlePie:{
+    //     deep:true,
+    //     immediate:true,
+    //     handler(newItem,oldItem){
+    //       this.cdata.seriesData[0].value = newItem.articleCollect;
+    //       this.cdata.seriesData[1].value = newItem.articleLike;
+    //       this.cdata.seriesData[2].value = newItem.articleView;
+    //     }
+    //   },
+    //   culPie:{
+    //     deep:true,
+    //     immediate:true,
+    //     handler(newItem,oldItem){
+    //       this.cdata.seriesData[3].value = newItem.culCreativityCollection;
+    //       this.cdata.seriesData[4].value = newItem.culCreativityLike;
+    //       this.cdata.seriesData[5].value = newItem.culCreativityView;
+    //     }
+    //   }
+    // },
   }
 </script>

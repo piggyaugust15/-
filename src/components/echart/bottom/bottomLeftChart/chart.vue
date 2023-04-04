@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width: 100%">
     <Echart
       :options="options"
       id="bottomLeftChart"
@@ -40,7 +40,7 @@ export default {
             }
           },
           legend:{
-            data:["小池","小季","小憨"],
+            data:["已发布","驳回","未通过"],
             textStyle:{
               color: "#B4B4B4"
             },
@@ -87,7 +87,7 @@ export default {
             }
           ],
           series:[{
-            name: "小池",
+            name: "文章",
             type: "line",
             smooth: true,
             showAllSymbol: true,
@@ -101,7 +101,7 @@ export default {
             },
             data: newData.rateData
           },{
-            name: "小季",
+            name: "文创",
             type: "bar",
             barWidth: 10,
             itemStyle: {
@@ -115,7 +115,7 @@ export default {
             },
             data: newData.barData
           },{
-            name: "小憨",
+            name: "未通过",
             type: "bar",
             barGap: "-100%",
             barWidth: 10,

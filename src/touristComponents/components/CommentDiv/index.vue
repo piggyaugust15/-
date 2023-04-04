@@ -19,7 +19,7 @@
         </div>
         <button @click="submitcomment()">发表评论</button>
       </div>
-      <div class="emoji" v-if="this.type===0">
+      <div class="emoji" >
         <el-col>
           <el-popover
               placement="auto bottom"

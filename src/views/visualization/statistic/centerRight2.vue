@@ -1,15 +1,15 @@
 <template>
   <div id="centerRight2">
     <div class="bg-color-black">
-      <div class="d-flex pt-2 pl-2">
+      <div class="d-flex pt-2 pl-2" style="text-align: center">
         <span>
           <icon name="align-left" class="text-icon"></icon>
         </span>
-        <span class="fs-xl text mx-2">产品销售渠道分析</span>
+        <span class="fs-xl text mx-2" >部分已录入景点国家地区分布</span>
       </div>
       <div class="d-flex ai-center flex-column body-box">
         <dv-capsule-chart class="dv-cap-chart" :config="config" />
-        <centerRight2Chart1 />
+<!--        <centerRight2Chart1 />-->
       </div>
     </div>
   </div>
@@ -24,24 +24,24 @@
         config: {
           data: [
             {
-              name: '南阳',
-              value: 167
+              name: '中国',
+              value: 33
             },
             {
-              name: '周口',
-              value: 67
+              name: '印度',
+              value: 1
             },
             {
-              name: '漯河',
-              value: 123
+              name: '德国',
+              value: 4
             },
             {
-              name: '郑州',
-              value: 55
+              name: '埃及',
+              value: 1
             },
             {
-              name: '西峡',
-              value: 98
+              name: '俄罗斯',
+              value: 2
             }
           ]
         }
@@ -64,6 +64,7 @@
       height: $box-height;
       width: $box-width;
       border-radius: 10px;
+      padding-top: 155px;
     }
     .text {
       color: #c3cbde;

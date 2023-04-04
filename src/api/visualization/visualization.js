@@ -20,3 +20,17 @@ export function getMedium() {
     method: 'get',
   })
 }
+
+export function getSightsTop(){
+  return request({
+    url:'/statistic/sightsTables',
+    method:'get'
+  })
+}
+
+export function getCulTop(){
+  return request({
+    url:'/statistic/culTables',
+    method:'get'
+  })
+}

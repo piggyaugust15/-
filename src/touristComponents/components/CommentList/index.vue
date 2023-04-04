@@ -72,6 +72,7 @@
                   @select="selectEmoji(index, emoji)"
                 />
               </div> -->
+              <button class="replybtn" @click="submitReply(item)">发布</button>
             </div>
           </div>
         </div>
@@ -380,6 +381,7 @@ li {
         }
         .replybox {
           position: relative;
+          height: 80px;
           box-sizing: border-box;
           margin: 0px;
           min-width: 0px;
@@ -391,6 +393,8 @@ li {
           input {
             width: 100%;
             border: none;
+            border-bottom: 1px solid #ebebeb;
+            padding-bottom: 5px;
             outline: none;
             user-select: text;
             white-space: nowrap;
@@ -399,6 +403,21 @@ li {
               PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC,
               WenQuanYi Micro Hei, sans-serif;
             font-size: 15px;
+          }
+          .replybtn{
+            position: absolute;
+            right: 10px;
+            bottom: 5px;
+            width: 70px;
+            height: 30px;
+            background-color: #7fd6f5;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            &:hover{
+              background-color: #00aeec;
+            }
           }
           .emojibanner {
             position: absolute;

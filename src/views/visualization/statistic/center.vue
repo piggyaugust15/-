@@ -44,12 +44,16 @@
           <dv-water-level-pond class="dv-wa-le-po" :config="water" />
         </div>
       </div>
+      <div>
+        <center-right2 />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
   import CenterChart from '@/components/echart/center/centerChartRate'
+  import CenterRight2 from "@/views/visualization/statistic/centerRight2";
   import {getData,getMedium} from "@/api/visualization/visualization.js"
   export default {
     data() {
@@ -61,7 +65,7 @@
             number: {
               number: [],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 26
@@ -73,7 +77,7 @@
             number: {
               number: [],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 26
@@ -85,7 +89,7 @@
             number: {
               number: [],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 26
@@ -97,7 +101,7 @@
             number: {
               number: [],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 26
@@ -109,7 +113,7 @@
             number: {
               number: [],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 26
@@ -121,7 +125,7 @@
             number: {
               number: [],
               toFixed: 1,
-              textAlign: 'left',
+              textAlign: 'center',
               content: '{nt}',
               style: {
                 fontSize: 26
@@ -176,7 +180,7 @@
           unit: '人'
         },
         water: {
-          data: [],
+          data: [20,13],
           shape: 'roundRect',
           formatter: '{value}%',
           waveNum: 6,
@@ -187,7 +191,7 @@
         rate: [
           {
             id: 'centerRate1',
-            tips: 0,
+            tips: 33,
             colorData: {
               textStyle: '#3fc0fb',
               series: {
@@ -201,7 +205,7 @@
           },
           {
             id: 'centerRate2',
-            tips: 0,
+            tips: 66,
             colorData: {
               textStyle: '#67e0e3',
               series: {
@@ -217,19 +221,21 @@
       }
     },
     components: {
-      CenterChart
+      CenterChart,
+      CenterRight2
     },
     methods:{
       Time(){
-        this.timer = setInterval(() => {
-           this.getData();
-           this.getMedium();
-        }, 5000)
+        // this.timer = setInterval(() => {
+        //    this.getData();
+        //    this.getMedium();
+        // }, 5000)
+        // this.getData();
+        this.getMedium();
     },
       getData(){
         getData().then((response)=>{
           let data = []
-          console.log('center',response)
           data.push(response.server.mem.used)
           data.push(response.server.cpu.used)
           this.rate[0].tips = response.articleRate
