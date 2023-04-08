@@ -70,11 +70,9 @@ const user = {
           if (res.roles && res.roles.length > 0) { // 验证返回的roles是否是一个非空数组
 
             // 设置 值      结果是 admin  common culture 对应着我们的设置 所以 对于游客应该单独开来
-            console.log(1 + res.roles)
 
             commit('SET_ROLES', res.roles)
 
-            console.log(2 + res.roles)
 
             commit('SET_PERMISSIONS', res.permissions)
 

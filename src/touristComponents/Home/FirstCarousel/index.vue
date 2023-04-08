@@ -189,6 +189,7 @@ export default {
         query: { id: id },
       })},
     suggestsearch(keywords) {
+      console.log(this.input)
       searchSights(keywords).then((response) => {
         this.attraction = response.data[0];
         this.creation = response.data[1];

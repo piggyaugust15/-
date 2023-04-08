@@ -21,5 +21,10 @@ export default {
   },
   methods: {},
   components: { articleFormVue, culFormVue },
+  created() {
+    if (this.$route.query.type === "edit" &&this.$route.query.arg==='cul'){
+      this.activeName='second';
+    }
+  }
 };
 </script>

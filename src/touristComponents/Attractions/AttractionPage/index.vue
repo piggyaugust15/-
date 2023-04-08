@@ -48,6 +48,7 @@
                     <li @click="gotonextpage('food', 1)">美食</li>
                     <li @click="gotonextpage('hotel')">酒店</li>
                   </ul>
+                  <div class="ticket" @click="centerDialogVisible=true">购买门票</div>
                 </div>
               </div>
               <el-button
@@ -65,7 +66,7 @@
                 class="hotPopover"
               >
                 <div class="hot" slot="reference">
-                  <span>{{ sights.scoreNum }}</span>
+                  <span>{{ sights.sightsHot }}</span>
                   <div>
                     <i class="fa fa-star" aria-hidden="true">热度</i>
                   </div>
@@ -116,6 +117,47 @@
           </div>
         </el-main>
       </el-container>
+      <el-dialog
+          title="门票"
+          :visible.sync="centerDialogVisible"
+          width="50%"
+          center>
+        <el-table :data="sights.tickets">
+          <el-table-column property="ticketPrice" label="价格" width="100"></el-table-column>
+          <el-table-column property="ticketNum" label="数量" ></el-table-column>
+          <el-table-column property="discount" label="折扣" ></el-table-column>
+          <el-table-column property="ticketBegintime" label="开始时间" width="170"></el-table-column>
+          <el-table-column property="ticketEndtime" label="结束时间"  width="170"></el-table-column>
+          <el-table-column
+              fixed="right"
+              label="操作"
+              width="100">
+            <template slot-scope="scope">
+              <el-button @click="handleClick(scope.row)" type="text" size="small">购买</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-dialog
+            title="购买界面"
+            :visible.sync="BuyVisible"
+            width="50%"
+            center
+            append-to-body
+        >
+          <div style="text-align: center">
+            <img :src="$store.state.front.url+sights.sightsCode.split(',')[0]" alt="" style="width: 300px;
+         height: 300px;">
+          </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="BuyVisible = false">取 消 购 买</el-button>
+        </span>
+        </el-dialog>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
+
     </div>
   </div>
 </template>
@@ -130,15 +172,17 @@ import { getSights, getSightsInfo } from "@/api/sights/sights.js";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
 import AttractionCommentDiv from "@/touristComponents/components/AttractionCommentDiv";
-import {addview,hit} from '@/api/hot/hotSights'
+import {addview,hit,fav} from '@/api/hot/hotSights'
 export default {
   name: "Attractionspage",
   data() {
     return {
+      BuyVisible:false,
+      centerDialogVisible:false,
       sights: {},
       fav: {
         active: "el-icon-star-off",
-        isactive: false,
+        isactive: 0,
       },
       comment: 5188,
       imgList: [],
@@ -163,17 +207,27 @@ export default {
   },
   methods: {
     handlefav() {
-      if (this.fav.isactive) {
+      if (this.sights.ifCollect) {
         this.fav.active = "el-icon-star-off";
-        this.fav.isactive = !this.fav.isactive;
-        this.$message("取消收藏");
+        this.sights.ifCollect = !this.sights.ifCollect;
+        //this.$message("取消收藏");
+        fav(this.$route.query.id).then((res)=>{
+          this.$message.success(res.msg);
+        })
       } else {
         this.fav.active = "el-icon-star-on";
-        this.fav.isactive = !this.fav.isactive;
-        this.$message("收藏成功");
+        this.sights.ifCollect = !this.sights.ifCollect;
+        //this.$message("收藏成功");
+        fav(this.$route.query.id).then((res)=>{
+          this.$message.success(res.msg);
+        })
       }
     },
+    handleChange(val) {
+      console.log(val);
+    },
     handleClick(tab, event) {
+      this.BuyVisible=true;
       console.log(tab, event);
     },
     gotoComment() {
@@ -198,8 +252,12 @@ export default {
       getSightsInfo(this.$route.query.id).then((response) => {
         addview(this.$route.query.id);
         hit(this.$route.query.id);
+        console.log('attra',response)
         this.sights = response.data;
         this.imgList = this.sights.sightsImage.split(",");
+        if(this.sights.ifCollect){
+          this.fav.active = "el-icon-star-on";
+        }
       });
     }
   },
@@ -224,7 +282,6 @@ export default {
   width: 100%;
   margin-top: 80px;
   color: #333;
-
   .main {
     width: 1340px;
     margin: 0 auto;
@@ -234,7 +291,6 @@ export default {
       align-items: center;
       margin-bottom: 20px;
       font-family: $font;
-
       li {
         width: 74px;
         height: 28px;
@@ -262,6 +318,19 @@ export default {
           color: #61666d;
           font-family: $font;
         }
+      }
+    }
+    .ticket{
+      width: 100px;
+      text-align: center;
+      padding: 10px;
+      border-radius: 5px;
+      color: #fff;
+      cursor: pointer;
+      background-color:#349eff;
+      transition: all ease .1s;
+      &:hover{
+        background-color: #0360b0;
       }
     }
     .mainText{
@@ -400,6 +469,9 @@ export default {
         width: 100%;
       }
     }
+  }
+  .code{
+
   }
 }
 </style>

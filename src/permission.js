@@ -65,9 +65,6 @@ router.beforeEach((to, from, next) => {
           })
       } else {
         //获得到角色的话直接放行
-
-        console.log("xx",store.getters.roles.indexOf("admin"))
-        console.log("xxx",store.getters.roles)
         //放行
         next()
       }

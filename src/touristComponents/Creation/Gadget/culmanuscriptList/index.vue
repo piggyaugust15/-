@@ -1,48 +1,44 @@
 <template>
   <div id="manuscriptlist" v-loading="loading">
     <el-empty
-      description="一个稿件都没有，请换个筛选条件(''▔□▔)"
-      v-if="List.length == 0"
+        description="一个稿件都没有，请换个筛选条件(''▔□▔)"
+        v-if="List.length == 0"
     ></el-empty>
     <ul v-else>
       <li v-for="(item, index) in List" :key="index">
         <div class="img">
-          <img :src="$store.state.front.url + item.articleCover" alt="" />
+          <img :src="$store.state.front.url + item.culCreativityImage.split(',')[0]" alt="" />
         </div>
         <div class="rightbox">
           <span class="title">
-            {{ item.articleTitle }}
+            {{ item.culCreativityTitle }}
           </span>
           <span class="time">{{ item.createTime }}</span>
           <div class="tags">
             <span class="view"
-              ><i class="el-icon-s-data"></i>{{ item.articleView }}</span
-            >
-            <span class="comment" v-if="item.articleComment"
-              ><i class="el-icon-chat-dot-round"></i
-              >{{ item.articleComment }}</span
+            ><i class="el-icon-s-data"></i>{{ item.culCreativityView }}</span
             >
             <span class="thumbsup"
-              ><i class="el-icon-thumb"></i>{{ item.articleLike }}</span
+            ><i class="el-icon-thumb"></i>{{ item.culCreativityLike }}</span
             >
             <span class="favourite"
-              ><i class="el-icon-star-off"></i>{{ item.articleCollect }}</span
+            ><i class="el-icon-star-off"></i>{{ item.culCreativityCollection }}</span
             >
           </div>
           <div class="btn">
             <el-button
-              icon="el-icon-edit"
-              class="edit"
-              @click="gotoEdit(item.articleId)"
-              >编辑</el-button
+                icon="el-icon-edit"
+                class="edit"
+                @click="gotoEdit(item.culCreativityId)"
+            >编辑</el-button
             >
             <el-popconfirm
-              confirm-button-text="好的"
-              cancel-button-text="不用了"
-              icon="el-icon-info"
-              icon-color="red"
-              title="确定删除吗？"
-              @confirm="handleConfirm([item.articleId])"
+                confirm-button-text="好的"
+                cancel-button-text="不用了"
+                icon="el-icon-info"
+                icon-color="red"
+                title="确定删除吗？"
+                @confirm="handleConfirm([item.culCreativityId])"
             >
               <el-button slot="reference">删除</el-button>
             </el-popconfirm>
@@ -54,9 +50,9 @@
 </template>
 
 <script>
-import { deleteUserManuscript } from "@/api/article/article.js";
+import { deleteManuscript } from "@/api/cul/cul";
 import deletePopover from "../deletePopover/index";
-import { getUsersArticleByWays } from "@/api/article/article.js";
+import { getCulByWays } from "@/api/cul/cul.js";
 import { getDraft } from "@/api/article/article.js";
 export default {
   data() {
@@ -69,7 +65,7 @@ export default {
   methods: {
     handleConfirm([item]) {
       this.loading = true;
-      deleteUserManuscript([item]).then((response) => {
+      deleteManuscript([item]).then((response) => {
         console.log(response);
         this.getInfo();
       });
@@ -82,7 +78,8 @@ export default {
           this.loading = false;
         });
       } else {
-        getUsersArticleByWays(this.type).then((response) => {
+        getCulByWays(this.type).then((response) => {
+          console.log('cul',response)
           this.List = response.rows;
           // this.$emit("get", this.List.length);
           this.loading = false;
@@ -95,7 +92,7 @@ export default {
         query: {
           type: "edit",
           id: id,
-          arg:'article',
+          arg:'cul',
         },
       });
     },
@@ -109,7 +106,7 @@ export default {
 
 <style lang="scss" scoped>
 $font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial,
-  "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+"PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
 ul {
   li {
     display: flex;

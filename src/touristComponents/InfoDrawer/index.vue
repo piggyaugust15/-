@@ -9,6 +9,7 @@
       :visible.sync="drawer"
       :direction="direction"
       :append-to-body="true"
+      @open="open()"
     >
       <el-container>
         <el-aside width="70px" class="aside">
@@ -44,14 +45,24 @@
                 >
               </el-menu-item-group>
             </el-submenu>
-            <el-menu-item index="3" @click="go('3')">
-              <i class="el-icon-time"></i>
-              <span slot="title">历史记录</span>
-              <span slot="label" class="leftIcon">
+            <el-submenu index="3" @click="go('3')">
+              <template slot="title">
+                <i class="el-icon-time"></i>
+                <span slot="title">历史记录</span>
+                <span slot="label" class="leftIcon">
                 <el-badge :value="this.navList[2].new" class="iconNew">
                 </el-badge>
               </span>
-            </el-menu-item>
+              </template>
+              <el-menu-item-group>
+                <span slot="title">类别</span>
+                <el-menu-item index="3-1" @click="go('3-1')">景点</el-menu-item>
+                <el-menu-item index="3-2" @click="go('3-2')">文章</el-menu-item>
+                <el-menu-item index="3-3" @click="go('3-3')"
+                >文创作品</el-menu-item
+                >
+              </el-menu-item-group>
+            </el-submenu>
           </el-menu>
         </el-aside>
         <el-container class="container">
@@ -65,9 +76,9 @@
                     :class="[item.type == 0 ? 'Read' : '']"
                     @click="showMessageDialog(item)"
                   >
-                    <span class="title">{{ item.sender }}</span>
-                    <span class="time">{{ item.time }}</span>
-                    <span class="content">{{ item.content }}</span>
+                    <span class="title" v-if="item.user">{{ item.user.nickName }}</span>
+                    <span class="time">{{  parseTime(item.createTime,'{y}-{m}-{d} {h}:{i}')  }}</span>
+                    <span class="content">{{ item.commentContent }}</span>
                   </li>
                   <span v-if="messageList.length == 0" class="noTip"
                     >暂无消息哦</span
@@ -78,10 +89,10 @@
                     :before-close="handleClose"
                     :append-to-body="true"
                   >
-                    <span slot="title"
-                      >来自 {{ currentItem.sender }} 的消息</span
+                    <span slot="title" v-if="currentItem.user"
+                      >来自 {{ currentItem.user.nickName }} 的消息</span
                     >
-                    <span>{{ currentItem.content }}</span>
+                    <span>{{ currentItem.commentContent }}</span>
                     <span slot="footer" class="dialog-footer">
                       <el-button type="primary" @click="dialogVisible = false"
                         >确 定</el-button
@@ -95,38 +106,150 @@
               <div v-if="this.type == '2-1'" class="view">
                 <ul class="fav">
                   <li
-                    v-for="(item, index) in favouriteList"
+                    v-for="(item, index) in favAttraction"
                     :key="index"
                     @click="gotoAttraction(item)"
                   >
                     <div class="leftbox">
-                      <img :src="item.src" alt="" />
+                      <img :src="$store.state.front.url+item.sightsImage.split(',')[0]" alt="" />
                       <div class="cover"></div>
                     </div>
                     <div class="rightbox">
                       <span class="location"
-                        ><i class="el-icon-position"></i>{{ item.name }}</span
+                        ><i class="el-icon-position"></i>{{ item.sightsName }}</span
                       >
-                      <span class="favtime">收藏于 {{ item.favtime }}</span>
+                      <span class="favtime">收藏于 {{  parseTime(item.createTime,'{y}-{m}-{d} {h}:{i}')  }}</span>
                     </div>
                   </li>
-                  <span v-if="favouriteList.length == 0" class="noTip"
+                  <span v-if="favAttraction.length == 0" class="noTip"
                     >暂无收藏哦</span
                   >
                 </ul>
               </div>
             </transition>
             <transition name="fade" mode="out-in">
-              <div v-if="this.type == '2-2'" class="view">zzz</div>
+              <div v-if="this.type == '2-2'" class="view">
+                <ul class="fav">
+                  <li
+                      v-for="(item, index) in favArticle"
+                      :key="index"
+                      @click="gotoArticle(item)"
+                  >
+                    <div class="leftbox">
+                      <img :src="$store.state.front.url+item.articleCover.split(',')[0]" alt="" />
+                      <div class="cover"></div>
+                    </div>
+                    <div class="rightbox">
+                      <span class="location"
+                      ><i class="el-icon-position"></i>{{ item.articleTitle }}</span
+                      >
+                      <span class="favtime">收藏于 {{  parseTime(item.createTime,'{y}-{m}-{d} {h}:{i}')  }}</span>
+                    </div>
+                  </li>
+                  <span v-if="favCul.length == 0" class="noTip"
+                  >暂无收藏哦</span
+                  >
+                </ul>
+              </div>
             </transition>
             <transition name="fade" mode="out-in">
-              <div v-if="this.type == '2-3'" class="view">zzz</div>
+              <div v-if="this.type == '2-3'" class="view">
+                <ul class="fav">
+                  <li
+                      v-for="(item, index) in favCul"
+                      :key="index"
+                      @click="gotoCul(item)"
+                  >
+                    <div class="leftbox">
+                      <img :src="$store.state.front.url+item.culCreativityImage.split(',')[0]" alt="" />
+                      <div class="cover"></div>
+                    </div>
+                    <div class="rightbox">
+                      <span class="location"
+                      ><i class="el-icon-position"></i>{{ item.culCreativityTitle }}</span
+                      >
+                      <span class="favtime">收藏于 {{  parseTime(item.createTime,'{y}-{m}-{d} {h}:{i}')  }}
+                      </span>
+                    </div>
+                  </li>
+                  <span v-if="favCul.length == 0" class="noTip"
+                  >暂无收藏哦</span
+                  >
+                </ul>
+              </div>
             </transition>
             <transition name="fade" mode="out-in">
-              <div v-if="this.type == '3'" class="view">
-                <ul>
-                  <span v-if="historyList.length == 0" class="noTip"
-                    >暂无历史浏览记录哦</span
+              <div v-if="this.type == '3-1'" class="view">
+                <ul class="fav">
+                  <li
+                      v-for="(item, index) in hisAttraction"
+                      :key="index"
+                      @click="gotoAttraction(item)"
+                  >
+                    <div class="leftbox">
+                      <img :src="$store.state.front.url+item.sightsImage.split(',')[0]" alt="" />
+                      <div class="cover"></div>
+                    </div>
+                    <div class="rightbox">
+                      <span class="location"
+                      ><i class="el-icon-position"></i>{{ item.sightsName }}</span
+                      >
+                      <span class="favtime">浏览于 {{  parseTime(item.createTime,'{y}-{m}-{d} {h}:{i}')  }}</span>
+                    </div>
+                  </li>
+                  <span v-if="favAttraction.length == 0" class="noTip"
+                  >暂无历史浏览记录哦</span
+                  >
+                </ul>
+              </div>
+            </transition>
+            <transition name="fade" mode="out-in">
+              <div v-if="this.type == '3-2'" class="view">
+                <ul class="fav">
+                  <li
+                      v-for="(item, index) in hisArticle"
+                      :key="index"
+                      @click="gotoArticle(item)"
+                  >
+                    <div class="leftbox">
+                      <img :src="$store.state.front.url+item.articleCover.split(',')[0]" alt="" />
+                      <div class="cover"></div>
+                    </div>
+                    <div class="rightbox">
+                      <span class="location"
+                      >{{ item.articleTitle }}</span
+                      >
+                      <span class="favtime">收藏于 {{  parseTime(item.createTime,'{y}-{m}-{d} {h}:{i}')  }}</span>
+                    </div>
+                  </li>
+                  <span v-if="favCul.length == 0" class="noTip"
+                  >暂无历史浏览记录哦</span
+                  >
+                </ul>
+              </div>
+            </transition>
+            <transition name="fade" mode="out-in">
+              <div v-if="this.type == '3-3'" class="view">
+                <ul class="fav">
+                  <li
+                      v-for="(item, index) in favCul"
+                      :key="index"
+                      @click="gotoCul(item)"
+                  >
+                    <div class="leftbox">
+                      <img :src="$store.state.front.url+item.culCreativityImage.split(',')[0]" alt="" />
+                      <div class="cover"></div>
+                    </div>
+                    <div class="rightbox">
+                      <span class="location"
+                      >{{ item.culCreativityTitle }}</span
+                      >
+                      <span class="favtime">收藏于 {{  parseTime(item.createTime,'{y}-{m}-{d} {h}:{i}')  }}
+                      </span>
+                    </div>
+                  </li>
+                  <span v-if="favCul.length == 0" class="noTip"
+                  >暂无历史浏览记录哦</span
                   >
                 </ul>
               </div>
@@ -139,6 +262,10 @@
 </template>
 
 <script>
+import {getFavCul,getHisCul} from '@/api/sights/cul_creativity'
+import {getFavArticle,getHisArticle} from '@/api/article/article'
+import {getAttractionFav,getAttractionHistory} from '@/api/attraction/attraction'
+import {getUserMessage,hasReadMessage} from "@/api/user/user"
 export default {
   data() {
     return {
@@ -153,32 +280,13 @@ export default {
         { icon: "el-icon-star-off", name: "收藏", new: 1 },
         { icon: "el-icon-time", name: "历史" },
       ],
-      messageList: [
-        {
-          id: "", //id为唯一标识，点击消息列表时会发送已阅读请求，传这个id
-          sender: "朱澔然",
-          content: "消息内容哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
-          time: "2023-1-6-13:06",
-          type: 0, //0表示已读，1表示未读
-        },
-        {
-          id: "",
-          sender: "池声楼",
-          content:
-            "hahah哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈",
-          time: "2023-1-6-13:22",
-          type: 1, //0表示已读，1表示未读
-        },
-      ], //message
-      favouriteList: [
-        {
-          id: "",
-          name: "卢浮宫",
-          favtime: "2023.1.29",
-          src: "https://dimg08.c-ctrip.com/images/fd/tg/g3/M0A/07/3D/CggYGlaeCDaAQoagAAnBQ-n4YHs222_R_1600_10000.jpg",
-        },
-      ],
-      historyList: [],
+      messageList: [], //message
+      favAttraction: [],
+      favCul:[],
+      favArticle:[],
+      hisAttraction:[],
+      hisArticle:[],
+      hisCul:[]
     };
   },
   methods: {
@@ -196,18 +304,67 @@ export default {
     },
     showMessageDialog(item) {
       this.dialogVisible = true;
-      console.log(item.sender);
       this.currentItem = item;
       item.type = 0;
-      // 发请求
-      // request({
-      //   url: "xxxx" + item.id, //接口，修改已阅表示，需要重新返回未读总数
-      //   method: "get",
-      // });
+      hasReadMessage([item.commentId]).then((response)=>{
+        console.log(response)
+      })
     },
     gotoAttraction(item) {
-      this.$router.push({ path: "/Attractionspage", query: { id: item.id } });
+      this.$router.push({ path: "/frontHome/attractions/attraction", query: { id: item.sightsId } });
     },
+    gotoArticle(item){
+      this.$router.push({ path: "/frontHome/articlepage", query: { id: item.articleId } });
+    },
+    gotoCul(item){
+      this.$router.push({ path: "/frontHome/culcreation", query: { id: item.culCreativityId } });
+    },
+    getAttractionFav(){
+      getAttractionFav().then((response)=>{
+        this.favAttraction=response.rows;
+      })
+    },
+    getFavArticle(){
+      getFavArticle().then((response)=>{
+        this.favArticle=response.rows;
+      })
+    },
+    getFavCul(){
+      getFavCul().then((response)=>{
+        this.favCul=response.rows;
+      })
+    },
+    getAttractionHistory(){
+      getAttractionHistory().then((response)=>{
+        this.hisAttraction=response.rows;
+      })
+    },
+    getHisArticle(){
+      getHisArticle().then((response)=>{
+        this.hisArticle=response.rows;
+      })
+    },
+    getHisCul(){
+      getHisCul().then((response)=>{
+      })
+    },
+    getUserMessage(){
+      getUserMessage().then((response)=>{
+        this.messageList=response.rows;
+      })
+    },
+    open(){
+      this.getFavCul();
+      this.getFavArticle();
+      this.getAttractionFav();
+      this.getAttractionHistory();
+      this.getHisArticle();
+      this.getHisCul();
+      this.getUserMessage();
+    }
+  },
+  mounted(){
+    this.open();
   },
   props: ["drawerTitle", "direction"],
 };
@@ -223,7 +380,8 @@ export default {
 }
 .container {
   width: 100%;
-
+  height: 100%;
+  background-color: red;
   #tab {
     width: 100%;
     position: relative;
@@ -258,9 +416,8 @@ export default {
         }
         .leftbox {
           position: relative;
-          width: 250px;
-          height: 140px;
-          background-color: red;
+          width: 180px;
+          height: 120px;
           img {
             width: 100%;
             height: 100%;

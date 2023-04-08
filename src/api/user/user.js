@@ -56,3 +56,17 @@ export function getSubscriptionInfo() {
         method: 'get',
     })
 }
+
+export function getUserMessage() {
+    return request({
+        url: '/permitAll/comment/getUnStatusComments',
+        method: 'get',
+    })
+}
+
+export function hasReadMessage(id) {
+    return request({
+        url: '/permitAll/comment/updateComments/'+id,
+        method: 'get',
+    })
+}

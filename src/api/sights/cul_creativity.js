@@ -121,3 +121,10 @@ export function getFavCul() {
     method: 'get',
   })
 }
+
+export function getHisCul() {
+  return request({
+    url: '/creativity/view/getAll',
+    method: 'get',
+  })
+}

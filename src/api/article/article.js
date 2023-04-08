@@ -163,3 +163,10 @@ export function editArticle(data) {
     data: data
   })
 }
+
+export function getHisArticle() {
+  return request({
+    url: '/article/view/getAll',
+    method: 'get',
+  })
+}

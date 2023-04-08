@@ -18,7 +18,7 @@
       <el-form-item label="文创简介" prop="culCreativityIntro">
         <el-input
           type="textarea"
-          :rows="2"
+          :rows="5"
           placeholder="输入文创简介"
           v-model="culCreationForm.culCreativityIntro"
         />
@@ -68,6 +68,7 @@
 
 <script>
 import { createCul } from "@/api/sights/cul_creativity.js";
+import {getEditCulDetail} from "@/api/cul/cul";
 export default {
   dicts: [
     "cul_creativity_type",
@@ -167,6 +168,14 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+  },
+  mounted() {
+    if (this.$route.query.type === "edit"&&this.$route.query.arg ==="cul") {
+      getEditCulDetail(this.$route.query.id).then((response) => {
+        this.culCreationForm = response.data;
+        console.log(response);
+      });
+    }
   },
 };
 </script>

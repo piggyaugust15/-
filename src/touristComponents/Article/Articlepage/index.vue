@@ -36,60 +36,6 @@
         <div class="content markdown-body" v-html="info.articleContent" ></div>
         <CommentDiv :type="2"></CommentDiv>
         <CommentList :type="2"></CommentList>
-        <!-- <div class="commentDiv">
-          <h2 class="commenttitle">评论</h2>
-          <div class="mycommentbox">
-            <div>
-              <el-input
-                id="input"
-                type="textarea"
-                :rows="2"
-                placeholder="请输入内容"
-                v-model="textarea"
-                class="input"
-                :autosize="{ minRows: 3, maxRows: 4 }"
-                resize="none"
-              >
-              </el-input>
-            </div>
-            <button @click="submitcomment()">发表评论</button>
-          </div>
-          <div class="emoji">
-            <el-col>
-              <el-button
-                type="text"
-                size="mini"
-                @click.stop="showDialog = !showDialog"
-                >添加表情</el-button
-              >
-              <div class="emojibanner">
-                <VEmojiPicker v-show="showDialog" @select="selectEmoji" />
-              </div>
-            </el-col>
-          </div>
-          <ul>
-            <li v-for="(item, index) in commentList" :key="index">
-              <div class="leftbox"><img :src="item.avatar" alt="" /></div>
-              <div class="rightbox">
-                <span class="name">{{ item.name }} · </span>
-                <span class="time">{{ item.time }}</span>
-                <span class="content">{{ item.content }}</span>
-                <span
-                  class="thumbsUp"
-                  @click="handleThumbsUp(item)"
-                  :class="[{ hasThumbup: item.ifThumb }]"
-                  ><i class="el-icon-thumb" aria-hidden="true"></i
-                  >{{ item.thumbsUp }}</span
-                >
-                <span class="reply"
-                  ><i class="el-icon-chat-line-round" aria-hidden="true"></i
-                  >回复</span
-                >
-                <div class="line"></div>
-              </div>
-            </li>
-          </ul>
-        </div> -->
       </div>
       <div class="profile">
         <div class="about">
@@ -137,7 +83,7 @@
       </div>
       <div class="like" :class="{ isHide: isHide }">
         <div class="buttonList">
-          <button class="thumbup" @click="addLike(info.articleId)">
+          <button  :class="['thumbup',info.ifLike?'active':'']" @click="handleLike()">
             <i class="el-icon-caret-top icon"></i>
             赞同
             {{ info.articleLike }}
@@ -151,8 +97,8 @@
           <span class="share inline"
             ><i class="el-icon-s-promotion"></i> 分享</span
           >
-          <span class="fav inline" @click="addCollect(info.articleId)"
-            ><i class="el-icon-star-off"> 收藏</i></span
+          <span :class="['fav','inline',info.ifCollect?'active':'']" @click="handlefav(info.articleId)"
+            ><i :class="fav.active">收藏</i></span
           >
         </div>
       </div>
@@ -172,12 +118,15 @@ import { VEmojiPicker } from "v-emoji-picker";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
 import {marked} from 'marked'
+import {fav} from "@/api/hot/hotSights";
 export default {
   dicts: ["article_state", "article_type", "article_category"],
   data() {
     return {
       url: process.env.VUE_APP_BASE_API,
-      // isFav:,
+      fav:{
+        active:"el-icon-star-off",
+      },
       info: {},
       user: {},
       visitor: {},
@@ -248,6 +197,36 @@ export default {
         this.$modal.msgSuccess(response.msg);
       });
     },
+    handleLike(){
+      if (this.info.ifLike) {
+        this.info.articleLike--;
+        this.info.ifLike=!this.info.ifLike;
+        addArticleLike(this.$route.query.id).then((response) => {
+          this.$modal.msgSuccess(response.msg);
+        });
+      } else {
+        this.info.articleLike++;
+        this.info.ifLike=!this.info.ifLike;
+        addArticleLike(this.$route.query.id).then((response) => {
+          this.$modal.msgSuccess(response.msg);
+        });
+      }
+    },
+    handlefav(articleId) {
+      if (this.info.ifCollect) {
+        this.fav.active = "el-icon-star-off";
+        this.info.ifCollect = !this.info.ifCollect;
+        addArticleCollect(this.$route.query.id).then((response) => {
+          this.$modal.msgSuccess(response.msg);
+        });
+      } else {
+        this.fav.active = "el-icon-star-on";
+        this.info.ifCollect = !this.info.ifCollect;
+        addArticleCollect(this.$route.query.id).then((response) => {
+          this.$modal.msgSuccess(response.msg);
+        });
+      }
+    },
     addCollect(articleId) {
       addArticleCollect(articleId).then((response) => {
         this.$modal.msgSuccess(response.msg);
@@ -262,6 +241,9 @@ export default {
       this.user = response.data.user;
       this.info.articleContent = marked(this.info.articleContent);
       this.visitor = response.data.visitor;
+      if(this.info.ifCollect){
+        this.fav.active = "el-icon-star-on";
+      }
       // 如果没有登录 就不用增加浏览量
       if (this.$store.state.user.token === "") {
         addArticleView(this.info.articleId);
@@ -359,6 +341,7 @@ li {
           button {
             flex: 1;
             margin-left: 10px;
+            color: #fff;
             &:hover {
               cursor: pointer;
             }
@@ -414,7 +397,6 @@ li {
                 display: inline-block;
                 margin-right: 30px;
                 color: #505050;
-
                 &:hover {
                   cursor: pointer;
                 }
@@ -545,6 +527,19 @@ li {
         }
         span {
           margin-right: 10px;
+        }
+        .inline{
+          cursor: pointer;
+          transition: all ease .3s;
+          padding: 3px 5px 3px 5px;
+          border-radius: 8px;
+          &:hover {
+            color: #606a7e;
+          }
+        }
+        .active{
+          background-color: #00aeec;
+          color: #fff;
         }
       }
     }

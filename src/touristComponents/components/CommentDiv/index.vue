@@ -81,7 +81,6 @@ export default {
       input.selectionStart = startPos + emoji.data.length;
       input.selectionEnd = startPos + emoji.data.length;
       this.ruleForm.commentContent = resultText;
-      console.log(this.ruleForm.commentContent)
     },
     submitcomment() {
       if (this.textarea === "") {

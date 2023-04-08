@@ -101,7 +101,6 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
     },
     jumpToLogin(item) {
       if (this.$route.path === "/Login") {
@@ -144,7 +143,6 @@ export default {
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
-    console.log(this.$store);
     if (
       this.$route.path == "/Attractionspage" ||
       this.$route.path == "/Attractionspage"

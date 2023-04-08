@@ -72,14 +72,14 @@
               <button class="thumbdown">
                 <i class="el-icon-caret-bottom icon"></i>
               </button>
-              <span class="comment inline"
-              ><i class="el-icon-chat-line-round"></i> 评论</span
+              <div class="comment inline"
+              ><i class="el-icon-chat-line-round"></i> 评论</div
               >
-              <span class="share inline"
-              ><i class="el-icon-s-promotion"></i> 分享</span
+              <div class="share inline"
+              ><i class="el-icon-s-promotion"></i> 分享</div
               >
-              <span class="fav inline"
-              ><i class="el-icon-star-off"> 收藏</i></span
+              <div class="fav inline"
+              ><i class="el-icon-star-off"> 收藏</i></div
               >
             </div>
           </div>
@@ -138,6 +138,7 @@
 import {getFavSights} from '@/api/sights/sights'
 import {getFavArticle} from '@/api/article/article'
 import {getFavCul} from '@/api/sights/cul_creativity'
+import {getAttractionFav} from '@/api/attraction/attraction'
 export default {
   name: "index",
   data() {
@@ -174,7 +175,8 @@ export default {
       });
     },
     getFavSights(){
-      getFavSights().then((res)=>{
+      getAttractionFav().then((res)=>{
+        console.log('si',res)
         this.sights=res.rows;
       })
     },
@@ -326,6 +328,7 @@ li {
         }
       }
       .inline {
+        display: inline-block;
         margin-right: 20px;
         cursor: pointer;
         color: #8590a6;

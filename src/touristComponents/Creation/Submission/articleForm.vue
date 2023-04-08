@@ -159,7 +159,7 @@ export default {
     },
   },
   mounted() {
-    if (this.$route.query.type == "edit") {
+    if (this.$route.query.type === "edit"&&this.$route.query.arg ==="article") {
       getEditArticleDetail(this.$route.query.id).then((response) => {
         this.ruleForm = response.data;
         console.log(response);

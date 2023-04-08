@@ -34,3 +34,10 @@ export function score(id) {
     method: 'get',
   })
 }
+
+export function fav(id) {
+  return request({
+    url: '/hotSights/collect/'+id ,
+    method: 'get',
+  })
+}
