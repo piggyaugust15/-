@@ -11,7 +11,6 @@
           >
             投稿
           </el-button> -->
-
           <el-menu
             default-active="/frontHome/Creation/index"
             class="el-menu-vertical-demo"
@@ -50,17 +49,6 @@
               <i class="el-icon-chat-line-square"></i>
               <span slot="title">评论管理</span>
             </el-menu-item>
-<!--            <el-menu-item index="/frontHome/Creation/activity">-->
-<!--              <i class="el-icon-chat-line-square"></i>-->
-<!--              <span slot="title">活动中心</span>-->
-<!--            </el-menu-item>-->
-            <!--            <el-menu-item-->
-            <!--              index="/frontHome/Creation/subscription"-->
-            <!--              @click="CreationGoTo()"-->
-            <!--            >-->
-            <!--              <i class="el-icon-bell"></i>-->
-            <!--              <span slot="title">文创订阅</span>-->
-            <!--            </el-menu-item>-->
             <el-menu-item index="/frontHome/Creation/convention">
               <i class="el-icon-collection"></i>
               <span slot="title">创作公约</span>

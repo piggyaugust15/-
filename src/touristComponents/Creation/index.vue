@@ -5,9 +5,9 @@
         <el-aside width="500px">
           <div id="carousel">
             <el-carousel indicator-position="outside" class="carousel">
-              <el-carousel-item v-for="item in carouselList" :key="item.id">
-                <img :src="item.src" alt="" />
-                <h3 class="title">{{ item.title }}</h3>
+              <el-carousel-item v-for="item in carouselList" :key="item.id" @click.native="gotoActivity(item.activityId)">
+                <img :src="$store.state.front.url+item.activityImage.split(',')[0]" alt="" />
+                <h3 class="title">{{ item.activityTitle }}</h3>
               </el-carousel-item>
             </el-carousel>
           </div>
@@ -21,14 +21,14 @@
             <ul>
               <li v-for="(item, index) in activityList" :key="index">
                 <div class="circle"></div>
-                <span class="name">{{ item.name }}</span>
+                <span class="name">{{ item.activityTitle }}</span>
                 <img src="@/assets/images/hot.png" alt="" />
-                <span class="takepart">{{ item.takepart }}人参与</span>
+                <div class="takepart"><img src="@/assets/images/fire.png" alt="">{{item.activityHot}}</div>
               </li>
             </ul>
           </div>
-          <div class="challenge">
-            <img src="@/assets/images/challenge.png" alt="" />
+          <div class="challenge" >
+            <img :src="$store.state.front.url+rightBottom.typesetImage.split(',')[0]" alt="" />
           </div>
         </el-main>
       </el-container>
@@ -110,26 +110,14 @@
 </template>
 
 <script>
-import axios from "axios";
+import {getActivityList, getActivityPic, getMoreActivity} from '@/api/activity/frontActivity'
 
 export default {
   data() {
     return {
       activeName: "first",
-      carouselList: [
-        {
-          title: "征稿新年热点大放送，投稿赢取千元奖金！",
-          img: "",
-          src: "https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg",
-        },
-        { title: "", img: "" },
-        { title: "", img: "" },
-        { title: "", img: "" },
-      ],
-      activityList: [
-        { name: "2022搞笑年度盛典", takepart: 3000 },
-        { name: "新年福运冲击赛", takepart: 1986 },
-      ],
+      carouselList: [],
+      activityList: [],
       manuscriptTagList: [
         { name: "浏览量", icon: "fa fa-eye ", number: 1 },
         { name: "评论", icon: "fa fa-comment", number: 122 },
@@ -178,6 +166,9 @@ export default {
         { name: "1", icon: "", number: 0, yesterday: 0 },
         { name: "1", icon: "", number: 0, yesterday: 0 },
       ],
+      rightBottom:{
+        typesetImage:''
+      }
     };
   },
   methods: {
@@ -199,19 +190,38 @@ export default {
       alert("请求刷新数据");
       location.reload();
     },
-    xxx() {
-      axios({
-        url: "http://localhost:8080/getAll",
-        method: "post",
-        data: null,
-      }).then((response) => {
-        console.log(response);
+    gotoActivity(id){
+      console.log('hh')
+      let routeUrl = this.$router.resolve({
+        path: "/frontHome/activity",
+        query: {id:id}
       });
+      window.open(routeUrl .href, '_blank');
     },
+    getActivityList(){
+      getActivityList().then((res)=>{
+        console.log('caro',res)
+        this.carouselList=res.data;
+        console.log(this.carouselList)
+      })
+    },
+    getActivityPic(){
+      getActivityPic().then((res)=>{
+        this.rightBottom=res.data;
+      })
+    },
+    getMoreActivity(){
+      getMoreActivity().then((res)=>{
+        this.activityList=res.data;
+        console.log('more',res)
+      })
+    }
   },
   created() {
-    this.xxx();
-  },
+    this.getActivityList();
+    this.getActivityPic();
+    this.getMoreActivity();
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -234,13 +244,13 @@ li {
     .carousel {
       width: 500px;
       border-radius: 5px;
+      cursor:pointer;
     }
     ::v-deep .el-carousel__container {
       border-radius: 10px;
       overflow: hidden;
     }
     .el-carousel__item {
-      position: relative;
       border-radius: 5px;
       .title {
         display: block;
@@ -249,6 +259,10 @@ li {
         position: absolute;
         bottom: 10px;
         left: 25px;
+        max-width: 400px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       img {
         display: block;
@@ -307,6 +321,7 @@ li {
             margin-right: 10px;
           }
           .name {
+            max-width: 300px;
             font-size: 14px;
             color: #212121;
             letter-spacing: 0;
@@ -317,6 +332,9 @@ li {
           }
           .takepart {
             position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             right: 0px;
             font-size: 12px;
             color: #757575;

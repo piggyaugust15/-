@@ -76,7 +76,7 @@
       </ul>
       <div class="empty" v-else>
         <ul>
-          <li><el-empty description="描述文字" ></el-empty></li>
+          <li><el-empty description="暂时没有订阅哦" ></el-empty></li>
         </ul>
       </div>
     </div>
@@ -373,7 +373,7 @@ li {
     padding: 0px 10px 0px 10px;
     ul {
       //overflow:visible;
-      height: 100vh;
+      height: calc(100% - 70px);
       li {
         display: flex;
         padding: 10px;

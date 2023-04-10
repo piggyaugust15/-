@@ -261,9 +261,12 @@ export default {
       });
     }
   },
+  created() {
+
+  },
   mounted() {
-    console.log(this.$route.query);
     this.getSightsInfo();
+
   },
 };
 </script>
