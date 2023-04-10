@@ -20,3 +20,9 @@ export function getEditCulDetail(id) {
     method: 'get'
   })
 }
+export function getDraft() {
+  return request({
+    url: '/creativity/getDraft',
+    method: 'get',
+  })
+}

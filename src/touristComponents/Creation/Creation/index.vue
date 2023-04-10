@@ -50,6 +50,10 @@
               <i class="el-icon-chat-line-square"></i>
               <span slot="title">评论管理</span>
             </el-menu-item>
+<!--            <el-menu-item index="/frontHome/Creation/activity">-->
+<!--              <i class="el-icon-chat-line-square"></i>-->
+<!--              <span slot="title">活动中心</span>-->
+<!--            </el-menu-item>-->
             <!--            <el-menu-item-->
             <!--              index="/frontHome/Creation/subscription"-->
             <!--              @click="CreationGoTo()"-->

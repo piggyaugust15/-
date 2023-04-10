@@ -6,6 +6,7 @@
       ref="culCreationForm"
       label-width="100px"
       class="demo-ruleForm"
+      v-loading='loading'
     >
       <el-form-item label="文创标题" prop="culCreativityTitle">
         <el-input v-model="culCreationForm.culCreativityTitle"></el-input>
@@ -26,6 +27,7 @@
       <el-form-item label="文创图片" prop="culCreativityImage">
         <imageUpload v-model="culCreationForm.culCreativityImage" />
       </el-form-item>
+
       <el-form-item label="文创状态" prop="status">
         <el-radio-group v-model="culCreationForm.status">
           <el-radio
@@ -36,6 +38,7 @@
           >
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="文创分类" prop="culCreativityCategory">
         <el-radio-group v-model="culCreationForm.culCreativityCategory">
           <el-radio
@@ -84,6 +87,7 @@ export default {
       }
     };
     return {
+      loading:false,
       culCreationForm: {
         culCreativityTitle: "",
         culCreativityContent: "",
@@ -171,9 +175,11 @@ export default {
   },
   mounted() {
     if (this.$route.query.type === "edit"&&this.$route.query.arg ==="cul") {
+      this.loading=true;
       getEditCulDetail(this.$route.query.id).then((response) => {
         this.culCreationForm = response.data;
         console.log(response);
+        this.loading=false;
       });
     }
   },

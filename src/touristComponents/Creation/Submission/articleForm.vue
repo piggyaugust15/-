@@ -16,6 +16,7 @@
       <el-form-item label="文章封面" prop="articleCover">
         <imageUpload v-model="ruleForm.articleCover" />
       </el-form-item>
+
       <el-form-item label="文章状态" prop="status">
         <el-radio-group v-model="ruleForm.status">
           <el-radio
@@ -26,6 +27,7 @@
           >
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="文章分类" prop="articleCategory">
         <el-radio-group v-model="ruleForm.articleCategory">
           <el-radio

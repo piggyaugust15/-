@@ -179,12 +179,13 @@
       v-loading="loading"
       stripe
       border
+      tooltip-effect="light"
       :data="cul_creativityList"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column
-        label="文创ID"
+        label="ID"
         width="55"
         align="center"
         prop="culCreativityId"
@@ -193,6 +194,7 @@
         label="文创标题"
         align="center"
         prop="culCreativityTitle"
+        :show-overflow-tooltip="true"
       />
       <el-table-column
         label="文创简介"
@@ -204,48 +206,58 @@
         label="文创类别"
         align="center"
         prop="culCreativityCategory"
-      />
-      <el-table-column label="标签" align="center" prop="culCreativityTags" />
-      <el-table-column label="关键字" align="center" prop="culCreativityKey" />
-      <el-table-column label="点赞量" align="center" prop="culCreativityLike" />
+        :show-overflow-tooltip="true"
+      >
+        <template slot-scope="scope">
+          <dict-tag
+              :options="dict.type.cul_creativity_type"
+              :value="scope.row.culCreativityCategory"
+          />
+        </template>
+      </el-table-column>
       <el-table-column
-        label="不喜欢量"
-        align="center"
-        prop="culCreativityDislike"
+          label="标签"
+          align="center"
+          prop="culCreativityTags"
+          :show-overflow-tooltip="true"
+      />
+      <el-table-column
+          label="关键字"
+          align="center"
+          prop="culCreativityKey"
+          :show-overflow-tooltip="true"
+      />
+      <el-table-column
+          label="点赞量"
+          align="center"
+          prop="culCreativityLike"
+          width="100"
       />
       <el-table-column
         label="收藏量"
         align="center"
         prop="culCreativityCollection"
+        width="100"
       />
-      <el-table-column label="点击量" align="center" prop="culCreativityHits" />
-      <el-table-column label="是否删除" align="center" prop="delFlag">
-        <template slot-scope="scope">
-          <dict-tag
-            :options="dict.type.sys_yes_no"
-            :value="scope.row.delFlag"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column label="是否置顶" align="center" prop="topFlag">
-        <template slot-scope="scope">
-          <dict-tag
-            :options="dict.type.sys_yes_no"
-            :value="scope.row.topFlag"
-          />
-        </template>
-      </el-table-column>
-      <el-table-column label="创建者" align="center" prop="createBy" />
       <el-table-column
-        label="创建时间"
-        align="center"
-        prop="createTime"
-        width="180"
+          label="点击量"
+          align="center"
+          prop="culCreativityHits"
+          width="100" />
+      <el-table-column
+          label="审核状态"
+          width="100"
+          align="center"
+          prop="isOk"
       >
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.createTime, "{y}-{m}-{d}") }}</span>
+          <dict-tag
+              :options="dict.type.all_judge_type"
+              :value="scope.row.isOk"
+          />
         </template>
       </el-table-column>
+
       <el-table-column
         label="操作"
         align="center"
@@ -258,7 +270,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:cul_creativity:edit']"
-            >修改</el-button
+            >审核</el-button
           >
           <el-button
             size="mini"
@@ -384,67 +396,100 @@
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="景点ID" prop="sightsId">
-          <el-input v-model="form.sightsId" placeholder="请输入景点ID" />
-        </el-form-item>
-        <el-form-item label="文创标题" prop="culCreativityTitle">
-          <el-input
-            v-model="form.culCreativityTitle"
-            placeholder="请输入文创标题"
-          />
-        </el-form-item>
-        <el-form-item label="文创简介" prop="culCreativityIntro">
-          <el-input
-            v-model="form.culCreativityIntro"
-            placeholder="请输入文创简介"
-          />
-        </el-form-item>
-        <el-form-item label="文创类别" prop="culCreativityCategory">
-          <el-select
-            v-model="form.culCreativityCategory"
-            placeholder="请选择文创类别"
-          >
-            <el-option
-              v-for="dict in dict.type.cul_creativity_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="标签" prop="culCreativityTags">
-          <el-input v-model="form.culCreativityTags" placeholder="请输入标签" />
-        </el-form-item>
-        <el-form-item label="关键字" prop="culCreativityKey">
-          <el-input
-            v-model="form.culCreativityKey"
-            placeholder="请输入关键字"
-          />
-        </el-form-item>
-        <el-form-item label="是否删除" prop="delFlag">
-          <el-select v-model="form.delFlag" placeholder="请选择是否删除">
-            <el-option
-              v-for="dict in dict.type.sys_yes_no"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="是否置顶" prop="topFlag">
-          <el-select v-model="form.topFlag" placeholder="请选择是否置顶">
-            <el-option
-              v-for="dict in dict.type.sys_yes_no"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="文创图片">
-          <imageUpload v-model="form.culCreativityImage" :file-size="10"/>
-        </el-form-item>
+        <el-row>
+          <el-col :span="3">
+            <el-form-item label="景点ID" prop="sightsId">
+              :   {{form.sightsId}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="3">
+            <el-form-item label="用户ID" prop="userId">
+              :   {{form.userId==null?'景点附加':form.userId}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="文创标题" prop="culCreativityTitle">
+              <el-input
+                  v-model="form.culCreativityTitle"
+                  placeholder="请输入文创标题"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="文创类别" prop="culCreativityCategory">
+              <el-select
+                  v-model="form.culCreativityCategory"
+                  placeholder="请选择文创类别"
+              >
+                <el-option
+                    v-for="dict in dict.type.cul_creativity_type"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="是否置顶" prop="topFlag">
+              <el-select v-model="form.topFlag" placeholder="请选择是否置顶">
+                <el-option
+                    v-for="dict in dict.type.sys_yes_no"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="标签" prop="culCreativityTags">
+              <el-input v-model="form.culCreativityTags" placeholder="请输入标签" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="关键字" prop="culCreativityKey">
+              <el-input
+                  v-model="form.culCreativityKey"
+                  placeholder="请输入关键字"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col>
+            <el-form-item label="文创简介" prop="culCreativityIntro">
+              <el-input
+                  v-model="form.culCreativityIntro"
+                  placeholder="请输入文创简介"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col>
+            <el-form-item label="文创内容" prop="culCreativityContent">
+              <editor v-model="form.culCreativityContent" :min-height="192" v-if="form.sightsId!==null"/>
+              {{form.culCreativityContent}}
+            </el-form-item>
+          </el-col>
+          <el-col>
+            <el-form-item label="文创图片">
+              <imageUpload v-model="form.culCreativityImage" :file-size="10"/>
+            </el-form-item>
+          </el-col>
+          <el-col>
+            <el-form-item label ="审核状态" prop="isOk">
+              <el-radio-group v-model="form.isOk">
+                <el-radio
+                    v-for="dict in dict.type.all_judge_type"
+                    :key="dict.value"
+                    :label="dict.value"
+                >{{ dict.label }}</el-radio
+                >
+              </el-radio-group>
+            </el-form-item>
+
+          </el-col>
+        </el-row>
       </el-form>
+
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
@@ -465,7 +510,7 @@ import {
 import { listSights, getSights } from "@/api/sights/sights";
 export default {
   name: "Cul_creativity",
-  dicts: ["sys_yes_no", "cul_creativity_type"],
+  dicts: ["sys_yes_no", "cul_creativity_type","all_judge_type"],
   data() {
     return {
       // 遮罩层
@@ -546,6 +591,7 @@ export default {
     getList() {
       this.loading = true;
       listCul_creativity(this.queryParams).then((response) => {
+        console.log('cul',response)
         this.cul_creativityList = response.rows;
         this.total = response.total;
         this.loading = false;

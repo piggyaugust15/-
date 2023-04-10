@@ -199,6 +199,10 @@ export const constantRoutes = [
         meta: { title: '公告' }
       },
       {
+        path: 'activity',
+        component: (resolve) => require(['@/touristComponents/Activity/index'], resolve),
+      },
+      {
         path: 'articlepage',
         component: (resolve) => require(['@/touristComponents/Article/Articlepage/index'], resolve),
         meta: { title: '文章详情' }
@@ -241,7 +245,6 @@ export const constantRoutes = [
             path: 'convention',
             component: (resolve) => require(['@/touristComponents/Creation/Convention/index'], resolve),
           },
-
         ]
       },
       {

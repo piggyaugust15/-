@@ -428,7 +428,7 @@ li {
     .background {
       position: relative;
       width: 100%;
-      height: 132px;
+      height: 170px;
       background-color: #999999;
       img {
         width: 100%;
@@ -463,6 +463,7 @@ li {
         background-color: #999999;
         border-radius: 10px;
         border: 4px solid #fff;
+        overflow: hidden;
         img {
           width: 100%;
           height: 100%;

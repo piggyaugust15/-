@@ -455,6 +455,7 @@
           colon
           direction="vertical"
         >
+
           <el-descriptions-item>
             <template slot="label">
               <i class="el-icon-user"></i>
@@ -503,6 +504,8 @@
           <div>内容:</div>
           {{ form.commentContent }}
         </el-card>
+
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>

@@ -130,7 +130,9 @@ export default {
         this.creation = {};
         this.attraction = {};
       }
-      this.suggestsearch(this.input);
+      if(this.input.trim()!==''){
+        this.suggestsearch(this.input);
+      }
     },
   },
   methods: {

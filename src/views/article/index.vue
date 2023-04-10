@@ -134,7 +134,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:article:add']"
-          >新增</el-button
+          >批量审核</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -146,7 +146,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:article:edit']"
-          >修改</el-button
+          >审核</el-button
         >
       </el-col>
       <el-col :span="1.5">
@@ -230,7 +230,7 @@
       <el-table-column label="收藏量" align="center" prop="articleCollect" />
       <el-table-column label="审核情况" align="center" prop="isOk">
         <template slot-scope="scope">
-          <dict-tag :options="dict.type.sys_yes_no" :value="scope.row.isOk" />
+          <dict-tag :options="dict.type.all_judge_type" :value="scope.row.isOk" />
         </template>
       </el-table-column>
       <el-table-column label="状态值" align="center" prop="status">
@@ -265,7 +265,7 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:article:edit']"
-            >修改</el-button
+            >审核</el-button
           >
           <el-button
             size="mini"
@@ -295,103 +295,44 @@
       append-to-body
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="文章分类" prop="articleCategory">
-          <el-select
-            v-model="form.articleCategory"
-            placeholder="请选择文章分类"
-          >
-            <el-option
-              v-for="dict in dict.type.article_category"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
+        <el-card shadow="hover">
+          <div>内容:</div>
+          {{ form.articleContent }}
+        </el-card>
+        <el-form-item label="缩略图">
+          <image-preview :src="form.articleCover" :width="100" :height="100"/>
         </el-form-item>
-        <el-form-item label="文章缩略图">
-          <imageUpload v-model="form.articleCover" />
-        </el-form-item>
-        <el-form-item label="文章标题" prop="articleTitle">
-          <el-input v-model="form.articleTitle" placeholder="请输入文章标题" />
-        </el-form-item>
-        <el-form-item label="文章内容">
-          <editor v-model="form.articleContent" :min-height="192" />
-        </el-form-item>
-        <el-form-item label="文章类型" prop="articleType">
-          <el-select v-model="form.articleType" placeholder="请选择文章类型">
-            <el-option
-              v-for="dict in dict.type.article_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="原文链接" prop="originalUrl">
-          <el-input v-model="form.originalUrl" placeholder="请输入原文链接" />
-        </el-form-item>
-        <el-form-item label="点赞数" prop="articleLike">
-          <el-input v-model="form.articleLike" placeholder="请输入点赞数" />
-        </el-form-item>
-        <el-form-item label="浏览量" prop="articleView">
-          <el-input v-model="form.articleView" placeholder="请输入浏览量" />
-        </el-form-item>
-        <el-form-item label="收藏量" prop="articleCollect">
-          <el-input v-model="form.articleCollect" placeholder="请输入收藏量" />
-        </el-form-item>
-        <el-form-item label="是否置顶">
-          <el-radio-group v-model="form.isTop">
-            <el-radio
-              v-for="dict in dict.type.sys_yes_no"
-              :key="dict.value"
-              :label="dict.value"
-              >{{ dict.label }}</el-radio
-            >
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="是否删除">
-          <el-radio-group v-model="form.isDelete">
-            <el-radio
-              v-for="dict in dict.type.sys_yes_no"
-              :key="dict.value"
-              :label="dict.value"
-              >{{ dict.label }}</el-radio
-            >
-          </el-radio-group>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="文章标题" prop="articleTitle">
+              {{form.articleTitle}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="原文链接" prop="originalUrl">
+              {{form.originalUrl===null||""?"原创":form.originalUrl}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="审核者" prop="judgeBy">
+              {{form.judgeBy}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="审核时间" prop="judgeTime">
+              {{form.judgeTime}}
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="审核情况">
           <el-radio-group v-model="form.isOk">
             <el-radio
-              v-for="dict in dict.type.sys_yes_no"
+              v-for="dict in dict.type.all_judge_type"
               :key="dict.value"
               :label="dict.value"
               >{{ dict.label }}</el-radio
             >
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="状态值" prop="status">
-          <el-select v-model="form.status" placeholder="请选择状态值">
-            <el-option
-              v-for="dict in dict.type.article_state"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="审核者" prop="judgeBy">
-          <el-input v-model="form.judgeBy" placeholder="请输入审核者" />
-        </el-form-item>
-        <el-form-item label="审核时间" prop="judgeTime">
-          <el-date-picker
-            clearable
-            size="small"
-            v-model="form.judgeTime"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="选择审核时间"
-          >
-          </el-date-picker>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -413,7 +354,7 @@ import {
 
 export default {
   name: "Article",
-  dicts: ["article_type", "article_state", "article_category", "sys_yes_no"],
+  dicts: ["article_type", "article_state", "article_category", "all_judge_type","sys_yes_no"],
   data() {
     return {
       // 遮罩层

@@ -53,7 +53,7 @@
 import { deleteManuscript } from "@/api/cul/cul";
 import deletePopover from "../deletePopover/index";
 import { getCulByWays } from "@/api/cul/cul.js";
-import { getDraft } from "@/api/article/article.js";
+import { getDraft } from "@/api/cul/cul.js";
 export default {
   data() {
     return {

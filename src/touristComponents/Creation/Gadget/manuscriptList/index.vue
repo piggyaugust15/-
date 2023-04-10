@@ -7,7 +7,7 @@
     <ul v-else>
       <li v-for="(item, index) in List" :key="index">
         <div class="img">
-          <img :src="$store.state.front.url + item.articleCover" alt="" />
+          <img :src="$store.state.front.url + item.articleCover.split(',')[0]" alt="" />
         </div>
         <div class="rightbox">
           <span class="title">
