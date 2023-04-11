@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      title: '丝路荟萃管理系统',
+      title: '丝路畅行旅游平台',
       logo: logoImg
     }
   }

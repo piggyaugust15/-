@@ -129,7 +129,7 @@
       <el-table-column label="餐馆名称" align="center" prop="restaurantName" />
       <el-table-column
         label="餐馆简介"
-        show-overflow-tooltip="true"
+        :show-overflow-tooltip="true"
         align="center"
         prop="restaurantIntro"
       />

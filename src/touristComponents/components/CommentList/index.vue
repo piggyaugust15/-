@@ -138,7 +138,6 @@
           </div>
         </li>
       </div>
-
       <el-empty description="暂无回复哦^-^" v-else></el-empty>
     </el-dialog>
   </div>
@@ -275,6 +274,7 @@ li {
 }
 #CommentList {
   padding-top: 30px;
+  padding-bottom: 30px;
   width: 100%;
   .Commentli {
     width: 100%;

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
-      <h3>我们的优质品牌合作伙伴</h3>
+      <h3>我们的预期品牌合作伙伴</h3>
     </div>
     <div class="piclist">
       <li v-for="(item, index) in list" :key="index">
@@ -76,7 +76,7 @@ li {
       .pic {
         width: 160px;
         height: 160px;
-        border: 1px solid #a1a1a1;
+        //border: 1px solid #a1a1a1;
         img {
           display: block;
           width: 100%;
@@ -85,6 +85,7 @@ li {
         }
       }
       .text {
+        max-width: 160px;
         margin-top: 15px;
         text-align: center;
         font-family: "Noto Serif SC", serif !important;

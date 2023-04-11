@@ -49,6 +49,8 @@
                     <li @click="gotonextpage('hotel')">酒店</li>
                   </ul>
                   <div class="ticket" @click="centerDialogVisible=true">购买门票</div>
+                  <div style="width: 100px;height: 100px;"><audio :voice="'Iamapig'"></audio></div>
+<!--                  <div><Speak :voice="'我是朱'" ></Speak></div>-->
                 </div>
               </div>
               <el-button
@@ -95,7 +97,7 @@
                   <el-tab-pane label="智能排序">
                     <CommentList :type="0"></CommentList>
                   </el-tab-pane>
-                  <el-tab-pane label="时间排序">时间排序</el-tab-pane>
+<!--                  <el-tab-pane label="时间排序">时间排序</el-tab-pane>-->
                 </el-tabs>
               </div>
             </div>
@@ -157,7 +159,6 @@
           <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
         </span>
       </el-dialog>
-
     </div>
   </div>
 </template>
@@ -173,13 +174,17 @@ import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
 import AttractionCommentDiv from "@/touristComponents/components/AttractionCommentDiv";
 import {addview,hit,fav} from '@/api/hot/hotSights'
+import Audio from "@/components/Speak";
+
 export default {
   name: "Attractionspage",
   data() {
     return {
       BuyVisible:false,
       centerDialogVisible:false,
-      sights: {},
+      sights: {
+        sightsCode:''
+      },
       fav: {
         active: "el-icon-star-off",
         isactive: 0,
@@ -198,7 +203,8 @@ export default {
     RecommendList,
     // Comment,
     CommentDiv,
-    CommentList,AttractionCommentDiv
+    CommentList,
+    AttractionCommentDiv,Audio
   },
   watch:{
     $route(to, from,next) {
@@ -244,7 +250,7 @@ export default {
           });
           break;
         case "hotel":
-          this.$router.push({ path: "/frontHome/attraction/hotel" });
+          this.$router.push({ path: "/frontHome/attraction/hotel" ,query:{id:this.$route.query.id}});
           break;
       }
     },
@@ -452,6 +458,7 @@ export default {
   }
   .mainText {
     margin-top: 20px;
+    padding-bottom: 30px;
     .left_box {
       display: inline-block;
       width: 70%;

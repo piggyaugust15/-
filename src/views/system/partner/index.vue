@@ -316,15 +316,15 @@ export default {
         pertnerLogo: [
           { required: true, message: "伙伴logo不能为空", trigger: "blur" },
         ],
-        cooperationBegin: [
-          { required: true, message: "合作开始时间不能为空", trigger: "blur" },
-        ],
-        cooperationEnd: [
-          { required: true, message: "合作结束时间不能为空", trigger: "blur" },
-        ],
-        cooperationDocument: [
-          { required: true, message: "合作文档不能为空", trigger: "blur" },
-        ],
+        // cooperationBegin: [
+        //   { required: false, message: "合作开始时间不能为空", trigger: "blur" },
+        // ],
+        // cooperationEnd: [
+        //   { required: false, message: "合作结束时间不能为空", trigger: "blur" },
+        // ],
+        // cooperationDocument: [
+        //   { required: false, message: "合作文档不能为空", trigger: "blur" },
+        // ],
       },
     };
   },

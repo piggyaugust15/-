@@ -2,7 +2,7 @@
   <div id="Header" :class="{ isHide: isHide }">
     <div class="header">
       <div class="logo">
-        <img src="@/assets/images/Logo3.png" alt="" />
+        <img src="@/assets/images/Logo5.png" alt="" />
       </div>
       <div class="nav_div">
         <router-link to="/frontHome/home">主页</router-link>
@@ -16,6 +16,7 @@
           >公告</router-link
         >
         <router-link to="/frontHome/map">地图</router-link>
+        <Speak :voice="'陈昭燃是徐州皇帝，一统天下'"></Speak>
       </div>
       <div class="search" v-if="this.$route.path != '/frontHome/home'">
         <Search></Search>
@@ -85,7 +86,7 @@
 import Drawer from "@/touristComponents/Drawer";
 import InfoDrawer from "@/touristComponents/InfoDrawer";
 import Search from "@/touristComponents/Search";
-import Audio from "@/components/Audio";
+import Speak from "@/components/Speak";
 export default {
   name: "Header",
   data() {
@@ -153,7 +154,7 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
 
-  components: { Drawer, Search, InfoDrawer,Audio },
+  components: { Drawer, Search, InfoDrawer,Speak },
 };
 </script>
 <style lang="scss" scoped>

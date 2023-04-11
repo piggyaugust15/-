@@ -1,5 +1,9 @@
 <template>
-  <div id="subscription" style="overflow:auto" v-infinite-scroll="getSubscriptionList" class="infinite-list">
+  <div id="subscription"
+       style="overflow:auto"
+       v-infinite-scroll="getSubscriptionList"
+       :infinite-scroll-immediate="false"
+       class="infinite-list">
     <div class="left">
       <div class="profile">
         <div class="background">
@@ -73,7 +77,11 @@
             </div>
           </div>
         </li>
+        <li v-if="!flag" >
+          <div style="width: 100%;text-align: center;display: block;color: #a3a8ad">没有更多了</div>
+        </li>
       </ul>
+
       <div class="empty" v-else>
         <ul>
           <li><el-empty description="暂时没有订阅哦" ></el-empty></li>
@@ -111,8 +119,10 @@ export default {
   data() {
     return {
       loading:true,
-      count: 0,
       pageNum:1,
+      pageSize:5,
+      disabled:false,
+      flag:true,
       user:{
         visitor:{
 
@@ -140,27 +150,29 @@ export default {
     };
   },
   methods: {
-    load () {
-      this.count += 2
-    },
     gotoCulcreation(id) {
       this.$router.push({ path: "/frontHome/culcreation" ,query:{id:id}});
     },
     getSubscriptionInfo(){
       getSubscriptionInfo().then((res)=>{
         this.user=res.data;
-        console.log(res)
       })
     },
     getSubscriptionList(){
+      if (this.flag){
+        getSubscriptionList({pageSize:this.pageSize,pageNum:this.pageNum}).then((res)=>{
+          if (res.rows.length < this.pageSize){
+            this.flag=false
+            this.loading=false;
+            this.subscriptionList=this.subscriptionList.concat(res.rows)
+            return;
+          }
+          this.loading=false;
+          this.subscriptionList=this.subscriptionList.concat(res.rows)
+          this.pageNum ++;
+        })
+      }
 
-      console.log(this.pageNum)
-      getSubscriptionList({pageSize:5,pageNum:this.pageNum}).then((res)=>{
-        console.log('123',res)
-        this.subscriptionList=this.subscriptionList.concat(res.rows)
-        this.pageNum++;
-        this.loading=false;
-      })
     },
   },
   watch: {
@@ -170,7 +182,7 @@ export default {
   },
   mounted(){
     this.getSubscriptionInfo();
-    this.getSubscriptionList()
+    // this.getSubscriptionList()
   },
 };
 </script>
@@ -370,7 +382,7 @@ li {
   }
   .subcriptionList {
     //width: 630px;
-    padding: 0px 10px 0px 10px;
+    padding: 0px 10px 30px 10px;
     ul {
       //overflow:visible;
       height: calc(100% - 70px);

@@ -148,7 +148,7 @@
       <el-table-column label="酒店电话" align="center" prop="hotelHotline" />
       <el-table-column label="酒店管理" align="center" prop="hotelManager" />
       <el-table-column label="酒店地址" align="center" prop="hotelAddress" />
-      <el-table-column label="酒店简介" align="center" prop="hotelIntro" />
+      <el-table-column label="酒店简介" align="center" prop="hotelIntro" :show-overflow-tooltip="true"/>
       <el-table-column
         label="点评均分"
         align="center"

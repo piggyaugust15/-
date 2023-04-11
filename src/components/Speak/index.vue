@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="speak">
 <!--    <el-button-->
 <!--    type="success"-->
 <!--    class="el-icon-microphone"-->
@@ -121,5 +121,13 @@
 
   }
 </script>
+<style lang="scss" scoped>
+#speak{
+  display: block !important;
+  background-color: red;
+  width: 100%;
+  height: 100%;
+}
+</style>
 
 

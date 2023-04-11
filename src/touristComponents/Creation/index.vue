@@ -21,7 +21,7 @@
             <ul>
               <li v-for="(item, index) in activityList" :key="index">
                 <div class="circle"></div>
-                <span class="name">{{ item.activityTitle }}</span>
+                <span class="name" @click="gotoActivity(item.activityId)">{{ item.activityTitle }}</span>
                 <img src="@/assets/images/hot.png" alt="" />
                 <div class="takepart"><img src="@/assets/images/fire.png" alt="">{{item.activityHot}}</div>
               </li>
@@ -71,41 +71,41 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-    <div class="bottom">
-      <div class="title">
-        <h3>评论</h3>
-        <div class="more">
-          <router-link to="/frontHome/Creation/comment"
-            >更多<i class="el-icon-arrow-right"></i
-          ></router-link>
-        </div>
-      </div>
-      <div class="commentDiv">
-        <ul>
-          <li v-for="(item, index) in commentList" :key="index">
-            <div class="leftbox"><img :src="item.avatar" alt="" /></div>
-            <div class="rightbox">
-              <span class="name">{{ item.name }} · </span>
-              <span class="time">{{ item.time }}</span>
-              <span class="content">{{ item.content }}</span>
-              <span
-                class="thumbsUp"
-                @click="handleThumbsUp(item)"
-                :class="[{ hasThumbup: item.ifThumb }]"
-                ><i class="el-icon-thumb" aria-hidden="true"></i
-                >{{ item.thumbsUp }}</span
-              >
-              <span class="reply"
-                ><i class="el-icon-chat-dot-round" aria-hidden="true"></i
-                >回复</span
-              >
-              <div class="line"></div>
-              <span class="source">来源 : {{ item.source }}</span>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
+<!--    <div class="bottom">-->
+<!--      <div class="title">-->
+<!--        <h3>评论</h3>-->
+<!--        <div class="more">-->
+<!--          <router-link to="/frontHome/Creation/comment"-->
+<!--            >更多<i class="el-icon-arrow-right"></i-->
+<!--          ></router-link>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="commentDiv">-->
+<!--        <ul>-->
+<!--          <li v-for="(item, index) in commentList" :key="index">-->
+<!--            <div class="leftbox"><img :src="item.avatar" alt="" /></div>-->
+<!--            <div class="rightbox">-->
+<!--              <span class="name">{{ item.name }} · </span>-->
+<!--              <span class="time">{{ item.time }}</span>-->
+<!--              <span class="content">{{ item.content }}</span>-->
+<!--              <span-->
+<!--                class="thumbsUp"-->
+<!--                @click="handleThumbsUp(item)"-->
+<!--                :class="[{ hasThumbup: item.ifThumb }]"-->
+<!--                ><i class="el-icon-thumb" aria-hidden="true"></i-->
+<!--                >{{ item.thumbsUp }}</span-->
+<!--              >-->
+<!--              <span class="reply"-->
+<!--                ><i class="el-icon-chat-dot-round" aria-hidden="true"></i-->
+<!--                >回复</span-->
+<!--              >-->
+<!--              <div class="line"></div>-->
+<!--              <span class="source">来源 : {{ item.source }}</span>-->
+<!--            </div>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
 </template>
 
@@ -119,12 +119,12 @@ export default {
       carouselList: [],
       activityList: [],
       manuscriptTagList: [
-        { name: "浏览量", icon: "fa fa-eye ", number: 1 },
+        // { name: "浏览量", icon: "fa fa-eye ", number: 354 },
         { name: "评论", icon: "fa fa-comment", number: 122 },
         { name: "收藏", icon: "fa fa-star", number: 16 },
-        { name: "点赞", icon: "fa fa-thumbs-up", number: 1 },
-        { name: "1", icon: "", number: 0 },
-        { name: "1", icon: "", number: 0 },
+        { name: "点赞", icon: "fa fa-thumbs-up", number: 22 },
+        // { name: "1", icon: "", number: 0 },
+        // { name: "1", icon: "", number: 0 },
       ],
       commentList: [
         {
@@ -329,6 +329,10 @@ li {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
+            cursor: pointer;
+            &:hover{
+              color: #00a1d6;
+            }
           }
           .takepart {
             position: absolute;

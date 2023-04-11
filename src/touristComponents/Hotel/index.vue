@@ -7,24 +7,23 @@
           <template v-slot:English>Hotel</template>
         </ComponentTitle>
       </el-header>
-      <el-main>
-        <ul>
+      <el-main v-loading="loading">
+        <ul v-if="HotelList.length>0">
           <li
-            v-for="(item, index) in FoodList"
+            v-for="(item, index) in HotelList"
             :key="index"
-            @click="gotoFoodDetail()"
             class="mainli"
           >
             <div class="leftbox">
-              <img :src="item.src" alt="" />
+              <img :src="$store.state.front.url+item.hotelPhoto.split(',')[0]" alt="" />
             </div>
             <div class="rightbox">
-              <span class="title">{{ item.name }}</span>
-              <span class="eng">{{ item.eng }}</span>
+              <span class="title">{{ item.hotelName }}</span>
               <span class="location"
                 ><i class="el-icon-location-outline"></i> 位于:
-                {{ item.location }}</span
+                {{ item.hotelAddress }}</span
               >
+              <span class="intro">{{ item.hotelIntro }}</span>
             </div>
             <div class="otherbox">
               <ul class="otherul">
@@ -53,6 +52,10 @@
             </div>
           </li>
         </ul>
+        <el-empty
+            description="暂时还没有酒店哦(''▔□▔)"
+            v-else
+        ></el-empty>
       </el-main>
     </div>
   </div>
@@ -60,20 +63,31 @@
 
 <script>
 import ComponentTitle from "@/touristComponents/components/ComponentsTitle";
+import {getHotelList} from '@/api/hotel/hotel.js'
 export default {
   data() {
     return {
-      FoodList: [
+      loading:true,
+      HotelList: [
         {
-          name: "东急涩谷卓越大酒店",
-          eng: "Shibuya Excel Hotel Tokyu",
-          location: "涩谷/原宿",
-          src: "https://hotel.mafengwo.net/mfs/s10/M00/BE/F4/wKgBZ1mIcoSAS8sLAAESSdsoM_w77.jpeg?imageMogr2%2Fthumbnail%2F%21660x480r%2Fgravity%2FCenter%2Fcrop%2F%21660x480%2Fquality%2F90",
+          hotelPhoto:''
         },
       ],
     };
   },
   components: { ComponentTitle },
+  methods:{
+    getHotelList(){
+      getHotelList(this.$route.query.id).then((res)=>{
+        this.HotelList=res.rows
+        console.log(res)
+        this.loading=false;
+      })
+    }
+  },
+  mounted(){
+    this.getHotelList()
+  }
 };
 </script>
 
@@ -82,7 +96,7 @@ li {
   list-style: none;
 }
 #hotel {
-  padding-top: 60px;
+  padding-top: 80px;
   background: #f6f6f6;
   min-height: 100%;
   .main {
@@ -123,9 +137,12 @@ li {
             font-size: 23px;
             // font-weight: 700;
           }
-          .eng {
-            font-size: 18px;
+          .intro {
+            display: block;
+            max-width: 600px;
+            font-size: 15px;
             padding-bottom: 5px;
+            margin-top: 15px;
           }
           .location {
             font-size: 15px;

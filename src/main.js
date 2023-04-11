@@ -21,7 +21,7 @@ import 'vue-awesome/icons/chart-area'
 import 'vue-awesome/icons/chart-pie'
 import 'vue-awesome/icons/chart-line'
 import 'vue-awesome/icons/align-left'
-
+import Speak from "@/components/Speak";
 
 import { download } from '@/utils/request'
 
@@ -56,6 +56,7 @@ import VueAxios from 'vue-axios'
 import BaiduMap from 'vue-baidu-map'
 Vue.use(VueAxios, axios)
 Vue.use(mavonEditor);
+Vue.use(Speak)
 // 全局方法挂载
 Vue.prototype.getDicts = getDicts
 Vue.prototype.getConfigKey = getConfigKey

@@ -6,7 +6,7 @@
       <router-view />
     </transition>
     <!-- <div>
-      <Audio voice="我是你大爷" :volume="5" />
+      <Speak voice="我是你大爷" :volume="5" />
     </div> -->
     <!-- <div>
       <Bottom />
@@ -17,7 +17,7 @@
 <script>
 import Bottom from "./components/Bottom";
 import Header from "./components/Header";
-import Audio from "../components/Audio";
+import Audio from "../components/Speak";
 
 export default {
   components: {

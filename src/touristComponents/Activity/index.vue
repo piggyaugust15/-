@@ -26,7 +26,7 @@
                 <img src="https://pic1.zhimg.com/v2-6ee5e80794a4e408363158d60d872a2c.jpg?source=32738c0c" alt="">
               </div>
               <div class="content">
-                <span class="name">知乎时尚</span>
+                <span class="name">明天会更好</span>
                 <span class="intro">intro</span>
               </div>
             </div>
@@ -44,7 +44,9 @@ export default {
   name: "index",
   data(){
     return{
-      data:{}
+      data:{
+        activityImage:''
+      }
     }
   },
   methods:{
