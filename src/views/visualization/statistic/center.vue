@@ -63,7 +63,7 @@
           {
             title: '今日累计发布',
             number: {
-              number: [],
+              number: [1],
               toFixed: 1,
               textAlign: 'center',
               content: '{nt}',
@@ -75,7 +75,7 @@
           {
             title: '本月累计发布',
             number: {
-              number: [],
+              number: [10],
               toFixed: 1,
               textAlign: 'center',
               content: '{nt}',
@@ -87,7 +87,7 @@
           {
             title: '今年累计发布',
             number: {
-              number: [],
+              number: [36],
               toFixed: 1,
               textAlign: 'center',
               content: '{nt}',
@@ -99,7 +99,7 @@
           {
             title: '今年总驳回',
             number: {
-              number: [],
+              number: [3],
               toFixed: 1,
               textAlign: 'center',
               content: '{nt}',
@@ -111,7 +111,7 @@
           {
             title: '今年总通过',
             number: {
-              number: [],
+              number: [33],
               toFixed: 1,
               textAlign: 'center',
               content: '{nt}',
@@ -123,7 +123,7 @@
           {
             title: '在线用户人数',
             number: {
-              number: [],
+              number: [1],
               toFixed: 1,
               textAlign: 'center',
               content: '{nt}',
@@ -265,7 +265,7 @@
       }
     },
     mounted() {
-      this.Time()
+      // this.Time()
       // this.getData();
       // this.getData();
       // this.getMedium();

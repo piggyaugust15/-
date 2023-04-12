@@ -31,11 +31,25 @@ module.exports = {
     port: port,
     open: true,
     proxy: {
-
+      '/baidu_translate':{
+        target:'http://api.fanyi.baidu.com/api/trans/vip/translate',
+        changeOrigin: true,
+        pathRewrite:{
+          '^/baidu_translate':''
+        },
+        secure:false,
+      },
+      // '/baiduApi': {
+      //   target: 'https://aip.baidubce.com', //访问地址
+      //   changeOrigin: true,
+      //   secure: false, //只有代理https 地址需要次选项
+      //   pathRewrite: {
+      //     '^/baiduApi': ''
+      //   }
+      // },
       // detail: https://cli.vuejs.org/config/#devserver-proxy
-
       [process.env.VUE_APP_BASE_API]: {
-        target: `http://192.168.1.106:8080`,
+        target: `http://192.168.1.103:8080`,
         changeOrigin: true,
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''

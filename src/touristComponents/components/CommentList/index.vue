@@ -213,7 +213,6 @@ export default {
     },
     getInfo() {
       getParentComment(this.request).then((response) => {
-        console.log('data',response);
         this.total = response.total;
         response.rows.map((item, index) => {
           this.list.push(Object.assign({}, item, { content: "" }));
@@ -223,7 +222,6 @@ export default {
     opendialog(item) {
       this.dialogVisible = true;
       getSecondComment(item.commentId).then((response) => {
-        console.log(response);
         this.secondComment = response.rows;
         this.dialogLoading = false;
       });
@@ -251,14 +249,10 @@ export default {
       setTimeout(() => {
         _this.secondComment = {};
       }, 500);
-    },haha(){
-      var emoji = require('emoji');
-      console.log('😎', emoji.unifiedToHTML('😎'));
-    }
+    },
   },
   mounted() {
     this.getInfo();
-    this.haha();
   },
   beforeDestroy() {
     window.removeEventListener("click", () => {}, true);

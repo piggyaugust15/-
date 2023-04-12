@@ -2,7 +2,7 @@
   <div id="main">
     <div class="block">
       <div class="search">
-        <h3>与《丝路荟萃》一起发现更多美好的文旅体验</h3>
+        <h3>与《丝路畅行》一起发现更多美好的文旅体验</h3>
         <el-popover
           placement="bottom"
           width="600"
@@ -27,6 +27,7 @@
               @click="clearInput()"
             ></i>
           </div>
+<!--          <Speak :voice="'陈昭燃是徐州皇帝，一统天下'"></Speak>-->
           <div class="searchbox">
             <div class="title tagbox">
               <div>{{ title }}</div>
@@ -116,6 +117,7 @@
 <script>
 import { getDyTypeset } from "@/api/system/typeset";
 import {hotSearch, searchSights} from "@/api/search/search.js";
+import Speak from "@/components/Speak";
 export default {
   data() {
     return {
@@ -220,6 +222,7 @@ export default {
       this.Images = response.data[0].typesetImage.split(",");
     });
   },
+  components:{Speak}
 };
 </script>
 <style lang="scss">

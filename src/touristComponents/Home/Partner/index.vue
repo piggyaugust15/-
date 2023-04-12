@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
-      <h3>我们的预期品牌合作伙伴</h3>
+      <h3>预期品牌合作伙伴</h3>
     </div>
     <div class="piclist">
       <li v-for="(item, index) in list" :key="index">

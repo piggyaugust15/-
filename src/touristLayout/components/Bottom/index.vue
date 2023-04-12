@@ -37,7 +37,7 @@
     </div>
     <div class="logobox">
       <div>
-        <img src="@/assets/images/Logo5.png" alt="">
+        <img src="@/assets/images/LogoGreen.png" alt="">
       </div>
 <!--      <router-link to="/Home">Silk Road Collection</router-link>-->
       <div class="rights">Copyright © 2023 Travelling On the Silk Road All Rights Reserved</div>

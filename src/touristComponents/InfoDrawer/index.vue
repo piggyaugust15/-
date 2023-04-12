@@ -146,7 +146,7 @@
                       <span class="favtime">收藏于 {{  parseTime(item.createTime,'{y}-{m}-{d} {h}:{i}')  }}</span>
                     </div>
                   </li>
-                  <span v-if="favCul.length == 0" class="noTip"
+                  <span v-if="favArticle.length == 0" class="noTip"
                   >暂无收藏哦</span
                   >
                 </ul>

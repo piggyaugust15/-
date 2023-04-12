@@ -36,6 +36,7 @@
         <div class="content markdown-body" v-html="info.articleContent" ></div>
         <CommentDiv :type="2"></CommentDiv>
         <CommentList :type="2"></CommentList>
+        <div class="speak"><Speak :voice=speakInfo :lang="speakTTS"></Speak></div>
       </div>
       <div class="profile">
         <div class="about">
@@ -119,6 +120,8 @@ import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
 import {marked} from 'marked'
 import {fav} from "@/api/hot/hotSights";
+import Speak from "@/components/Speak";
+import {paraTranslate} from '@/api/system/translate'
 export default {
   dicts: ["article_state", "article_type", "article_category"],
   data() {
@@ -135,6 +138,8 @@ export default {
       loading: true,
       textarea: "",
       showDialog: false,
+      speakTTS:'zh-CN',
+      speakInfo:'',
     };
   },
   methods: {
@@ -232,6 +237,20 @@ export default {
         this.$modal.msgSuccess(response.msg);
       });
     },
+    paraTranslate(){
+      paraTranslate(2,this.$route.query.id,0).then((res)=>{
+        this.info.articleContent=res.data.articleContentOUT;
+        this.speakInfo=res.data.articleContentOUT;
+        this.speakTTS=res.data.speakTTS;
+        console.log(this.speakTTS)
+        console.log('lang',res)
+      })
+    }
+  },
+  watch:{
+    '$store.state.front.lang'(){
+      this.paraTranslate();
+    }
   },
   mounted() {
     //this.$route.query.id
@@ -251,13 +270,13 @@ export default {
         addArticleViewByAnonymous(this.info.articleId);
       }
     });
-
     window.addEventListener("scroll", this.handleScroll);
-    if (
-      this.$route.path == "/Attractionspage" ||
-      this.$route.path == "/Attractionspage"
-    ) {
-    }
+    this.paraTranslate();
+    // if (
+    //   this.$route.path == "/Attractionspage" ||
+    //   this.$route.path == "/Attractionspage"
+    // ) {
+    // }
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.handleScroll);
@@ -266,6 +285,7 @@ export default {
     VEmojiPicker,
     CommentDiv,
     CommentList,
+    Speak
   },
 };
 </script>
@@ -285,6 +305,7 @@ li {
     display: flex;
     padding: 10px;
     .text {
+      position: relative;
       padding: 10px;
       width: 1000px;
       // background-color: yellow;
@@ -441,6 +462,11 @@ li {
             }
           }
         }
+      }
+      .speak{
+        position: absolute;
+        right: 40px;
+        top: 10px;
       }
     }
     .profile {

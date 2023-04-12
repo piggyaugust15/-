@@ -25,9 +25,19 @@
                 <h1>{{ sights.sightsName }}</h1>
                 <span class="translation">{{ sights.sightsEng }}</span>
                 <div class="rating">
-                  <span>{{ sights.sightsScore }}</span
+                  <span class="score">{{ sights.sightsScore }}</span
                   >/5分&nbsp;&nbsp;&nbsp;
-                  <p @click="gotoComment()">{{ sights.commentNum }}条点评 ></p>
+                  <div style="margin-top: 10px;" class="myrating">
+                    我的评分：<el-rate
+                      v-model="value"
+                      :colors="colors"
+                      show-text
+                      :texts="texts"
+                  @change="scoreChange">
+                  </el-rate>
+<!--                    <span v-if="sights.score===-1"  class="myrating" @click="ratingVisible=true">暂未评分</span>-->
+<!--                    <span v-else  class="myrating"  @click="ratingVisible=true">{{ sights.score }}</span>-->
+                  </div>
                   <table
                     style="border-collapse: separate; border-spacing: 0px 20px"
                   >
@@ -49,8 +59,7 @@
                     <li @click="gotonextpage('hotel')">酒店</li>
                   </ul>
                   <div class="ticket" @click="centerDialogVisible=true">购买门票</div>
-                  <div style="width: 100px;height: 100px;"><audio :voice="'Iamapig'"></audio></div>
-<!--                  <div><Speak :voice="'我是朱'" ></Speak></div>-->
+                  <div class="speak"><Speak :voice=speakInfo :lang="speakTTS"></Speak></div>
                 </div>
               </div>
               <el-button
@@ -82,7 +91,7 @@
               <div class="mainBody">
                 <div class="para">
                   <h1>介绍</h1>
-                  <div class="info" v-html="sights.sightsIntro"></div>
+                  <div class="info" v-html="sights.sightsDetail"></div>
                 </div>
                 <div class="para">
                   <h1>必看贴士</h1>
@@ -159,13 +168,26 @@
           <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
         </span>
       </el-dialog>
+      <el-dialog
+          title="评分"
+          :visible.sync="ratingVisible"
+          width="500px"
+          center>
+        <div class="block" style="text-align: center">
+<!--          <span class="demonstration">我的评分</span>-->
+
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="ratingVisible = false">取 消</el-button>
+          <el-button type="primary" @click="handleScore">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
 import Crumbs from "../../New/Crumbs";
-// import Comment from "../../components/Comment";
 import ComponentTitle from "../../components/ComponentsTitle";
 import RecommendList from "../../components/RecommendList";
 import Maintext from "../../New/Maintext";
@@ -173,15 +195,22 @@ import { getSights, getSightsInfo } from "@/api/sights/sights.js";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
 import AttractionCommentDiv from "@/touristComponents/components/AttractionCommentDiv";
-import {addview,hit,fav} from '@/api/hot/hotSights'
-import Audio from "@/components/Speak";
+import {addview,hit,fav,score} from '@/api/hot/hotSights'
+import {paraTranslate} from '@/api/system/translate'
+import Speak from "@/components/Speak";
 
 export default {
   name: "Attractionspage",
   data() {
     return {
+      speakTTS:'zh-CN',
+      speakInfo:'',
+      texts:['1分', '2分', '3分', '4分', '5分'],
+      value: null,
+      colors: ['#99A9BF', '#F7BA2A', '#FF9900'],
       BuyVisible:false,
       centerDialogVisible:false,
+      ratingVisible:false,
       sights: {
         sightsCode:''
       },
@@ -204,11 +233,14 @@ export default {
     // Comment,
     CommentDiv,
     CommentList,
-    AttractionCommentDiv,Audio
+    AttractionCommentDiv,Speak
   },
   watch:{
     $route(to, from,next) {
       this.getSightsInfo();
+    },
+    '$store.state.front.lang'(){
+      this.paraTranslate();
     }
   },
   methods: {
@@ -236,10 +268,20 @@ export default {
       this.BuyVisible=true;
       console.log(tab, event);
     },
-    gotoComment() {
-      document.querySelector("#Comment").scrollIntoView({
-        behavior: "smooth",
-      });
+    scoreChange(){
+      this.handleScore();
+    },
+    handleScore(){
+      this.sights.score=this.value;
+      score(this.$route.query.id,this.value).then((res)=>{
+        this.$message.success(res.msg);
+      })
+    },
+    handleScoreClose(){
+      if(this.sights.score!==-1){
+        this.value=this.sights.score
+      }
+      this.ratingVisible = false;
     },
     gotonextpage(item, value) {
       switch (item) {
@@ -258,21 +300,29 @@ export default {
       getSightsInfo(this.$route.query.id).then((response) => {
         addview(this.$route.query.id);
         hit(this.$route.query.id);
-        console.log('attra',response)
         this.sights = response.data;
+        if(this.sights.score!==-1){
+          this.value=this.sights.score
+        }
         this.imgList = this.sights.sightsImage.split(",");
         if(this.sights.ifCollect){
           this.fav.active = "el-icon-star-on";
         }
       });
+    },
+    paraTranslate(){
+      paraTranslate(0,this.$route.query.id,0).then((res)=>{
+        this.sights.sightsDetail=res.data.sightsDetailOUT;;
+        this.speakInfo=res.data.sightsDetailOUT;
+        this.speakTTS=res.data.speakTTS;
+        console.log(this.speakTTS)
+        console.log('lang',res)
+      })
     }
-  },
-  created() {
-
   },
   mounted() {
     this.getSightsInfo();
-
+    this.paraTranslate();
   },
 };
 </script>
@@ -403,7 +453,11 @@ export default {
     }
     .mainBody {
       padding-left: 20px;
-
+      .speak{
+        position: absolute;
+        top: 0;
+        right: 70px;
+      }
       .rating {
         margin-top: 10px;
         p {
@@ -417,7 +471,11 @@ export default {
         .leftTag {
           font-weight: 700;
         }
-        span {
+        .myrating{
+          display: flex;
+          align-items: center;
+        }
+        .score{
           font-size: 26px;
           font-weight: 700;
           color: #349eff;

@@ -141,8 +141,12 @@ li {
             display: block;
             max-width: 600px;
             font-size: 15px;
-            padding-bottom: 5px;
+            padding-bottom: 0px;
             margin-top: 15px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 7;
+            overflow: hidden;
           }
           .location {
             font-size: 15px;

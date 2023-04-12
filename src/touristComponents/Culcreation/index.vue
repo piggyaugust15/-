@@ -14,6 +14,16 @@
           <p class="info">
             {{ info.culCreativityIntro }}
           </p>
+          <div v-if="this.info">
+            <div class="fav" v-if="this.info.culCreativityCollection">
+              <img  src="@/assets/images/fav-on.svg" alt="" @click="handleFav">
+              <span v-if="this.info.culCreativityCollection">已收藏</span>
+            </div>
+            <div class="fav" v-else>
+              <img src="@/assets/images/fav-off.svg" alt="" @click="handleFav">
+              <span>加入收藏</span>
+            </div>
+          </div>
         </div>
         <div class="text">
           <h2 class="productiontitle">关于</h2>
@@ -21,6 +31,7 @@
             {{info.culCreativityContent}}
           </p>
         </div>
+        <div class="speak"><Speak :voice=speakInfo :lang="speakTTS"></Speak></div>
         <CommentDiv :type="1"></CommentDiv>
         <CommentList :type="1"></CommentList>
       </div>
@@ -35,12 +46,17 @@
 <script>
 import { VEmojiPicker } from "v-emoji-picker";
 import CommentList from "@/touristComponents/components/CommentList";
-import { getCuldetail } from "@/api/sights/cul_creativity.js";
+import { getCuldetail,culViewByUser,culFav } from "@/api/sights/cul_creativity.js";
 import { submitComment } from "@/api/system/comment.js";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
+import Speak from "@/components/Speak";
+import {paraTranslate} from "@/api/system/translate";
 export default {
   data() {
     return {
+      fav:'@/assets/images/fav-off.svg',
+      speakTTS:'zh-CN',
+      speakInfo:'',
       info: {},
       loading: true,
       showDialog: false,
@@ -54,7 +70,18 @@ export default {
       },
     };
   },
+  watch:{
+    '$store.state.front.lang'(){
+      this.paraTranslate();
+    }
+  },
   methods: {
+    handleFav(){
+      culFav(this.$route.query.id).then((res)=>{
+        this.info.culCreativityCollection=!this.info.culCreativityCollection
+        this.$message.success(res.msg);
+      })
+    },
     handleThumbsUp(item) {
       if (!item.ifThumb) {
         item.thumbsUp++;
@@ -108,18 +135,30 @@ export default {
         objectId: "",
       };
     },
+    paraTranslate(){
+      paraTranslate(1,this.$route.query.id,1).then((res)=>{
+        this.info.culCreativityContent=res.data.culCreativityContentOUT;
+        this.speakInfo=res.data.culCreativityContentOUT;
+        this.speakTTS=res.data.speakTTS;
+        console.log(this.speakTTS)
+        console.log('lang',res)
+      })
+    }
   },
   components: {
     VEmojiPicker,
     CommentList,
     CommentDiv,
+    Speak
   },
   mounted() {
+    culViewByUser(this.$route.query.id);
     getCuldetail(this.$route.query.id).then((res) => {
-      console.log(res);
+      // console.log('culcrea  ',res);
       this.info = res.data;
       this.imgList = this.info.culCreativityImage.split(",");
     });
+    this.paraTranslate();
   },
   beforeDestroy() {
     window.removeEventListener("click", () => {}, true);
@@ -172,6 +211,7 @@ p {
     position: relative;
     display: flex;
     .left {
+      position: relative;
       width: 800px;
       .top {
         .name {
@@ -188,6 +228,18 @@ p {
           text-indent: 2em;
           padding-top: 10px;
           font-size: 17px;
+        }
+        .fav{
+          display: flex;
+          align-items: center;
+
+          img{
+            width: 30px;
+            height: 26px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: all ease-in-out .3s;
+          }
         }
         padding-bottom: 20px;
         border-bottom: 1px solid #979797;
@@ -324,6 +376,11 @@ p {
             }
           }
         }
+      }
+      .speak{
+        position: absolute;
+        top:25px;
+        right: 10px;
       }
     }
     .right {

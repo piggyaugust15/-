@@ -1,4 +1,4 @@
-import {requestLocal} from "@/utils/requestLocal";
+import {requestOut} from "@/utils/requestOut";
 
 export function getMap() {
   return request({

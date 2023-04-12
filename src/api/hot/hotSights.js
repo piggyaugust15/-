@@ -28,9 +28,9 @@ export function collect(id) {
   })
 }
 
-export function score(id) {
+export function score(sightsId,score) {
   return request({
-    url: '/hotSights/score/'+id ,
+    url: '/hotSights/score/'+sightsId+"/"+score ,
     method: 'get',
   })
 }

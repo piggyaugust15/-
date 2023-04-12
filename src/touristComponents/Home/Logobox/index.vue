@@ -7,7 +7,7 @@
       <h1>{{ info.typesetIntroduction }}</h1>
       <span>{{ info.typesetText }}</span>
       <button @click="this.$route.push(info.typesetRoute)">
-        关于丝路荟萃指南
+        关于丝路畅行指南
       </button>
     </div>
   </div>

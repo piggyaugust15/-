@@ -76,6 +76,12 @@ export function culLike(culCreativityId) {
     method: 'get'
   })
 }
+export function culFav(culCreativityId) {
+  return request({
+    url: '/creativity/collect/' + culCreativityId,
+    method: 'get'
+  })
+}
 
 // 登陆性浏览
 export function culViewByUser(culCreativityId) {

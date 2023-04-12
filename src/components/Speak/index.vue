@@ -5,9 +5,9 @@
 <!--    class="el-icon-microphone"-->
 <!--    @click="play()"-->
 <!--    ></el-button>-->
-    <i class="el-icon-microphone" @click="play()"/>
-    <i class="el-icon-video-pause" @click="goahead()"/>
-    <i class="el-icon-video-play" @click="paused()"/>
+    <i :class="{'el-icon-microphone':true,'icon':true,'active':active&&ifplay}" @click="play()"/>
+    <span v-if="active"><i class="el-icon-video-pause icon" @click="paused()" v-if="ifplay"/>
+    <i :class="{'el-icon-video-play':true, 'icon':true,'active':ifplay}" @click="paused()" v-else/></span>
   </div>
 </template>
 
@@ -26,6 +26,7 @@
    *Speech.speaking()
    */
   import Speech from 'speak-tts'
+  import md5 from "@/utils/md5";
   export default {
     props:{
       voice: {
@@ -54,14 +55,27 @@
       }
 
     },
+    watch: {
+       lang(val) {
+        // this.lang = val;
+         console.log(val)
+        this.speech.setLanguage(val)
+      }
+    },
     data(){
       return {
+        active:false,
+        ifplay:false,
         speech:null,
         support:true,
+        appid:'20220724001282080',
+        salt:new Date().getTime(),
+        secretKey:'2H4LG690Vjvbu6nTEeXN',
       }
     },
     mounted() {
-        this.SpeechInit();
+      this.SpeechInit();
+      console.log('挂载speak 组件',this.lang)
     },
     methods:{
       SpeechInit(){
@@ -79,7 +93,6 @@
           //   }
           // }
         }).then(()=>{
-
         })
       },
       // 播放按钮
@@ -90,7 +103,9 @@
           listeners:{
             // 开始播放
             onstart:()=>{
-              console.log("开始播放")
+              this.active=true;
+              this.ifplay=true;
+              // console.log("开始播放")
             },
             // 判断播放是否完毕
             onend:()=>{
@@ -107,7 +122,12 @@
       },
       // 暂停
       paused(){
-        this.speech.pause();
+        if(this.ifplay){
+          this.speech.pause();
+        }else{
+          this.goahead();
+        }
+        this.ifplay=!this.ifplay;
       },
       // 从暂停处继续播放
       goahead(){
@@ -117,16 +137,34 @@
     // 离开页面取消语音
     destroyed() {
       this.speech.cancel();
-    }
+    },
 
   }
 </script>
 <style lang="scss" scoped>
 #speak{
   display: block !important;
-  background-color: red;
+  margin-top: 10px;
   width: 100%;
   height: 100%;
+  .icon{
+    text-align: center;
+    line-height: 50px;
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
+    border-radius: 50%;
+    transition: all ease .1s;
+    cursor: pointer;
+    margin-left: 5px;
+    &:hover{
+      background-color: #d6d6d6;
+    }
+  }
+  .active{
+    color: #fff;
+    background-color: #349eff;
+  }
 }
 </style>
 

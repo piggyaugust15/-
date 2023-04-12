@@ -2,7 +2,7 @@
   <div id="Header" :class="{ isHide: isHide }">
     <div class="header">
       <div class="logo">
-        <img src="@/assets/images/Logo5.png" alt="" />
+        <img src="@/assets/images/LogoGreen.png" alt="" />
       </div>
       <div class="nav_div">
         <router-link to="/frontHome/home">主页</router-link>
@@ -16,11 +16,9 @@
           >公告</router-link
         >
         <router-link to="/frontHome/map">地图</router-link>
-        <Speak :voice="'陈昭燃是徐州皇帝，一统天下'"></Speak>
       </div>
       <div class="search" v-if="this.$route.path != '/frontHome/home'">
         <Search></Search>
-
       </div>
 
       <div class="avatar">
@@ -69,8 +67,11 @@
                   placement="bottom"
                   width="100"
                   trigger="hover"
-                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。">
-                <el-button divided @click.native="logout">退出登录</el-button>
+                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
+                  style="display: flex;width: 100%;justify-content: center;"
+              >
+                  <el-button divided @click.native="logout" class="downBtn">退出登录</el-button>
+                  <el-button divided @click.native="changeLanguage" class="downBtn">选择语言</el-button>
                 <img :src="$store.state.user.avatar" alt="" slot="reference">
               </el-popover>
             </div>
@@ -79,6 +80,21 @@
         </li>
       </div>
     </div>
+    <el-dialog
+        title="选择主语言"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose"
+        append-to-body
+    >
+      <el-radio-group v-model="$store.state.front.lang">
+        <el-radio v-for="(item,index) in langList" :key="index"  :label="item.audioId">{{item.baiduLabel}}-{{item.langEn}}</el-radio>
+      </el-radio-group>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -87,6 +103,7 @@ import Drawer from "@/touristComponents/Drawer";
 import InfoDrawer from "@/touristComponents/InfoDrawer";
 import Search from "@/touristComponents/Search";
 import Speak from "@/components/Speak";
+import {getLangList} from "@/api/system/translate";
 export default {
   name: "Header",
   data() {
@@ -95,9 +112,11 @@ export default {
         drawerTitle: "你好 ! " + this.$store.state.user.name,
         direction: "rtl",
       },
+      dialogVisible: false,
       oldScrollTop: 0,
       isHide: false,
       style: { backgroundColor: "", transition: "all ease-in-out .3s" },
+      langList:[]
     };
   },
   methods: {
@@ -126,8 +145,8 @@ export default {
       }
     },
     gotoProfile(){
-  this.$router.push({
-    path :'/frontHome/user',
+      this.$router.push({
+      path :'/frontHome/user',
   })
     },
     async logout() {
@@ -140,24 +159,52 @@ export default {
           location.href = '/index';
         })
       }).catch(() => {});
+    },
+    changeLanguage(){
+      this.dialogVisible=true;
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+    },
+    getLangList(){
+      getLangList().then((res)=>{
+        console.log(res)
+        this.langList=res.data;
+      })
     }
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
-    if (
-      this.$route.path == "/Attractionspage" ||
-      this.$route.path == "/Attractionspage"
-    ) {
-    }
+    // if (
+    //   this.$route.path == "/Attractionspage" ||
+    //   this.$route.path == "/Attractionspage"
+    // ){
+    // }
+    this.getLangList();
   },
   beforeDestroy() {
     window.removeEventListener("scroll", this.handleScroll);
   },
 
-  components: { Drawer, Search, InfoDrawer,Speak },
+  components: { Drawer, Search, InfoDrawer },
 };
 </script>
 <style lang="scss" scoped>
+::v-deep.el-radio-group{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  flex-wrap: wrap;
+}
+::v-deep.el-radio{
+  width: 120px;
+  margin: 10px;
+}
 li {
   list-style: none;
   font-size: 14px;
@@ -326,5 +373,9 @@ li {
     transition: all ease .3s;
     z-index: 1;
   }
+}
+.downBtn{
+  margin: 0 auto 10px 5px;
+  text-align: center;
 }
 </style>

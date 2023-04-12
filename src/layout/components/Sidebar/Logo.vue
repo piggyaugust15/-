@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      title: '丝路畅行旅游平台',
+      title: '',
       logo: logoImg
     }
   }
@@ -69,8 +69,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 100%;
+      height: auto;
       vertical-align: middle;
       margin-right: 12px;
     }
@@ -89,6 +89,7 @@ export default {
 
   &.collapse {
     .sidebar-logo {
+      width: 100%;
       margin-right: 0px;
     }
   }
