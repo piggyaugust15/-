@@ -242,8 +242,6 @@ export default {
         this.info.articleContent=res.data.articleContentOUT;
         this.speakInfo=res.data.articleContentOUT;
         this.speakTTS=res.data.speakTTS;
-        console.log(this.speakTTS)
-        console.log('lang',res)
       })
     }
   },

@@ -157,7 +157,6 @@ export default {
     hotsearch() {
       hotSearch().then((response)=>{
         this.hotSearch=response.data;
-        console.log('hot',response)
       })
     }, // 热搜建议
     suggestsearch(keywords) {
@@ -171,7 +170,7 @@ export default {
       }
     }, //搜索建议
     handleChange(val) {
-      console.log(val);
+
     },
     clickMusic(item) {},
     gotoDetail(id) {},

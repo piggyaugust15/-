@@ -55,12 +55,10 @@
       Crumbs,
     },
     mounted() {
-      console.log(this.newsInformation);
     },
     methods:{
       getAllNews(){
         getAll().then(response => {
-          console.log(response)
           for (let i = 0;i<response.data.length;i++){
             if (response.data[i].topFlag==="Y"){
               this.Top.push(response.data[i]);
@@ -70,8 +68,6 @@
           }
         })
 
-        console.log(this.Top)
-        console.log(this.homeNews)
       }
     },
     created() {

@@ -38,7 +38,7 @@
               </div>
             </div>
           </div>
-          <CategoryLink :listInfo="CategoryLinkInfo"></CategoryLink>
+<!--          <CategoryLink :listInfo="CategoryLinkInfo"></CategoryLink>-->
         </el-main>
         <el-footer>
           <!-- <Bottom></Bottom> -->

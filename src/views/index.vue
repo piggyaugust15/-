@@ -1,5 +1,7 @@
 <template>
   <div class="content">
+    <h1>欢迎来到‘丝路畅行’特色文化旅游信息服务平台！</h1>
+    <img src="@/assets/images/LogoGreen.png" alt="">
   </div>
 </template>
 
@@ -39,10 +41,8 @@
     methods:{
       getList() {
         getHistHotAd().then(response=>{
-          console.log(1,response)
         })
         getRecentAd().then(response=>{
-          console.log(2,response)
         })
         // listAd(this.queryParams).then(response => {
         //   console.log(response)
@@ -54,6 +54,17 @@
 
   };
 </script>
+<style lang="scss" scoped>
+h1{
+  text-align: center;
+}
+img{
+  width: 80%;
+  text-align: center;
+  margin-left: 10%;
+  margin-top: 5%;
+}
+</style>
 
 
 

@@ -26,7 +26,7 @@
         </div> -->
       </div>
     </div>
-    <button><i class="el-icon-s-promotion"></i> 寻找更多文创作品</button>
+    <button @click="gotoCreation"><i class="el-icon-s-promotion"></i> 寻找更多文创作品</button>
   </div>
 </template>
   
@@ -50,6 +50,11 @@ export default {
       this.$router.push({
         path:"/frontHome/culcreation",
         query: { id: id },
+      });
+    },
+    gotoCreation(){
+      this.$router.push({
+        path:"/frontHome/creation/index",
       });
     }
   },

@@ -113,7 +113,6 @@ export default {
         this.$message.error("评论内容不能为空哈");
       } else {
         submitComment(this.ruleForm).then((res) => {
-          console.log(res);
           if (res.code == 200) {
             this.$message({
               message: "评论成功，待管理员审核~",
@@ -140,8 +139,6 @@ export default {
         this.info.culCreativityContent=res.data.culCreativityContentOUT;
         this.speakInfo=res.data.culCreativityContentOUT;
         this.speakTTS=res.data.speakTTS;
-        console.log(this.speakTTS)
-        console.log('lang',res)
       })
     }
   },

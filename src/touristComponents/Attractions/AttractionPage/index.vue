@@ -315,8 +315,6 @@ export default {
         this.sights.sightsDetail=res.data.sightsDetailOUT;;
         this.speakInfo=res.data.sightsDetailOUT;
         this.speakTTS=res.data.speakTTS;
-        console.log(this.speakTTS)
-        console.log('lang',res)
       })
     },
   },

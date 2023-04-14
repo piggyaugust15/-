@@ -38,7 +38,7 @@
                   >稿件管理</el-menu-item
                 >
                 <el-menu-item index="/frontHome/Creation/appeal"
-                  >申诉管理</el-menu-item
+                  >申诉管理(待完善)</el-menu-item
                 >
                 <el-menu-item index="/frontHome/Creation/draft"
                   >草稿箱</el-menu-item

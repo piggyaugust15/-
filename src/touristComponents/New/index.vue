@@ -14,7 +14,7 @@
             :listInfo="ViewTemplateListInfo"
             :type="type"
           ></ViewTemplate>
-          <CategoryLink :listInfo="CategoryLinkInfo"></CategoryLink>
+<!--          <CategoryLink :listInfo="CategoryLinkInfo"></CategoryLink>-->
         </el-main>
       </el-container>
     </div>

@@ -67,7 +67,7 @@
         </div>
       </div>
     </div>
-    <button>继续阅读</button>
+    <button @click="gotoRandomSights()">继续阅读</button>
   </div>
 </template>
 
@@ -103,6 +103,12 @@ export default {
         path:"/frontHome/attractions/attraction",
         query: { id: id },
       });
+    },
+    gotoRandomSights(){
+      this.$router.push({
+        path:"/frontHome/attractions",
+      });
+
     }
   },
   mounted() {
