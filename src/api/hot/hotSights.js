@@ -41,3 +41,24 @@ export function fav(id) {
     method: 'get',
   })
 }
+
+export function getSimilarSight(id) {
+  return request({
+    url: '/recommend/similar/attractions/'+id ,
+    method: 'get',
+  })
+}
+
+export function getOnlineRecommendation() {
+  return request({
+    url: '/recommend/online' ,
+    method: 'get',
+  })
+}
+
+export function getCommonRecommendation() {
+  return request({
+    url: '/recommend/common' ,
+    method: 'get',
+  })
+}

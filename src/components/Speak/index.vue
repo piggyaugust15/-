@@ -58,7 +58,6 @@
     watch: {
        lang(val) {
         // this.lang = val;
-         console.log(val)
         this.speech.setLanguage(val)
       }
     },
@@ -75,7 +74,6 @@
     },
     mounted() {
       this.SpeechInit();
-      console.log('挂载speak 组件',this.lang)
     },
     methods:{
       SpeechInit(){
@@ -109,7 +107,6 @@
             },
             // 判断播放是否完毕
             onend:()=>{
-              console.log("播放结束")
             },
             // 回复播放
             onresume:()=>{},

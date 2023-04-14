@@ -117,8 +117,8 @@
                 @tab-click="handleClick"
                 :stretch="true"
               >
-                <el-tab-pane label="附近景点" name="first">
-                  <RecommendList :type="NearbyAttractions"></RecommendList>
+                <el-tab-pane label="相似景点" name="first">
+                  <RecommendList :type="SimilarAttractions"></RecommendList>
                 </el-tab-pane>
                 <el-tab-pane label="推荐景点" name="second">
                   <RecommendList :type="RecommendAttractions"></RecommendList>
@@ -195,7 +195,7 @@ import { getSights, getSightsInfo } from "@/api/sights/sights.js";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
 import CommentList from "@/touristComponents/components/CommentList";
 import AttractionCommentDiv from "@/touristComponents/components/AttractionCommentDiv";
-import {addview,hit,fav,score} from '@/api/hot/hotSights'
+import {addview,hit,fav,score,getSimilarSight} from '@/api/hot/hotSights'
 import {paraTranslate} from '@/api/system/translate'
 import Speak from "@/components/Speak";
 
@@ -221,7 +221,7 @@ export default {
       comment: 5188,
       imgList: [],
       activeName: "second",
-      NearbyAttractions: "NearbyAttractions",
+      SimilarAttractions: "SimilarAttractions",
       RecommendAttractions: "RecommendAttractions",
     };
   },
@@ -318,7 +318,7 @@ export default {
         console.log(this.speakTTS)
         console.log('lang',res)
       })
-    }
+    },
   },
   mounted() {
     this.getSightsInfo();

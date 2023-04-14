@@ -4,6 +4,7 @@
 
 #RecommendList li {
     margin-bottom: 10px;
+    cursor:pointer;
 }
 
 #RecommendList .img_div {
@@ -26,8 +27,9 @@
     position: relative;
 }
 
-#RecommendList .Info h3 {
-    font-weight: 400;
+#RecommendList .Info .name {
+    display: block;
+    margin-bottom: 10px;
 }
 
 #RecommendList .Info .rating {
