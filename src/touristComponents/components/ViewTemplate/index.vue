@@ -50,11 +50,6 @@
                 </span
                 >
               </router-link>
-<!--              <span class="title">-->
-<!--                <span class="link" @click="gotoLink(item.sightsId)">{{-->
-<!--                  item.sightsName-->
-<!--                }}</span></span-->
-<!--              >-->
               <span class="text" v-html="item.sightsDetail"></span>
             </div>
           </div>
@@ -82,11 +77,9 @@
                 <router-link :to="'/frontHome/new/NewsPage/'+item.newsId">
                   <span class="link">{{item.newsTitle}}</span>
                 </router-link>
-<!--                <span class="link">{{-->
-<!--                  item.newsTitle-->
-<!--                }}</span>-->
               </span>
-              <span class="text" v-html="item.newsContent"></span>
+              <span class="text" v-html="item.newsIntroduction"></span>
+              <span class="author">by - chas</span>
             </div>
           </div>
         </li>
@@ -122,123 +115,115 @@
   };
 </script>
 
-<style scoped>
-  #ViewList .link,
-  #ViewList a {
+<style lang="scss" scoped>
+#ViewList {
+  position: relative;
+  width: 750px;
+  margin-top: 30px;
+  margin-bottom: 100px;
+  margin-left: 100px;
+  .link, a {
     text-decoration: none;
     color: #333;
     transition: 0.3s all ease-in-out;
   }
-
-  #ViewList {
-    position: relative;
-    width: 750px;
-    margin-top: 30px;
-    margin-bottom: 100px;
-    margin-left: 100px;
-  }
-  #ViewList ul {
+  ul {
     width: 100%;
     height: 100%;
+    li {
+      display: block;
+      width: 100%;
+      height: 20%;
+      list-style: none;
+      margin-bottom: 20px;
+      .total_div {
+        display: flex;
+        position: relative;
+      }
+      .img_div {
+        display: inline-block;
+        position: relative;
+        width: 340px;
+        height: 200px;
+        overflow: hidden;
+      }
+      .time_div {
+        position: absolute;
+        bottom: 25px;
+        left: -15px;
+        width: 70px;
+        height: 55px;
+        /* background-color: pink; */
+        background-image: linear-gradient(80deg, #d1e8ff, #35b6f7);
+        z-index: 3;
+      }
+      .time_div .day, .time_div .year_month {
+        display: block;
+        text-align: center;
+      }
+      .time_div .day {
+        font-size: 24px;
+      }
+      .time_div .year_month {
+        font-size: 14px;
+      }
+      .img_div img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background: no-repeat;
+        transition: 0.3s all ease-in-out;
+      }
+      .info_div {
+        display: inline-block;
+        position: relative;
+        width: 360px;
+        height: 200px;
+        margin-left: 15px;
+        /* background-color: pink; */
+        overflow: hidden;
+        .title {
+          display: block;
+          padding-left: 15px;
+          padding-top: 15px;
+          font-weight: 700;
+          font-size: 17px;
+        }
+        .text {
+          display: block;
+          font-size: 13px;
+          padding-left: 15px;
+          padding-top: 20px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
+        }
+        .author{
+          position: absolute;
+          left: 20px;
+          bottom: 10px;
+        }
+      }
+      .globalview {
+        display: block;
+        position: absolute;
+        right: 30px;
+      }
+      &:hover {
+        cursor: pointer;
+      }
+      &:hover img {
+        transform: scale(1.2);
+      }
+      a {
+        display: block;
+      }
+    }
   }
-  #ViewList ul li {
-    display: block;
-    width: 100%;
-    height: 20%;
-    list-style: none;
-    margin-bottom: 20px;
-  }
-  #ViewList ul li a {
-    display: block;
-  }
-  #ViewList ul li .link:hover {
-    cursor: pointer;
-    color: #007aff;
-  }
-
-  #ViewList ul li:hover img {
-    transform: scale(1.2);
-  }
-
-  #ViewList ul li .total_div {
-    display: flex;
-    position: relative;
-  }
-
-  #ViewList ul li .img_div {
-    display: inline-block;
-    position: relative;
-    width: 340px;
-    height: 200px;
-    overflow: hidden;
-  }
-
-  #ViewList ul li .time_div {
-    position: absolute;
-    bottom: 25px;
-    left: -15px;
-    width: 70px;
-    height: 55px;
-    /* background-color: pink; */
-    background-image: linear-gradient(80deg, #d1e8ff, #35b6f7);
-    z-index: 3;
-  }
-  #ViewList ul li .time_div .day,
-  #ViewList ul li .time_div .year_month {
-    display: block;
-    text-align: center;
-  }
-
-  #ViewList ul li .time_div .day {
-    font-size: 24px;
-  }
-
-  #ViewList ul li .time_div .year_month {
-    font-size: 14px;
-  }
-
-  #ViewList ul li .img_div img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    background: no-repeat;
-    transition: 0.5s all ease-in-out;
-  }
-
-  #ViewList ul li .info_div {
-    display: inline-block;
-    width: 360px;
-    height: 200px;
-    margin-left: 15px;
-    /* background-color: pink; */
-  }
-
-  #ViewList ul li .info_div .title {
-    display: block;
-    padding-left: 15px;
-    padding-top: 15px;
-    font-weight: 700;
-    font-size: 17px;
-  }
-
-  #ViewList ul li .info_div .text {
-    display: block;
-    height: 100px;
-    font-size: 13px;
-    padding-left: 15px;
-    padding-top: 20px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 6;
-  }
-  #ViewList .globalview {
-    display: block;
-    position: absolute;
-    right: 30px;
-  }
+}
   #ViewList .globalview:hover {
     color: #007aff;
   }

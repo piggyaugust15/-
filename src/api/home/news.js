@@ -49,3 +49,19 @@ export function getAll() {
     method:'post'
   })
 }
+
+
+//前端
+export function getRecentlyNews() {
+  return request({
+    url: '/permitAll/News/getRecentlyNew',
+    method:'get'
+  })
+}
+
+export function getCarousel() {
+  return request({
+    url: '/permitAll/News/swiper',
+    method:'get'
+  })
+}

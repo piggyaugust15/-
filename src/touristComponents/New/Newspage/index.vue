@@ -71,6 +71,8 @@
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+#Newspage{
+  padding-top: 80px;
+}
 </style>

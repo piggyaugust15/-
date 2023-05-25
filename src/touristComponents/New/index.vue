@@ -9,12 +9,13 @@
             <template v-slot:English>News</template>
           </ComponentTitle>
         </el-header>
-        <el-main>
+        <el-main class="center">
           <ViewTemplate
             :listInfo="ViewTemplateListInfo"
             :type="type"
+            class="template"
           ></ViewTemplate>
-<!--          <CategoryLink :listInfo="CategoryLinkInfo"></CategoryLink>-->
+          <side></side>
         </el-main>
       </el-container>
     </div>
@@ -22,11 +23,12 @@
 </template>
 
 <script>
-  import {getAll} from "../../api/home/news";
+  import {getRecentlyNews} from "../../api/home/news";
   import ComponentTitle from "../components/ComponentsTitle";
   import TitleSwiper from "../components/TitleSwiper";
   import CategoryLink from "../components/CategoryLink";
   import ViewTemplate from "../components/ViewTemplate";
+  import side from "@/touristComponents/New/Side";
   export default {
     data() {
       return {
@@ -104,17 +106,16 @@
       ComponentTitle,
       TitleSwiper,
       CategoryLink,
-      ViewTemplate
+      ViewTemplate,
+      side
     },
     created() {
       this.getAllNews();
     },
     methods:{
       getAllNews(){
-        getAll().then(response =>{
-          console.log(response)
+        getRecentlyNews().then(response =>{
           this.ViewTemplateListInfo = response.data;
-          console.log(this.ViewTemplateListInfo);
         });
       }
     }
@@ -123,12 +124,19 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   #News {
-    height: 0px;
-  }
-  #News .main {
-    width: 80%;
-    margin: 0 auto;
+    padding-top: 60px;
+    .main {
+      width: 1340px;
+      margin: 0 auto;
+    }
+    .center{
+      display: flex;
+      .template{
+        flex: 1;
+      }
+
+    }
   }
 </style>
