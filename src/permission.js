@@ -9,7 +9,7 @@ import { isRelogin } from '@/utils/request'
 NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/login', '/auth-redirect', '/bind', '/register','/frontHome/home'
-  ,'/frontHome/News','/frontHome/Attractions','/frontHome/Bulletins','/frontHome/Newspage']
+  ,'/frontHome/News','/frontHome/Attractions','/frontHome/CulcreationHome','/frontHome/Newspage']
 
 /**
  * to: router即将进入的路由对象

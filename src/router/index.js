@@ -193,10 +193,16 @@ export const constantRoutes = [
         meta: { title: '景点' }
       },
       {
-        path: 'bulletins',
-        component: (resolve) => require(['@/touristComponents/Bulletins/index'], resolve),
-        name: 'Bulletins',
-        meta: { title: '公告' }
+        path: 'culcreation',
+        component: (resolve) => require(['@/touristComponents/Culcreation/CulcreationHome/index'], resolve),
+        name: 'Culcreation',
+        meta: { title: '文创' }
+      },
+      {
+        path: 'article',
+        component: (resolve) => require(['@/touristComponents/Article/ArticleHome/index'], resolve),
+        name: 'Article',
+        meta: { title: '文章' }
       },
       {
         path: 'activity',
@@ -206,6 +212,11 @@ export const constantRoutes = [
         path: 'articlepage',
         component: (resolve) => require(['@/touristComponents/Article/Articlepage/index'], resolve),
         meta: { title: '文章详情' }
+      },
+      {
+        path: 'newspage',
+        component: (resolve) => require(['@/touristComponents/New/Newspage'], resolve),
+        meta: { title: '快讯详情' }
       },
       {
         path: '/frontHome/map',

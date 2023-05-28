@@ -3,9 +3,8 @@
     <el-breadcrumb separator="/">
       <!--      这里到时候要注意一下哦-->
       <el-breadcrumb-item :to="{ path: '/frontHome' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
-      <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-      <el-breadcrumb-item>活动详情</el-breadcrumb-item>
+      <el-breadcrumb-item :to="{path:'/frontHome/new'}">快讯</el-breadcrumb-item>
+      <el-breadcrumb-item>快讯详情</el-breadcrumb-item>
     </el-breadcrumb>
   </div>
 </template>

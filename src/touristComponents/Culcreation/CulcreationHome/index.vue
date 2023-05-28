@@ -5,8 +5,8 @@
       <el-container>
         <el-header>
           <ComponentTitle>
-            <template v-slot:Chinese>公告</template>
-            <template v-slot:English>Bulletins</template>
+            <template v-slot:Chinese>文创</template>
+            <template v-slot:English>Culcreation</template>
           </ComponentTitle>
         </el-header>
         <el-main>
@@ -22,10 +22,10 @@
 </template>
 
 <script>
-import ComponentTitle from "../components/ComponentsTitle";
-import TitleSwiper from "../components/TitleSwiper";
-import CategoryLink from "../components/CategoryLink";
-import ViewTemplate from "../components/ViewTemplate";
+import ComponentTitle from "@/touristComponents/components/ComponentsTitle";
+import TitleSwiper from "@/touristComponents/components/TitleSwiper";
+import CategoryLink from "@/touristComponents/components/CategoryLink";
+import ViewTemplate from "@/touristComponents/components/ViewTemplate";
 
 export default {
   name: "Bulletins",
@@ -133,7 +133,7 @@ export default {
           ],
         },
       ],
-      type: "Bulletins",
+      type: "CulcreationHome",
     };
   },
   components: {

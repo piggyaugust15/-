@@ -1,23 +1,18 @@
 <template>
   <div class="box">
     <div class="mainbox">
-      <h1 class="title">{{ newsInformation[0].title }}</h1>
+      <h1 class="title">{{ newsInformation.newsTitle }}</h1>
       <!-- 文章标题 -->
       <div class="newsbox">
-        <span class="newstext">{{ newsInformation[0].text1 }} </span>
-        <Picture :src="newsInformation[2][0]">我是这张图片的注释</Picture>
-        <span class="newstext">{{ newsInformation[0].text2 }} </span>
-        <Picture :src="newsInformation[2][0]">我是这张图片的注释</Picture>
-        <span class="newstext">{{ newsInformation[0].text3 }} </span>
+        <span class="newstext" v-html='newsInformation.newsContent'>{{ newsInformation.newsContent}} </span>
       </div>
       <div class="linkList">
         <ul>
           <div class="relatedNews">相关新闻</div>
-          <a href="#" v-for="news in newsInformation[1]" :key="news.id"
-          ><li>
-            {{ news.title }}<span>{{ news.time }}</span>
-          </li></a
-          >
+          <li v-for="(item,index) in similarNews" :key="index" @click="gotoNews(item.newsId)">
+            {{ item.newsTitle }}
+          <span>{{ item.createTime }}</span>
+          </li>
         </ul>
       </div>
       <!-- 推荐算法 -->
@@ -35,17 +30,27 @@
     components: {
       Picture,
     },
+    methods:{
+      gotoNews(id){
+        this.$router.push({path:'/frontHome/newspage',query:{id:id}})
+      }
+    },
     props: {
       newsInformation: {
+        type: Object,
+        required: true,
+        default: () => {},
+      },
+      similarNews:{
         type: Array,
         required: true,
         default: () => [],
-      },
+      }
     },
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   a {
     text-decoration: none;
     color: #333333;
@@ -56,46 +61,52 @@
   }
   .box {
     display: flex;
-  }
-  .title {
-    font-size: 36px;
-    letter-spacing: 1px;
-    margin-bottom: 30px;
-    margin-top: 15px;
-  }
-  .mainbox {
-    flex: 7;
+    .title {
+      font-size: 36px;
+      letter-spacing: 1px;
+      margin-bottom: 30px;
+      margin-top: 15px;
+    }
+    .mainbox {
+      flex: 7;
+      .newsbox {
+        flex: 7;
+        .newstext {
+          display: block;
+          font-size: 17px;
+          text-indent: 2em;
+        }
+      }
+      .linkList {
+        .relatedNews {
+          font-size: 21px;
+          border-bottom: solid 1px #dcdcdc;
+          padding: 10px;
+        }
+        ul {
+        margin-top: 30px;
+        padding-left: 0px;
+        li {
+          padding: 15px;
+          font-size: 17px;
+          list-style: none;
+          border-bottom: solid 1px #dcdcdc;
+          transition: all ease-in-out .2s;
+          &:hover{
+            color: #1890ff;
+            cursor: pointer;
+          }
+          span {
+            float: right;
+            font-size: 12px;
+            color: rgb(0, 123, 255);
+          }
+        }
+      }}
+    }
   }
   .timeline {
     flex: 3;
     top: 30%;
-  }
-  .mainbox .newsbox {
-    flex: 7;
-  }
-  .newsbox .newstext {
-    display: block;
-    font-size: 17px;
-    text-indent: 2em;
-  }
-  .linkList ul {
-    margin-top: 30px;
-    padding-left: 0px;
-  }
-  .linkList .relatedNews {
-    font-size: 21px;
-    border-bottom: solid 1px #dcdcdc;
-    padding: 10px;
-  }
-  .linkList li {
-    padding: 15px;
-    font-size: 17px;
-    list-style: none;
-    border-bottom: solid 1px #dcdcdc;
-  }
-  .linkList li span {
-    float: right;
-    font-size: 12px;
-    color: rgb(0, 123, 255);
   }
 </style>

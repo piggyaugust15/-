@@ -19,7 +19,7 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   #Componenttitle {
     height: 300px;
     width: 100%;
@@ -31,6 +31,11 @@
     padding-right: 15px;
     border-right: 3px solid rgb(0, 123, 255);
     vertical-align: middle;
+    font: {
+      size: 20px;
+      weight: 700;
+      family: "Noto Serif SC", serif;;
+    };
   }
 
   #Componenttitle .leftText span {

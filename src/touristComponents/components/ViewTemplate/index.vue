@@ -1,6 +1,6 @@
 <template>
   <div id="ViewList">
-    <div v-if="type === 'Bulletins'">
+    <div v-if="type === 'CulcreationHome'">
       <!-- 判断传输过来的数据是哪一个部分的？ -->
       <ul>
         <li v-for="item in listInfo" :key="item.noticeId">
@@ -70,16 +70,14 @@
               <span class="year_month">{{  parseTime(item.createTime,'{y}-{m}')  }}</span>
             </div>
             <div class="img_div">
-              <img :src="url+item.imageId" :alt="item.newsTitle" />
+              <img :src="url+item.imageId.split(',')[0]" :alt="item.newsTitle" />
             </div>
-            <div class="info_div">
+            <div class="info_div" @click="gotoLink(item.newsId)">
               <span class="title">
-                <router-link :to="'/frontHome/new/NewsPage/'+item.newsId">
                   <span class="link">{{item.newsTitle}}</span>
-                </router-link>
               </span>
               <span class="text" v-html="item.newsIntroduction"></span>
-              <span class="author">by - chas</span>
+              <span class="author">{{item.newsAuthor}}</span>
             </div>
           </div>
         </li>
@@ -104,10 +102,10 @@
     methods: {
       gotoLink(value) {
         if (this.type === "News") {
-          this.$router.push({ path: "/NewsPage"});
+          this.$router.push({ path: "/frontHome/newsPage",query:{id:value}});
         } else if (this.type === "Attractions") {
           this.$router.push({ path: "/Attractionspage", query: { id: value } });
-        } else if (this.type === "Bulletins") {
+        } else if (this.type === "CulcreationHome") {
           this.$router.push({ path: "/Bulletinspage", query: { id: value } });
         }
       },

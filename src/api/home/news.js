@@ -65,3 +65,31 @@ export function getCarousel() {
     method:'get'
   })
 }
+
+export function getDetail(newsId) {
+  return request({
+    url: '/permitAll/News/getInfo/'+newsId,
+    method:'get'
+  })
+}
+
+export function getColumn(id) {
+  return request({
+    url: '/permitAll/News/column/'+id,
+    method:'get'
+  })
+}
+
+export function getSimilarNews(id) {
+  return request({
+    url: '/permitAll/News/similarNews/'+id,
+    method:'get'
+  })
+}
+
+export function getPoster(value1,value2) {
+  return request({
+    url: '/page/typeset/'+value1+'/'+value2,
+    method:'get'
+  })
+}

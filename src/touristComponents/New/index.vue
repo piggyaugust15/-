@@ -99,7 +99,7 @@
             ],
           },
         ],
-        type: "News", //请求的第二个参数 判断是哪个模块 News Attractions Bulletins
+        type: "News", //请求的第二个参数 判断是哪个模块 News Attractions CulcreationHome
       };
     },
     components:{
@@ -126,7 +126,6 @@
 
 <style lang="scss" scoped>
   #News {
-    padding-top: 60px;
     .main {
       width: 1340px;
       margin: 0 auto;

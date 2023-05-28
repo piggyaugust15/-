@@ -12,8 +12,11 @@
         <router-link to="/frontHome/attractions" active-class="active"
           >景点</router-link
         >
-        <router-link to="/frontHome/bulletins" active-class="active"
-          >公告</router-link
+        <router-link to="/frontHome/culcreation" active-class="active"
+          >文创</router-link
+        >
+        <router-link to="/frontHome/article" active-class="active"
+        >文章</router-link
         >
         <router-link to="/frontHome/map">地图</router-link>
       </div>
@@ -67,7 +70,6 @@
                   placement="bottom"
                   width="100"
                   trigger="hover"
-                  content="这是一段内容,这是一段内容,这是一段内容,这是一段内容。"
                   style="display: flex;width: 100%;justify-content: center;"
               >
                   <el-button divided @click.native="logout" class="downBtn">退出登录</el-button>
@@ -172,7 +174,6 @@ export default {
     },
     getLangList(){
       getLangList().then((res)=>{
-        console.log(res)
         this.langList=res.data;
       })
     }

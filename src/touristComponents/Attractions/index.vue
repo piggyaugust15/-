@@ -152,7 +152,7 @@ export default {
     //     this.$router.push({ path: "/Newspage", query: { id: value } });
     //   } else if (this.type === "Attractions") {
     //     this.$router.push({ path: "/Attractionspage", query: { id: value } });
-    //   } else if (this.type === "Bulletins") {
+    //   } else if (this.type === "CulcreationHome") {
     //     this.$router.push({ path: "/Bulletinspage", query: { id: value } });
     //   }
     // },
