@@ -86,10 +86,3 @@ export function getSimilarNews(id) {
     method:'get'
   })
 }
-
-export function getPoster(value1,value2) {
-  return request({
-    url: '/page/typeset/'+value1+'/'+value2,
-    method:'get'
-  })
-}

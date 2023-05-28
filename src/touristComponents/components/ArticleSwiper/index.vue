@@ -38,11 +38,11 @@
                           v-for="(item, index) in hotSearch"
                           :key="index"
                           class="have"
-                          @click="hotgotoSights(item.sightsId)"
+                          @click="gotoArticle(item.articleId)"
                       >
                         <span class="number">{{index+1}}</span>
-                        <span v-html="item.sightsName"></span>
-                        <span class="hotrate">{{item.sightsHot}}</span>
+                        <span v-html="item.articleTitle"></span>
+                        <span class="hotrate">{{item.articleHot}}</span>
                       </li>
                     </div>
                     <li v-else class="null">暂无热搜</li>
@@ -52,52 +52,17 @@
                   <div class="article tagbox">
                     <i class="el-icon-reading"></i> <span class="tag">文章</span>
                     <ul>
-                      <div v-if="this.article.searchReturns.length >= 1">
+                      <div v-if="this.article.length >= 1">
                         <li
-                            v-for="(item, index) in article.searchReturns"
+                            v-for="(item, index) in article"
                             :key="index"
                             class="have"
                             @click="gotoArticle(item.articleId)"
                         >
                           <span v-html="item.articleTitle"></span>
-                          <!-- {{ item.articleTitle }} -->
                         </li>
                       </div>
                       <li v-else class="null">暂无文章</li>
-                    </ul>
-                  </div>
-                  <div class="creation tagbox">
-                    <i class="el-icon-shopping-bag-1"></i>
-                    <span class="tag">文创</span>
-                    <ul>
-                      <div v-if="this.creation.searchReturns.length >= 1">
-                        <li
-                            v-for="(item, index) in creation.searchReturns"
-                            :key="index"
-                            class="have"
-                            @click="gotoCul(item.culCreativityId)"
-                        >
-                          <span v-html="item.culCreativityTitle"></span>
-                        </li>
-                      </div>
-                      <li v-else class="null">暂无文创</li>
-                    </ul>
-                  </div>
-                  <div class="attraction tagbox">
-                    <i class="el-icon-map-location"></i>
-                    <span class="tag">景点</span>
-                    <ul>
-                      <div v-if="this.attraction.searchReturns.length >= 1">
-                        <li
-                            v-for="(item, index) in attraction.searchReturns"
-                            :key="index"
-                            class="have"
-                            @click="gotoSights(item.sightsId)"
-                        >
-                          <span v-html="item.sightsName"></span>
-                        </li>
-                      </div>
-                      <li v-else class="null">暂无景点</li>
                     </ul>
                   </div>
                 </div>
@@ -123,8 +88,8 @@
 </template>
 
 <script>
-import {getPoster} from "@/api/home/news";
 import {hotSearch, searchSights} from "@/api/search/search";
+import {getHotArticle,getPoster,getSuggestArticle} from "@/api/article/article"
 export default {
   name: "ArticleSwiper",
   data() {
@@ -136,21 +101,7 @@ export default {
       hotSearch: [],
       hotsearchLoading:true,
       suggestSearch: {},
-      article: {
-        route: "",
-        searchReturns: [],
-        type: "",
-      },
-      creation: {
-        route: "",
-        searchReturns: [],
-        type: "",
-      },
-      attraction: {
-        route: "",
-        searchReturns: [],
-        type: "",
-      },
+      article: [],
       listInfo: [{newsTitle:''}],
     };
   },
@@ -160,9 +111,7 @@ export default {
         this.title = "搜索建议";
       } else {
         this.title = "热搜榜";
-        this.article = {};
-        this.creation = {};
-        this.attraction = {};
+        this.attraction = [];
       }
       if(this.input.trim()!==''){
         this.suggestsearch(this.input);
@@ -175,24 +124,13 @@ export default {
     },
     gotoArticle(id){
       this.$router.push({
-        path: this.article.route,
-        query: { id: id },
-      });
-    },
-    gotoCul(id){
-      this.$router.push({
-        path: this.creation.route,
-        query: { id: id },
-      });
-    },
-    gotoSights(id){
-      this.$router.push({
-        path: this.attraction.route,
+        path: '/frontHome/articlepage',
         query: { id: id },
       });
     },
     hotsearch() {
-      hotSearch().then((response)=>{
+      getHotArticle().then((response)=>{
+        console.log(response,'article')
         this.hotSearch=response.data;
         this.hotsearchLoading=false;
       })
@@ -203,11 +141,8 @@ export default {
         query: { id: id },
       })},
     suggestsearch(keywords) {
-      console.log(this.input)
-      searchSights(keywords).then((response) => {
-        this.attraction = response.data[0];
-        this.creation = response.data[1];
-        this.article = response.data[2];
+      getSuggestArticle(keywords).then((response) => {
+        this.article= response.data;
       });
     }, //搜索建议
     handleChange(val) {
@@ -229,7 +164,6 @@ export default {
   },
   mounted() {
     getPoster(3,10).then(response =>{
-      console.log(response,'ll')
       this.listInfo=response.data
     });
   },

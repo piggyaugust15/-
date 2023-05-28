@@ -1,4 +1,5 @@
 import request from '@/utils/request'
+import {keyword} from "chalk";
 
 // 查询文章列表
 export function listArticle(query) {
@@ -167,6 +168,35 @@ export function editArticle(data) {
 export function getHisArticle() {
   return request({
     url: '/article/view/getAll',
+    method: 'get',
+  })
+}
+
+//articleHomeapi
+export function getPoster(value1,value2) {
+  return request({
+    url: '/page/typeset/'+value1+'/'+value2,
+    method:'get'
+  })
+}
+
+export function getTopArticle() {
+  return request({
+    url: '/article/TopArticle',
+    method: 'get',
+  })
+}
+
+export function getHotArticle() {
+  return request({
+    url: '/article/hotArticle',
+    method: 'get',
+  })
+}
+
+export function getSuggestArticle(keywords) {
+  return request({
+    url: '/search/article/'+keywords,
     method: 'get',
   })
 }

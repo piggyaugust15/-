@@ -28,13 +28,9 @@
     <div class="right">
       <span class="top">排行榜</span>
       <ul>
-        <li>
-          <div class="number">1</div>
-          <div class="text">「数十万人」雨中集结听武契奇发表「告别演讲」，武契奇为何辞去执政党党主席一职？塞国内政局将如何发展？</div>
-        </li>
-        <li>
-          <div class="number">2</div>
-          <div class="text">「数十万人」雨中集结听武契奇发表「告别演讲」，武契奇为何辞去执政党党主席一职？塞国内政局将如何发展？</div>
+        <li v-for="(item,index) in topList" :key="index" @click="gotoArticle(item.articleId)">
+          <div class="number">{{index+1}}</div>
+          <div class="text">{{item.articleTitle}}</div>
         </li>
       </ul>
     </div>
@@ -42,8 +38,24 @@
 </template>
 
 <script>
+import {getTopArticle,getHotArticle} from "@/api/article/article"
 export default {
-  name: "index"
+  name: "index",
+  data(){
+    return{
+      topList:[],
+    }
+  },
+  methods:{
+    gotoArticle(id){
+      this.$router.push({path:'/frontHome/articlepage',query:{id:id}})
+    }
+  },
+  mounted() {
+    getTopArticle().then((res)=>{
+      this.topList=res.data;
+    })
+  }
 }
 </script>
 
