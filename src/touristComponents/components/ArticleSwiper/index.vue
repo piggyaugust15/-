@@ -82,6 +82,7 @@
           <span class="read">阅读全文</span>
         </div>
         <img :src="$store.state.front.url+listInfo[0].typesetImage" alt="">
+        <span class="icon" @click="go()"><i class="el-icon-arrow-down"></i></span>
       </div>
     </div>
   </div>
@@ -119,9 +120,6 @@ export default {
     },
   },
   methods:{
-    gotoNews(id){
-      this.$router.push({ path: "/frontHome/new/NewsPage/"+id});
-    },
     gotoArticle(id){
       this.$router.push({
         path: '/frontHome/articlepage',
@@ -161,6 +159,9 @@ export default {
         this.showPopover = false;
       }
     },
+    go(){
+      this.$emit('scroll')
+    }
   },
   mounted() {
     getPoster(3,10).then(response =>{
@@ -299,6 +300,21 @@ export default {
           line-height: 150px;
           margin: 0;
         }
+      .icon{
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        color: #fff;
+        opacity: .7;
+        transition: all ease-in-out .2s ;
+        &:hover{
+          opacity: 1;
+          cursor: pointer;
+        }
+        i{
+          font-size: 45px;
+        }
+      }
     }
   }
   ::v-deep .el-carousel__arrow{

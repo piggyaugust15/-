@@ -35,7 +35,7 @@ import {getCarousel} from "@/api/home/news";
     },
     methods:{
       gotoNews(id){
-        this.$router.push({ path: "/frontHome/new/NewsPage/"+id});
+        this.$router.push({ path: "/frontHome/newsPage",query:{id:id}});
       }
     },
     mounted() {

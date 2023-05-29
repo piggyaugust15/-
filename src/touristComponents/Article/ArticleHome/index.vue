@@ -1,7 +1,7 @@
 <template>
   <div id="ArticleHome">
-    <ArticleSwiper></ArticleSwiper>
-    <div class="main">
+    <ArticleSwiper @scroll="scroll()"></ArticleSwiper>
+    <div class="main" id="main">
       <el-container>
         <el-header>
           <ComponentTitle>
@@ -10,7 +10,7 @@
           </ComponentTitle>
         </el-header>
         <el-main>
-          <ListTemplate></ListTemplate>
+          <ListTemplate @scroll="scroll()"></ListTemplate>
           <!--          <CategoryLink :listInfo="CategoryLinkInfo"></CategoryLink>-->
         </el-main>
       </el-container>
@@ -96,6 +96,11 @@ export default {
       ],
       type: "CulcreationHome",
     };
+  },
+  methods:{
+    scroll(){
+      document.getElementById("main").scrollIntoView({behavior:'smooth'});
+    }
   },
   components: {
     ArticleSwiper,

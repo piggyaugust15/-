@@ -1,6 +1,6 @@
 <template>
   <div id="Bulletins">
-    <TitleSwiper></TitleSwiper>
+    <CulCreationSwiper></CulCreationSwiper>
     <div class="main">
       <el-container>
         <el-header>
@@ -10,11 +10,7 @@
           </ComponentTitle>
         </el-header>
         <el-main>
-          <!-- <ViewTemplate
-            :listInfo="ViewTemplateListInfo"
-            :type="type"
-          ></ViewTemplate> -->
-<!--          <CategoryLink :listInfo="CategoryLinkInfo"></CategoryLink>-->
+          <CulCreationMain></CulCreationMain>
         </el-main>
       </el-container>
     </div>
@@ -26,7 +22,8 @@ import ComponentTitle from "@/touristComponents/components/ComponentsTitle";
 import TitleSwiper from "@/touristComponents/components/TitleSwiper";
 import CategoryLink from "@/touristComponents/components/CategoryLink";
 import ViewTemplate from "@/touristComponents/components/ViewTemplate";
-
+import CulCreationMain from "@/touristComponents/Culcreation/CulcreationHome/CulCreationMain"
+import CulCreationSwiper from "@/touristComponents/Culcreation/CulcreationHome/CulCreationSwiper"
 export default {
   name: "Bulletins",
   data() {
@@ -141,6 +138,8 @@ export default {
     TitleSwiper,
     CategoryLink,
     ViewTemplate,
+    CulCreationMain,
+    CulCreationSwiper
   },
 };
 </script>

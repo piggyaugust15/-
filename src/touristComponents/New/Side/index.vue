@@ -64,7 +64,7 @@ export default {
   },
   methods:{
     goto(id){
-      this.$router.push({path:'/frontHome/new/NewsPage/'+id})
+      this.$router.push({path:'/frontHome/NewsPage/',query:{id:id}})
     }
   },
   mounted() {

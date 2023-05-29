@@ -200,3 +200,11 @@ export function getSuggestArticle(keywords) {
     method: 'get',
   })
 }
+
+export function getPaginationArticle(query) {
+  return request({
+    url: '/article/articleShow',
+    method: 'get',
+    params:query
+  })
+}

@@ -1,29 +1,32 @@
 <template>
   <div id="listtemplate">
     <div class="left">
-      <ul>
-        <li>
+      <ul v-loading="loading">
+        <li v-for="(item,index) in totalList" :key="index" @click="$router.push({path:'/frontHome/articlepage',query:{id:item.articleId}})">
           <div>
-            <span class="title">从巴黎到罗马，那是6月的一路南下</span>
+            <span class="title">{{item.articleTitle}}</span>
             <div class="middle">
               <div class="img">
-                <img src="https://p1-q.mafengwo.net/s11/M00/C1/E6/wKgBEFsLup6AF7TPAAyOwN_f0Qw42.jpeg?imageMogr2%2Fthumbnail%2F%21220x150r%2Fgravity%2FCenter%2Fcrop%2F%21220x150%2Fquality%2F100" alt="">
+                <img :src='$store.state.front.url+item.articleCover' alt="">
               </div>
               <div class="text">
-                <span class="info">那是六月，美好的事情即将发生 still there…still there…still there…gone. 一个如同爱在午夜降临前的日落黄昏时，那是佛罗伦萨。 建筑歌剧、诗人画家、文艺复兴古罗马；
-                  傍晚牵手的老桥，深情对望摆拍的穹顶上，那是佛罗伦萨。 听半个艺术生的你讲，...那是六月，美好的事情即将发生 still there…still there…still there…gone. 一个如同爱在午夜降临前的日落黄昏时，那是佛罗伦萨。 建筑歌剧、诗人画家、文艺复兴古罗马；
-                  傍晚牵手的老桥，深情对望摆拍的穹顶上，那是佛罗伦萨。 听半个艺术生的你讲，...那是六月，美好的事情即将发生 still there…still there…still there…gone. 一个如同爱在午夜降临前的日落黄昏时，那是佛罗伦萨。 建筑歌剧、诗人画家、文艺复兴古罗马；
-                  傍晚牵手的老桥，深情对望摆拍的穹顶上，那是佛罗伦萨。 听半个艺术生的你讲，...那是六月，美好的事情即将发生 still there…still there…still there…gone. 一个如同爱在午夜降临前的日落黄昏时，那是佛罗伦萨。 建筑歌剧、诗人画家、文艺复兴古罗马；
-                  傍晚牵手的老桥，深情对望摆拍的穹顶上，那是佛罗伦萨。 听半个艺术生的你讲，...</span>
-                <div class="user">
-                  <img src="https://p1-q.mafengwo.net/s18/M00/82/CF/CoUBYGB-tfKAKxiMAACPGbbUd2881.jpeg?imageMogr2%2Fthumbnail%2F%2148x48r%2Fgravity%2FCenter%2Fcrop%2F%2148x48%2Fquality%2F90" alt="">
-                  <span class="name">章鱼小丸子</span>
+                <span class="info">{{item.articleContent}}</span>
+                <div class="user" @click="this.$router.push()">
+                  <img :src='$store.state.front.url+item.avatar' alt="">
+                  <span class="name">{{item.nickName}}</span>
                 </div>
               </div>
             </div>
           </div>
         </li>
       </ul>
+      <Pagination
+          :total="pagination.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          :auto-scroll="false"
+          @pagination="getPaginationArticle"
+      ></Pagination>
     </div>
     <div class="right">
       <span class="top">排行榜</span>
@@ -38,23 +41,47 @@
 </template>
 
 <script>
-import {getTopArticle,getHotArticle} from "@/api/article/article"
+import {getTopArticle,getHotArticle,getPaginationArticle} from "@/api/article/article"
 export default {
   name: "index",
   data(){
     return{
+      loading:true,
       topList:[],
+      totalList:[],
+      flag:1,
+      pagination:{
+        total:0,
+      },
+      queryParams:{
+        pageNum:1,
+        pageSize:10,
+      }
     }
   },
   methods:{
     gotoArticle(id){
       this.$router.push({path:'/frontHome/articlepage',query:{id:id}})
+    },
+    getPaginationArticle(){
+      this.loading=true;
+      getPaginationArticle(this.queryParams).then((res)=>{
+        console.log(res,"pagination")
+        this.totalList=res.rows;
+        this.pagination.total=res.total;
+         if(this.flag!==1){
+           this.$emit('scroll')
+         }
+         this.flag++;
+         this.loading=false;
+      })
     }
   },
   mounted() {
     getTopArticle().then((res)=>{
       this.topList=res.data;
     })
+    this.getPaginationArticle();
   }
 }
 </script>
@@ -115,10 +142,11 @@ export default {
               color: #666666;
             }
             .user{
+              width: 140px;
               display: flex;
               align-items: center;
               position: absolute;
-              right: 30px;
+              left: 75%;
               bottom: 0;
               img{
                 width: 30px;
@@ -127,6 +155,10 @@ export default {
                 margin-right: 7px;
               }
               .name{
+                width: 100px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 font: {
                   size: 11px;
                 };

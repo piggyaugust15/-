@@ -213,6 +213,13 @@ export function getSightsScoreRank() {
   })
 }
 
+export function addSightsTop(sightsId,top){
+  return request({
+    url: '/sights/ToTop/'+sightsId+"/"+top,
+    method:'get'
+  })
+}
+
 
 
 

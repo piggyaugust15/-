@@ -1,7 +1,7 @@
 <template>
   <div id="Acttractions">
     <!-- <Header></Header> -->
-    <TitleSwiper class=""></TitleSwiper>
+    <AttractionsSwiper ></AttractionsSwiper>
     <div class="main">
       <el-container>
         <el-header class="header">
@@ -50,7 +50,7 @@
 
 <script>
 import ComponentTitle from "../components/ComponentsTitle";
-import TitleSwiper from "../components/TitleSwiper";
+import AttractionsSwiper from "@/touristComponents/Attractions/AttractionsSwiper";
 import CategoryLink from "../components/CategoryLink";
 import ViewTemplate from "../components/ViewTemplate";
 import {getAttractionList} from '@/api/attraction/attraction.js'
@@ -162,7 +162,7 @@ export default {
   },
   components: {
     ComponentTitle,
-    TitleSwiper,
+    AttractionsSwiper,
     CategoryLink,
     ViewTemplate,
   },
@@ -206,13 +206,17 @@ export default {
     font-size: 16px;
     border-radius: 8px;
     font-size: 12px;
-    color: #18191c;
-    border: 1px solid #c0c0c0;
+    color: #181929;
+    border: 1px solid #e3e5e7;
     transform-origin: center;
     transition: 0.2s;
     cursor: pointer;
+    background-color: #ffffff;
     &:active {
       transform: scale(0.95) translateZ(0);
+    }
+    &:hover{
+      background-color: #e3e5e7;
     }
   }
 }

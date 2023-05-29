@@ -9,10 +9,13 @@
       <div class="linkList">
         <ul>
           <div class="relatedNews">相关新闻</div>
-          <li v-for="(item,index) in similarNews" :key="index" @click="gotoNews(item.newsId)">
-            {{ item.newsTitle }}
-          <span>{{ item.createTime }}</span>
-          </li>
+          <div v-if="similarNews.length>0">
+            <li v-for="(item,index) in similarNews" :key="index" @click="gotoNews(item.newsId)" >
+              {{ item.newsTitle }}
+              <span>{{ item.createTime }}</span>
+            </li>
+          </div>
+          <span v-else class="null">暂无新闻</span>
         </ul>
       </div>
       <!-- 推荐算法 -->
@@ -82,6 +85,13 @@
           font-size: 21px;
           border-bottom: solid 1px #dcdcdc;
           padding: 10px;
+
+        }
+        .null{
+          display: block;
+          margin-top: 10px;
+          text-align: center;
+          color: #a2a2a2;
         }
         ul {
         margin-top: 30px;

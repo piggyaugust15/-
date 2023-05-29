@@ -43,7 +43,7 @@
       })
       getSimilarNews(this.$route.query.id).then((res)=>{
         this.similarNews=res.data;
-        console.log(res)
+        console.log(res,'news')
       })
     }
 

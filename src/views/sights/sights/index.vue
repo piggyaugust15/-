@@ -269,6 +269,24 @@
             v-hasPermi="['sightBase:sights:remove']"
             >删除</el-button
           >
+          <el-button v-if="scope.row.sightsTop==='N'"
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleTop(scope.row)"
+              v-hasPermi="['sightBase:sights:edit']"
+          >置顶</el-button
+          >
+
+          <el-button v-if="scope.row.sightsTop==='Y'"
+                     size="mini"
+                     type="text"
+                     icon="el-icon-edit"
+                     @click="handleTop(scope.row)"
+                     v-hasPermi="['sightBase:sights:edit']"
+          >取消置顶</el-button
+          >
+
         </template>
       </el-table-column>
     </el-table>
@@ -276,8 +294,10 @@
     <pagination
       v-show="total > 0"
       :total="total"
+
       :page.sync="queryParams.pageNum"
       :limit.sync="queryParams.pageSize"
+
       @pagination="getList"
     />
 
@@ -468,6 +488,7 @@ import {
   delSights,
   addSights,
   updateSights,
+  addSightsTop,
 } from "@/api/sights/sights";
 import { getToken } from "@/utils/auth";
 
@@ -508,6 +529,7 @@ export default {
         sightsTelephone: null,
         sightsEng: null,
         sightsOpen: null,
+        sightsTop:null,
       },
       // 表单参数
       form: {},
@@ -582,6 +604,7 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
+        sightsTop: null,
       };
       this.resetForm("form");
     },
@@ -641,24 +664,25 @@ export default {
     handleDelete(row) {
       const sightsIds = row.sightsId || this.ids;
       this.$modal
-        .confirm('是否确认删除景点基本信息编号为"' + sightsIds + '"的数据项？')
-        .then(function () {
-          return delSights(sightsIds);
-        })
-        .then(() => {
-          this.getList();
-          this.$modal.msgSuccess("删除成功");
-        })
-        .catch(() => {});
+          .confirm('是否确认删除景点基本信息编号为"' + sightsIds + '"的数据项？')
+          .then(function() {
+            return delSights(sightsIds);
+          })
+          .then(() => {
+            this.getList();
+            this.$modal.msgSuccess("删除成功");
+          })
+          .catch(() => {
+          });
     },
     /** 导出按钮操作 */
     handleExport() {
       this.download(
-        "sightBase/sights/export",
-        {
-          ...this.queryParams,
-        },
-        `sights_${new Date().getTime()}.xlsx`
+          "sightBase/sights/export",
+          {
+            ...this.queryParams,
+          },
+          `sights_${new Date().getTime()}.xlsx`
       );
     },
     /** 导入按钮 */
@@ -669,9 +693,9 @@ export default {
     /** 下载模板操作 */
     importTemplate() {
       this.download(
-        "/sightBase/sights/importSightsTemplate",
-        {},
-        `sights_template_${new Date().getTime()}.xlsx`
+          "/sightBase/sights/importSightsTemplate",
+          {},
+          `sights_template_${new Date().getTime()}.xlsx`
       );
     },
     /**文件上传中处理*/
@@ -690,6 +714,19 @@ export default {
     submitFileForm() {
       this.$refs.upload.submit();
     },
-  },
+    handleTop(row) {
+      if (row.sightsTop === 'Y') {
+        addSightsTop(row.sightsId, "N").then((response) => {
+          this.$modal.msgSuccess(response.msg);
+          this.getList();
+        });
+      } else {
+        addSightsTop(row.sightsId, "Y").then((response) => {
+          this.$modal.msgSuccess(response.msg);
+          this.getList();
+        });
+      }
+    },
+  }
 };
 </script>
