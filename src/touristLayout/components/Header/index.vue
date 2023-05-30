@@ -12,7 +12,7 @@
         <router-link to="/frontHome/attractions" active-class="active"
           >景点</router-link
         >
-        <router-link to="/frontHome/culcreation" active-class="active"
+        <router-link to="/frontHome/culcreationHome" active-class="active"
           >文创</router-link
         >
         <router-link to="/frontHome/article" active-class="active"

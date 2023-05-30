@@ -193,7 +193,7 @@ export const constantRoutes = [
         meta: { title: '景点' }
       },
       {
-        path: 'culcreation',
+        path: 'culcreationHome',
         component: (resolve) => require(['@/touristComponents/Culcreation/CulcreationHome/index'], resolve),
         name: 'Culcreation',
         meta: { title: '文创' }

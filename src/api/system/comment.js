@@ -58,19 +58,20 @@ export function submitComment(data) {
   })
 }
 
-export function getParentComment(data) {
+export function getParentComment(query) {
   return request({
     url: '/permitAll/comment/getComment',
-    method: 'post',
-    params: data
+    method: 'get',
+    params: query
   })
 }
 
 
-export function getSecondComment(commentId) {
+export function getSecondComment(query) {
   return request({
-    url: "/permitAll/comment/getChildComment/" + commentId,
+    url: "/permitAll/comment/getChildComment",
     method: 'get',
+    params:query
   })
 }
 

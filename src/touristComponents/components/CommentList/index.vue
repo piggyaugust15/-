@@ -84,18 +84,21 @@
     <pagination
       v-show="total > 0"
       :total="total"
-      :page.sync="request.pageNum"
-      :limit.sync="request.pageSize"
+      :page.sync="queryParams.pageNum"
+      :limit.sync="queryParams.pageSize"
       @pagination="getInfo"
+      :auto-scroll="false"
     />
     <el-dialog
       title="评论回复"
       :visible.sync="dialogVisible"
-      width="30%"
+      width="40%"
       class="dialog"
       :before-close="handleClose"
+      :lock-scroll="true"
+      :modal="true"
     >
-      <div v-if="secondComment.length > 0" v-loading="dialogLoading">
+      <div v-if="secondComment.length > 0" v-loading="dialogLoading" class="commentBox" id="second">
         <li
           v-for="(item, index) in secondComment"
           :key="index"
@@ -139,6 +142,14 @@
         </li>
       </div>
       <el-empty description="暂无回复哦^-^" v-else></el-empty>
+      <pagination
+          v-show="secondTotal > 0"
+          :total="secondTotal"
+          :page.sync="secondCommentParams.pageNum"
+          :limit.sync="secondCommentParams.pageSize"
+          :auto-scroll="false"
+          @pagination="getSecondComment()"
+      />
     </el-dialog>
   </div>
 </template>
@@ -159,9 +170,15 @@ export default {
       isActive: -1,
       dialogVisible: false,
       total: 0,
-      request: {
+      secondTotal:0,
+      currentItem:{},
+      queryParams:{
+        pageNum: 1,
+        pageSize: 10,
         commentSource: this.type,
         id: this.$route.query.id,
+      },
+      secondCommentParams:{
         pageNum: 1,
         pageSize: 10,
       },
@@ -171,6 +188,9 @@ export default {
     };
   },
   methods: {
+    SecondScroll(){
+      document.getElementById("second").scrollIntoView({behavior:'smooth'});
+    },
     handleTipOff(item) {
       const h = this.$createElement;
       this.$msgbox({
@@ -212,19 +232,27 @@ export default {
       }
     },
     getInfo() {
-      getParentComment(this.request).then((response) => {
+      getParentComment(this.queryParams).then((response) => {
         this.total = response.total;
-        response.rows.map((item, index) => {
-          this.list.push(Object.assign({}, item, { content: "" }));
-        });
+        this.list=response.rows;
+      });
+    },
+    getSecondComment(){
+      getSecondComment({
+        pageNum: this.secondCommentParams.pageNum,
+        pageSize: this.secondCommentParams.pageSize,
+        commentId:this.currentItem.commentId
+      }).then((response) => {
+        this.secondTotal=response.total
+        this.secondComment = response.rows;
+        this.dialogLoading = false;
+        this.SecondScroll();
       });
     },
     opendialog(item) {
       this.dialogVisible = true;
-      getSecondComment(item.commentId).then((response) => {
-        this.secondComment = response.rows;
-        this.dialogLoading = false;
-      });
+      this.currentItem=item;
+      this.getSecondComment(item);
     },
     reply(index) {
       this.isActive = index;
@@ -435,6 +463,10 @@ li {
   ::v-deep.el-empty__image {
     text-align: center;
     margin: 0 auto;
+  }
+  .commentBox{
+    height: 400px;
+    overflow: auto;
   }
 }
 </style>

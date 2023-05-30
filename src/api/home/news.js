@@ -52,10 +52,11 @@ export function getAll() {
 
 
 //前端
-export function getRecentlyNews() {
+export function getRecentlyNews(query) {
   return request({
     url: '/permitAll/News/getRecentlyNew',
-    method:'get'
+    method:'get',
+    params:query
   })
 }
 

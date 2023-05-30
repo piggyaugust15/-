@@ -1,9 +1,8 @@
 import request from '@/utils/request'
 
-export const getSubscriptionList = (data) => {
+export function getSubscriptionList(value1,value2){
   return request({
-    url: '/creativity/lazy',
+    url: '/creativity/lazy/'+value1+'/'+value2,
     method: 'get',
-    params:data
   })
 }

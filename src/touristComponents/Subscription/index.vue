@@ -44,7 +44,7 @@
         ></router-link>
       </div>
     </div>
-    <div class="subcriptionList " v-loading="loading"
+    <div class="subcriptionList "
     >
       <ul
           v-if="subscriptionList.length>0"
@@ -119,14 +119,20 @@ export default {
   data() {
     return {
       loading:true,
-      pageNum:1,
-      pageSize:5,
-      disabled:false,
       flag:true,
+      params:{
+        pageNum:1,
+        pageSize:5,
+        orderByColum:"create_time",
+        isAsc:"asc",
+        total:this.total
+      },
+      total:0,
+      disabled:false,
       user:{
-        visitor:{
-
-        }
+        visitor:{},
+        backgroundImage:'',
+        avatar:''
       },
       currentList:[],
       subscriptionList: [],
@@ -155,24 +161,22 @@ export default {
     },
     getSubscriptionInfo(){
       getSubscriptionInfo().then((res)=>{
+        console.log(res,'user')
         this.user=res.data;
       })
     },
     getSubscriptionList(){
-      if (this.flag){
-        getSubscriptionList({pageSize:this.pageSize,pageNum:this.pageNum}).then((res)=>{
-          if (res.rows.length < this.pageSize){
-            this.flag=false
+          getSubscriptionList(this.params.pageNum,this.params.pageSize).then((res)=>{
+            this.total=res.total
+            console.log(res,'res')
+            this.subscriptionList=this.subscriptionList.concat(res.data)
+            this.params.pageNum ++;
+            console.log(this.params.pageNum)
             this.loading=false;
-            this.subscriptionList=this.subscriptionList.concat(res.rows)
-            return;
-          }
-          this.loading=false;
-          this.subscriptionList=this.subscriptionList.concat(res.rows)
-          this.pageNum ++;
-        })
-      }
-
+            if(res.data.length==0){
+              this.flag=false;
+            }
+          })
     },
   },
   watch: {
@@ -182,7 +186,6 @@ export default {
   },
   mounted(){
     this.getSubscriptionInfo();
-    // this.getSubscriptionList()
   },
 };
 </script>

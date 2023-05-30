@@ -11,7 +11,6 @@
         </el-header>
         <el-main class="center">
           <ViewTemplate
-            :listInfo="ViewTemplateListInfo"
             :type="type"
             class="template"
           ></ViewTemplate>
@@ -109,18 +108,6 @@
       ViewTemplate,
       side
     },
-    created() {
-      this.getAllNews();
-    },
-    methods:{
-      getAllNews(){
-        getRecentlyNews().then(response =>{
-          this.ViewTemplateListInfo = response.data;
-        });
-      }
-    }
-
-
   }
 </script>
 

@@ -63,7 +63,7 @@
     <div v-else-if="type === 'News'">
       <!-- 判断传输过来的数据是哪一个部分的？ -->
       <ul>
-        <li v-for="item in listInfo" :key="item.newsId">
+        <li v-for="item in List" :key="item.newsId">
           <div class="total_div">
             <div class="time_div">
               <span class="day">{{ parseTime(item.createTime,'{d}') }}</span>
@@ -82,24 +82,42 @@
           </div>
         </li>
       </ul>
-      <a href="#" class="globalview">
-        <i class="fa fa-eye" aria-hidden="true"></i>
-        总览</a
-      >
+      <Pagination
+          :total="total"
+          :page.sync=" pagination.pageNum"
+          :limit.sync=" pagination.pageSize"
+          :auto-scroll="false"
+          @pagination="getAllNews()"
+      ></Pagination>
     </div>
   </div>
 </template>
 
 <script>
+  import {getRecentlyNews} from "@/api/home/news";
+
   export default {
     name: "ViewTemplate",
     data(){
       return{
         url:process.env.VUE_APP_BASE_API,
+        total:0,
+        List:[],
+        pagination:{
+          pageNum:1,
+          pageSize:10,
+        }
       }
     },
     props: ["listInfo", "type"],
     methods: {
+      getAllNews(){
+        getRecentlyNews(this.pagination).then(response =>{
+          console.log(response,'list')
+          this.List = response.rows;
+          this.total=response.total;
+        });
+      },
       gotoLink(value) {
         if (this.type === "News") {
           this.$router.push({ path: "/frontHome/newsPage",query:{id:value}});
@@ -109,6 +127,9 @@
           this.$router.push({ path: "/Bulletinspage", query: { id: value } });
         }
       },
+    },
+    created() {
+      this.getAllNews();
     },
   };
 </script>

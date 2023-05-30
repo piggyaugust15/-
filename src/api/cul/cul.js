@@ -26,3 +26,11 @@ export function getDraft() {
     method: 'get',
   })
 }
+
+//culcreationHome
+export function getCulHome(value1,value2) {
+  return request({
+    url: '/creativity/lazy/fall/'+value1+'/'+value2,
+    method: 'get',
+  })
+}
