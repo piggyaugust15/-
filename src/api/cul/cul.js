@@ -28,9 +28,10 @@ export function getDraft() {
 }
 
 //culcreationHome
-export function getCulHome(value1,value2) {
+export function getCulHome(query) {
   return request({
-    url: '/creativity/lazy/fall/'+value1+'/'+value2,
+    url: '/creativity/lazy/fall',
     method: 'get',
+    params:query
   })
 }

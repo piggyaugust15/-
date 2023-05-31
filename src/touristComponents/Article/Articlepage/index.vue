@@ -239,6 +239,7 @@ export default {
     },
     paraTranslate(){
       paraTranslate(2,this.$route.query.id,0).then((res)=>{
+        console.log('翻译了')
         this.info.articleContent=res.data.articleContentOUT;
         this.speakInfo=res.data.articleContentOUT;
         this.speakTTS=res.data.speakTTS;
@@ -247,7 +248,9 @@ export default {
   },
   watch:{
     '$store.state.front.lang'(){
-      this.paraTranslate();
+      if(this.$store.state.front.lang!=='26'){
+        this.paraTranslate();
+      }
     }
   },
   mounted() {
@@ -269,7 +272,7 @@ export default {
       }
     });
     window.addEventListener("scroll", this.handleScroll);
-    this.paraTranslate();
+    // this.paraTranslate();
     // if (
     //   this.$route.path == "/Attractionspage" ||
     //   this.$route.path == "/Attractionspage"

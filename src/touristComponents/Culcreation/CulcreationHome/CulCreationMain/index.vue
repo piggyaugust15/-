@@ -1,21 +1,22 @@
 <template>
-<!--  v-infinite-scroll="getCulHome()"
-      :infinite-scroll-immediate="false"-->
-  <div
-      id="culcreationmain"
-      style="overflow:auto;"
-      class="infinite-list"
-
-  >
-    <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto" infinite-scroll-distance="10">
-      <li v-for="i in count" class="infinite-list-item">{{ i }}</li>
-    </ul>
-<!--    <div class="box">-->
-<!--      <div class="item" v-for="(item,index) in List" :key="index">-->
-<!--        <img :src="$store.state.front.url+item.culCreativityImage.split(',')[0]" alt="">-->
-<!--        <span>{{item.culCreativityTitle}}</span>-->
-<!--      </div>-->
-<!--    </div>-->
+  <div id="culcreationmain">
+    <div class="box">
+      <div class="item" v-for="(item,index) in List" :key="index" @click="$router.push({path:'/frontHome/culcreation',query:{id:item.culCreativityId}})">
+          <img :src="$store.state.front.url+item.culCreativityImage.split(',')[0]" alt="">
+          <span class="text">{{item.culCreativityTitle}}</span>
+      </div>
+    </div>
+    <div class="pagination">
+<!--      在pagination外层嵌套个div，使div textalign center 即可居中pagination-->
+      <Pagination
+          :total="total"
+          :page.sync="pagination.pageNum"
+          :limit.sync="pagination.pageSize"
+          :auto-scroll="false"
+          @pagination="getCulHome"
+          layout="sizes,total,jumper,prev,pager,next"
+      ></Pagination>
+    </div>
   </div>
 </template>
 
@@ -39,14 +40,16 @@ export default {
       this.count += 2
     },
     getCulHome(){
-      getCulHome(this.pagination.pageNum,this.pagination.pageSize).then((res)=>{
+      getCulHome(this.pagination).then((res)=>{
         this.total=res.total;
-        this.List=this.List.concat(res.data);
+        this.List=res.rows;
         console.log(res,'CulHome')
-        this.pagination.pageNum++;
       })
     }
   },
+  mounted() {
+    this.getCulHome();
+  }
 }
 </script>
 
@@ -55,21 +58,23 @@ export default {
   width: 1340px;
   margin: 0 auto;
   height: 100%;
+  padding-bottom: 20px;
   .box {
     width: 100%; // 默认宽度
     margin: 40px auto; // 剧中
     columns: 5; // 默认列数
     column-gap: 30px; // 列间距
-    height: 100%;
-    overflow:auto;
     ul{
-      height: 100px;
+      height: calc(100% - 70px);
     }
     .item {
+      position: relative;
       width: 100%;
       break-inside: avoid;
+      padding-bottom: 10px;
       margin-bottom: 30px;
       span {
+        display: block;
         padding: 10px 5px 10px 5px;
         line-height: 25px;
         font: {
@@ -78,18 +83,19 @@ export default {
           family: "Noto Serif SC", serif;;
         };
       }
-    }
-
-    .item img {
-      width: 100%;
-    }
-
-    .item h2 {
-      padding: 8px 0;
+      img {
+        width: 100%;
+      }
+      h2 {
+        padding: 8px 0;
+      }
+      &:hover{
+        cursor:pointer;
+      }
     }
   }
-  .infinite-list{
-    overflow-y: scroll;
+  .pagination{
+    text-align: center;
   }
 }
 </style>
