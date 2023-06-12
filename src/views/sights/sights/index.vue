@@ -300,7 +300,6 @@
 
       @pagination="getList"
     />
-
     <!-- 添加或修改景点基本信息对话框 -->
     <el-dialog
       :title="title"
@@ -413,6 +412,31 @@
               />
             </el-form-item>
           </el-col>
+          <el-col :span="12">
+            <el-form-item label="修正编码">
+              <el-radio-group v-model="choice">
+                <el-radio label="Y">开启</el-radio>
+                <el-radio label="N">关闭</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item v-if=" form.territorId == null || this.choice === 'Y' ">
+              <el-cascader
+                           placeholder="试试搜索：南京"
+                           :options="options"
+                           @expand-change="cascaderChange"
+                           @change="finalChange"
+                           filterable
+                           v-model="form.territorId"
+              ></el-cascader>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+
+            <el-form-item label="省市编码" prop="territorId">
+              {{form.territorId}}
+            </el-form-item>
+          </el-col>
+
           <el-col :span="24">
             <el-form-item label="景点细节">
               <editor v-model="form.sightsDetail" :min-height="192" />
@@ -421,6 +445,22 @@
           <el-col :span="24">
             <el-form-item label="景点图片">
               <imageUpload v-model="form.sightsImage"  :file-size="10"/>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="24">
+            <el-form-item label="视频链接" prop="sightsVideo">
+              <el-input
+                  v-model="form.sightsVideo"
+                  clearable
+                  autosize
+                  placeholder="视频链接"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="视频封面">
+              <imageUpload v-model="form.sightsCover"  :file-size="10"/>
             </el-form-item>
           </el-col>
           <el-col :span="24">
@@ -489,6 +529,8 @@ import {
   addSights,
   updateSights,
   addSightsTop,
+  getCountryProvince,
+  getProvinceCity, getCityDistrict
 } from "@/api/sights/sights";
 import { getToken } from "@/utils/auth";
 
@@ -533,6 +575,7 @@ export default {
       },
       // 表单参数
       form: {},
+      choice: 'N',
       // 表单校验
       rules: {
         sightsName: [
@@ -557,10 +600,19 @@ export default {
         // 上传的地址
         url: process.env.VUE_APP_BASE_API + "/sightBase/sights/importData",
       },
+
+      options:[
+        {
+          value: '1',
+          label: '中国',
+          children: []
+        }
+        ]
     };
   },
   created() {
     this.getList();
+    this.getProvince();
   },
   methods: {
     /** 查询景点基本信息列表 */
@@ -594,6 +646,8 @@ export default {
         sightsLongitude: null,
         sightsLatitude: null,
         sightsImage: null,
+        sightsVideo:null,
+        sightsCover:null,
         sightsCode: null,
         sightsIntro: null,
         sightsDetail: null,
@@ -605,6 +659,7 @@ export default {
         updateBy: null,
         updateTime: null,
         sightsTop: null,
+        territorId:null,
       };
       this.resetForm("form");
     },
@@ -635,6 +690,8 @@ export default {
       this.reset();
       const sightsId = row.sightsId || this.ids;
       getSights(sightsId).then((response) => {
+        //response.data.territorId=response.data.territorId.split('/');
+        //console.log(response.data.territorId)
         this.form = response.data;
         this.open = true;
         this.title = "修改景点基本信息";
@@ -645,6 +702,7 @@ export default {
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.sightsId != null) {
+            console.log(this.form)
             updateSights(this.form).then((response) => {
               this.$modal.msgSuccess("修改成功");
               this.open = false;
@@ -727,6 +785,69 @@ export default {
         });
       }
     },
+
+    getProvince(){
+      getCountryProvince(1).then((res)=>{
+        console.log(res)
+        for(let i=0;i<=res.data.length;i++){
+          this.options[0].children.push({value:res.data[i].province,label:res.data[i].province,children:[]})
+        }
+      })
+    },
+
+    cascaderChange(value){
+      if(value.length===2){
+        getProvinceCity(value[1]).then((res)=>{
+          for(let i=0;i<=this.options[0].children.length;i++){
+
+            if(this.options[0].children[i].value===value[1]){
+
+              this.options[0].children[i].children=[];
+
+              for(let j=0;j<res.data.length;j++){
+
+                this.options[0].children[i].children.push({value:res.data[j].cityGeocode,label:res.data[j].city,children:[]});
+              }
+              return
+              // console.log(this.form.sightsProvince)
+            }
+          }
+        })
+      }
+      if(value.length===3){
+        getCityDistrict(value[2]).then((res)=>{
+
+          for(let i=0;i<this.options[0].children.length;i++){
+
+            for(let j=0;j<this.options[0].children[i].children.length;j++){
+
+              if(this.options[0].children[i].children[j].value===value[2]){
+                this.options[0].children[i].children[j].children=[];
+                for(let k=0;k<res.data.length;k++){
+                  this.options[0].children[i].children[j].children.push({value:res.data[k].territorId,label:res.data[k].district});
+                }
+                return
+              }
+            }
+
+          }
+        })
+      }
+    },
+
+    finalChange(value){
+      console.log(value,2222222222)
+      let content = "";
+      for (let i = 0; i < value.length; i++) {
+        content += value[i];
+        if (i === value.length-1){
+          break;
+        }
+        content = content + "/"
+      }
+
+      this.form.territorId = content;
+    }
   }
 };
 </script>

@@ -54,7 +54,7 @@ export default {
     },
     gotoCreation(){
       this.$router.push({
-        path:"/frontHome/creation/index",
+        path:"/frontHome/culcreationHome",
       });
     }
   },

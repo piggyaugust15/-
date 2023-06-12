@@ -465,8 +465,9 @@
           </el-col>
           <el-col>
             <el-form-item label="文创内容" prop="culCreativityContent">
-              <editor v-model="form.culCreativityContent" :min-height="192" v-if="form.sightsId!==null"/>
-              {{form.culCreativityContent}}
+              <editor v-model="form.culCreativityContent" :min-height="192" />
+<!--              v-if="form.sightsId!==null"-->
+<!--              {{form.culCreativityContent}}-->
             </el-form-item>
           </el-col>
           <el-col>

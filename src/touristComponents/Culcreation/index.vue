@@ -11,6 +11,9 @@
       <div class="left">
         <div class="top">
           <p class="name">{{ info.culCreativityTitle }}</p>
+          <span class="type">文创标签:
+          <div class="tagItem" v-for="(item,index) in info.culCreativityTags">{{item}}</div>
+          </span>
           <p class="info">
             {{ info.culCreativityIntro }}
           </p>
@@ -27,8 +30,8 @@
         </div>
         <div class="text">
           <h2 class="productiontitle">关于</h2>
-          <p class="text">
-            {{info.culCreativityContent}}
+          <p class="text" v-html="info.culCreativityContent">
+<!--            {{}}-->
           </p>
         </div>
         <div class="speak"><Speak :voice=speakInfo :lang="speakTTS"></Speak></div>
@@ -151,11 +154,11 @@ export default {
   mounted() {
     culViewByUser(this.$route.query.id);
     getCuldetail(this.$route.query.id).then((res) => {
-      // console.log('culcrea  ',res);
+      console.log('culcrea  ',res);
       this.info = res.data;
       this.imgList = this.info.culCreativityImage.split(",");
     });
-    this.paraTranslate();
+    // this.paraTranslate();
   },
   beforeDestroy() {
     window.removeEventListener("click", () => {}, true);
@@ -211,6 +214,25 @@ p {
       position: relative;
       width: 800px;
       .top {
+        .type{
+          text-align: left;
+          color: rgb(111, 111, 111);
+          font-size: 13px;
+          padding: 5px 0px;
+        }
+        .tagItem{
+          display: inline-block;
+          padding: 1px 5px;
+          background-color: #ebf2f7;
+          margin-right: 5px;
+          border-radius: 3px;
+          text-align: center;
+          height: 20px;
+          color: rgb(111, 111, 111);
+          font-size: 13px;
+          //padding: 5px 0px;
+          text-align: left;
+        }
         .name {
           font-family: "Noto Serif SC", serif !important;
           font-weight: 700;
@@ -247,6 +269,9 @@ p {
           text-indent: 2em;
           line-height: 30px;
           font-size: 17px;
+          //img{
+          //  width: 100%;
+          //}
         }
         .productiontitle {
           font-family: "Noto Serif SC", serif !important;

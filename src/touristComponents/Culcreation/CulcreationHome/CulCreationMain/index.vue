@@ -73,6 +73,7 @@ export default {
       break-inside: avoid;
       padding-bottom: 10px;
       margin-bottom: 30px;
+      //padding: 10px;
       span {
         display: block;
         padding: 10px 5px 10px 5px;
@@ -91,6 +92,9 @@ export default {
       }
       &:hover{
         cursor:pointer;
+        box-shadow: 0 0 0 1px rgba(0,0,0,.05), 0 2px 3px rgba(0,0,0,.18);
+        transform: scale(1.1);
+        transition: all 500ms ease 0s;
       }
     }
   }

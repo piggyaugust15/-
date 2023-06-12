@@ -1,8 +1,9 @@
 import request from '@/utils/request'
 
-export function getCulByWays(num) {
+export function getCulByWays(num,query) {
   return request({
     url: '/creativity/person/'+num ,
+    params:query,
     method: 'get',
   })
 }

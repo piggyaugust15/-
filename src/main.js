@@ -54,6 +54,11 @@ import 'mavon-editor/dist/css/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import BaiduMap from 'vue-baidu-map'
+
+import VueVideoPlayer from 'vue-video-player';
+window.videojs = VueVideoPlayer.videojs;
+import 'video.js/dist/video-js.css';
+require('video.js/dist/lang/zh-CN.js');
 Vue.use(VueAxios, axios)
 Vue.use(mavonEditor);
 Vue.use(Speak)
@@ -85,6 +90,7 @@ Vue.use(dataV)
 Vue.use(directive)
 Vue.use(plugins)
 Vue.use(VueMeta)
+Vue.use(VueVideoPlayer);
 Vue.use(BaiduMap, {
   ak: 'qOODeQG4eQRtkrNor1lFe4rLS6sWEhDt'
 })

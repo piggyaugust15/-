@@ -9,9 +9,10 @@ export function getAttractionList() {
   })
 }
 
-export function getAttractionFav() {
+export function getAttractionFav(query) {
   return request({
     url: '/record/collect/getAll',
+    params:query,
     method: 'get',
   })
 }

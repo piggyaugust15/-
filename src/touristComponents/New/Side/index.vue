@@ -1,7 +1,7 @@
 <template>
   <div id="side">
     <div>
-      <span class="title">丝绸之路专栏</span>
+      <span class="title">丝路新闻</span>
       <div class="block">
         <el-carousel trigger="click" height="300px" :interval="5000">
           <el-carousel-item v-for="(item,index) in silk" :key="index">
@@ -16,19 +16,29 @@
       </div>
     </div>
 
-    <div class="hot">
-      <span class="title">社会热点</span>
-      <div @click="goto(hot[0].newsId)" class="hotblock">
-        <div class="img">
-          <img :src="$store.state.front.url+hot[0].imageId.split(',')[0]" alt="">
-        </div>
-        <div class="text">
-          {{hot[0].newsTitle}}
-        </div>
-      </div>
+    <div class="block">
+      <span class="title">文旅动态</span>
+      <el-carousel trigger="click" height="300px" :interval="5000">
+        <el-carousel-item v-for="(item,index) in hot" :key="index">
+          <div @click="goto(item.newsId)">
+            <div class="img">
+              <img :src="$store.state.front.url+item.imageId.split(',')[0]" alt="">
+            </div>
+            <div class="text">{{item.newsTitle}}</div>
+          </div>
+        </el-carousel-item>
+      </el-carousel>
+<!--      <div @click="goto(hot[0].newsId)" class="hotblock">-->
+<!--        <div class="img">-->
+<!--          <img :src="$store.state.front.url+hot[0].imageId.split(',')[0]" alt="">-->
+<!--        </div>-->
+<!--        <div class="text">-->
+<!--          {{hot[0].newsTitle}}-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
-<!--    <div class="policy">-->
-<!--      <span class="title">政策法规</span>-->
+<!--    <div class="political">-->
+<!--      <span class="title">丝路法规</span>-->
 <!--      <div class="img">-->
 <!--        <img :src="$store.state.front.url+policy[0].imageId.split(',')[0]" alt="">-->
 <!--      </div>-->
@@ -38,9 +48,20 @@
 <!--    </div>-->
 
     <div class="political">
-      <span class="title">时政专栏</span>
+      <span class="title">国际时政</span>
       <ul>
         <li v-for="(item,index) in political" :key="index" @click="goto(item.newsId)">
+          {{  parseTime(item.createTime,'{m}')}}月
+          {{ parseTime(item.createTime,'{d}') }}日
+          {{item.newsTitle}}
+        </li>
+      </ul>
+    </div>
+
+    <div class="political">
+      <span class="title">丝路法规</span>
+      <ul>
+        <li v-for="(item,index) in policy" :key="index" @click="goto(item.newsId)">
           {{  parseTime(item.createTime,'{m}')}}月
           {{ parseTime(item.createTime,'{d}') }}日
           {{item.newsTitle}}
@@ -59,7 +80,8 @@ export default {
       silk:[],
       political:[],
       hot:[{imageId:''}],
-      policy:[{imageId:''}]
+      policy:[],
+      law:[{imageId:''}]
     }
   },
   methods:{
@@ -71,13 +93,13 @@ export default {
     getColumn(4).then((res)=>{
       this.silk=res.data
     })
-    getColumn(3).then((res)=>{
+    getColumn(3).then((res)=>{//国际时政
       this.political=res.data
     })
-    getColumn(0).then((res)=>{
+    getColumn(2).then((res)=>{//文旅动态
       this.hot=res.data
     })
-    getColumn(1).then((res)=>{
+    getColumn(1).then((res)=>{//丝路法规
       this.policy=res.data
       console.log(res)
     })
@@ -133,6 +155,7 @@ export default {
     }
   }
   .political{
+    margin-bottom: 50px;
     li{
       text-overflow: ellipsis;
       overflow: hidden;

@@ -50,6 +50,13 @@
         </div>
       </li>
     </ul>
+    <Pagination
+        :total="pagination.total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        :auto-scroll="false"
+        @pagination="getInfo"
+    ></Pagination>
   </div>
 </template>
 
@@ -63,6 +70,13 @@ export default {
     return {
       loading: true,
       List: [],
+      pagination:{
+        total:0,
+      },
+      queryParams:{
+        pageNum:1,
+        pageSize:10,
+      }
     };
   },
   components: { deletePopover },
@@ -75,6 +89,7 @@ export default {
       });
     },
     getInfo() {
+      this.loading=true;
       if (this.type === 3) {
         getDraft().then((response) => {
           console.log(response);
@@ -82,8 +97,10 @@ export default {
           this.loading = false;
         });
       } else {
-        getUsersArticleByWays(this.type).then((response) => {
+        getUsersArticleByWays(this.type,this.queryParams).then((response) => {
+          console.log('article',response,)
           this.List = response.rows;
+          this.pagination.total=response.total;
           // this.$emit("get", this.List.length);
           this.loading = false;
         });
@@ -110,64 +127,68 @@ export default {
 <style lang="scss" scoped>
 $font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial,
   "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-ul {
-  li {
-    display: flex;
-    padding-bottom: 20px;
-    padding-top: 20px;
-    border-bottom: 1px solid #e7e7e7;
-    cursor: pointer;
-    transition: all 0.3s ease-in;
-    &:hover {
-      background-color: #fafafa;
-    }
-    .img {
-      width: 154px;
-      height: 96px;
-      border-radius: 10px;
-      padding-right: 20px;
-      img {
-        width: 100%;
-        height: 100%;
+#manuscriptlist{
+  padding-bottom: 10px;
+  ul {
+    li {
+      display: flex;
+      padding-bottom: 20px;
+      padding-top: 20px;
+      border-bottom: 1px solid #e7e7e7;
+      cursor: pointer;
+      transition: all 0.3s ease-in;
+      &:hover {
+        background-color: #fafafa;
       }
-    }
-    .rightbox {
-      position: relative;
-      flex: 1;
-      .title {
-        display: block;
-        font-size: 16px;
-        color: #212121;
-        padding-bottom: 15px;
-        font-family: $font;
-      }
-      .time {
-        display: block;
-        font-size: 14px;
-        color: #505050;
-        font-family: $font;
-        padding-bottom: 20px;
-      }
-      .tags {
-        span {
-          padding-right: 20px;
-          font-family: $font;
-          font-size: 12px;
-          color: #99a2aa;
-          i {
-            padding-right: 5px;
-          }
+      .img {
+        width: 154px;
+        height: 96px;
+        border-radius: 10px;
+        padding-right: 20px;
+        img {
+          width: 100%;
+          height: 100%;
         }
       }
-      .btn {
-        position: absolute;
-        right: 20px;
-        top: 40px;
-        .edit {
-          margin-right: 10px;
+      .rightbox {
+        position: relative;
+        flex: 1;
+        .title {
+          display: block;
+          font-size: 16px;
+          color: #212121;
+          padding-bottom: 15px;
+          font-family: $font;
+        }
+        .time {
+          display: block;
+          font-size: 14px;
+          color: #505050;
+          font-family: $font;
+          padding-bottom: 20px;
+        }
+        .tags {
+          span {
+            padding-right: 20px;
+            font-family: $font;
+            font-size: 12px;
+            color: #99a2aa;
+            i {
+              padding-right: 5px;
+            }
+          }
+        }
+        .btn {
+          position: absolute;
+          right: 20px;
+          top: 40px;
+          .edit {
+            margin-right: 10px;
+          }
         }
       }
     }
   }
 }
+
 </style>

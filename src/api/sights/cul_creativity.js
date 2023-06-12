@@ -106,9 +106,10 @@ export function create(data) {
   })
 }
 //获得用户文创列表
-export function getCulList(id) {
+export function getCulList(id,query) {
   return request({
     url: '/creativity/getAllCul/'+id,
+    params:query,
     method: 'post',
   })
 }

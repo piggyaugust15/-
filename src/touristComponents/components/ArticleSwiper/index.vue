@@ -3,7 +3,7 @@
     <div class="block">
       <div class="carousel" >
         <div class="total">
-          <span class="slogan">Don`t fear the unknown</span>
+          <span class="slogan">Travelling On the Silk Road</span>
           <div class="search">
             <el-popover
                 placement="bottom"

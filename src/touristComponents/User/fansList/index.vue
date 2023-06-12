@@ -24,6 +24,15 @@
         </div></li>
       </div>
       <el-empty description="这里还没有关注的人哦" v-else></el-empty>
+      <div style="padding-bottom: 20px">
+        <Pagination
+            :total="subPagination.total"
+            :page.sync="subQueryParams.pageNum"
+            :limit.sync="subQueryParams.pageSize"
+            :auto-scroll="false"
+            @pagination="getList"
+        ></Pagination>
+      </div>
     </ul>
     <ul v-else
     >
@@ -48,6 +57,15 @@
         </div></li>
       </div>
       <el-empty description="这里还没有粉丝哦" v-else></el-empty>
+      <div style="padding-bottom: 20px">
+        <Pagination
+            :total="fansPagination.total"
+            :page.sync="fansQueryParams.pageNum"
+            :limit.sync="fansQueryParams.pageSize"
+            :auto-scroll="false"
+            @pagination="getList"
+        ></Pagination>
+      </div>
     </ul>
   </div>
 </template>
@@ -61,7 +79,22 @@ export default {
       sub:[],
       fans:[],
       ifSelf:false,
-      flag:this.$route.query.id
+      flag:this.$route.query.id,
+      subPagination:{
+        total:0,
+      },
+      subQueryParams:{
+        pageNum:1,
+        pageSize:10,
+      },
+
+      fansPagination:{
+        total:0,
+      },
+      fansQueryParams:{
+        pageNum:1,
+        pageSize:10,
+      },
     }
   },
   methods:{
@@ -80,19 +113,16 @@ export default {
     },
     getList(){
       if(this.type){
-        getSubList(this.flag).then((res)=>{
+        getSubList(this.flag,this.subQueryParams).then((res)=>{
           this.ifSelf=res.params.ifSelf;
-          console.log(this.ifSelf)
           this.sub=res.rows;
-          console.log('sub',res)
+          this.subPagination.total=res.total;
         })
       }else{
-        getFansList(this.flag).then((res)=>{
+        getFansList(this.flag,this.fansQueryParams).then((res)=>{
           this.ifSelf=res.params.ifSelf;
-          console.log(this.ifSelf)
           this.fans=res.rows;
-          console.log('fans',res)
-
+          this.fansPagination.total=res.total;
         })
       }
 

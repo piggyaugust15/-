@@ -85,9 +85,10 @@ export function createArticle(data) {
 }
 
 // 获取用户收藏列表
-export function getFavArticle() {
+export function getFavArticle(query) {
   return request({
     url: '/article/collect/getAll',
+    params:query,
     method: 'get'
   })
 }
@@ -117,11 +118,11 @@ export function getArticleDetail(articleId) {
 }
 
 // 获取用户文章列表  分页
-export function getArticleList(id) {
+export function getArticleList(id,query) {
   return request({
     url: '/article/getAllArticle/'+id,
     method: 'post',
-    // params: query
+    params: query
   })
 }
 
@@ -133,9 +134,10 @@ export function getDraft() {
   })
 }
 
-export function getUsersArticleByWays(num) {
+export function getUsersArticleByWays(num,query) {
   return request({
     url: '/article/person/' + num,
+    params: query,
     method: 'get'
   })
 }
@@ -206,5 +208,13 @@ export function getPaginationArticle(query) {
     url: '/article/articleShow',
     method: 'get',
     params:query
+  })
+}
+
+//获得文章标签提示
+export function getRandomTags(position) {
+  return request({
+    url: '/tags/show/'+position,
+    method: 'get',
   })
 }

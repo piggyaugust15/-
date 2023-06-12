@@ -220,6 +220,27 @@ export function addSightsTop(sightsId,top){
   })
 }
 
+export function getCountryProvince(nation){
+  return request({
+    url: 'areaChoice/country/'+nation,
+    method:'get'
+  })
+}
+
+export function getProvinceCity(province){
+  return request({
+    url: 'areaChoice/city/'+province,
+    method:'get'
+  })
+}
+
+export function getCityDistrict(cityGeocode){
+  return request({
+    url: 'areaChoice/area/'+cityGeocode,
+    method:'get'
+  })
+}
+
 
 
 

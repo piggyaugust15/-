@@ -28,6 +28,41 @@
         <imageUpload v-model="culCreationForm.culCreativityImage" />
       </el-form-item>
 
+      <el-form-item label="文创标签" prop="articleTag">
+        <el-tag
+            :key="tag"
+            v-for="tag in culCreationForm.culCreativityTags"
+            closable
+            :disable-transitions="false"
+            @close="handleClose(tag)">
+          {{tag}}
+        </el-tag>
+        <el-popover
+            placement="right"
+            width="400"
+            trigger="click">
+          <div class="input">
+            <el-input
+                placeholder="请输入文字，Enter键入可添加自定义标签"
+                v-model="input"
+                @keyup.enter.native="handleInputConfirm"
+                clearable
+            >
+            </el-input>
+            <div class="tagBox">
+              <span class="item" v-for="(item,index) in suggestTags"
+                    @click="pushTags(item)"
+                    :key="index"
+              >{{item}}</span>
+            </div>
+            <span class="text">
+              还可以添加 {{ 5 - culCreationForm.culCreativityTags.length }} 个标签
+            </span>
+          </div>
+          <el-button slot="reference" icon="el-icon-plus" size="mini" style="margin-left: 10px">添加文章标签</el-button>
+        </el-popover>
+      </el-form-item>
+
       <el-form-item label="文创状态" prop="status">
         <el-radio-group v-model="culCreationForm.status">
           <el-radio
@@ -88,6 +123,8 @@ export default {
     };
     return {
       loading:false,
+      input:'',
+      suggestTags:['python','django','pygame','热门旅行','美味的食物','哈哈哈哈哈哈哈哈哈','12','12','12','12',],
       culCreationForm: {
         culCreativityTitle: "",
         culCreativityContent: "",
@@ -122,7 +159,7 @@ export default {
           { validator: checkImage, triger: "blur" },
         ],
         culCreativityIntro: [
-          { required: true, message: "请输入文创标题", trigger: "blur" },
+          { required: true, message: "请输入文创简介", trigger: "blur" },
           {
             min: 1,
             message: "请输入文创内容",
@@ -133,6 +170,47 @@ export default {
     };
   },
   methods: {
+    handleClose(tag) {
+      this.culCreationForm.culCreativityTags.splice(this.culCreationForm.culCreativityTags.indexOf(tag), 1);
+    },
+    pushTags(item){
+      if(this.culCreationForm.culCreativityTags.includes(item)){
+        this.$message({
+          message:'已经有该标签啦~',
+          type: "warning",
+        })
+      }else if(this.culCreationForm.culCreativityTags.length<5){
+        this.culCreationForm.culCreativityTags.push(item);
+      }else if(this.culCreationForm.culCreativityTags.length>=5){
+        this.$message({
+          message:'标签数量已达上限',
+          type: "warning",
+        })
+      }
+    },
+    handleInputConfirm() {
+      let input = this.input.trim();
+      if (input && this.culCreationForm.culCreativityTags.length < 5&&!this.culCreationForm.culCreativityTags.includes(input)) {
+        this.culCreationForm.culCreativityTags.push(input);
+        this.input = '';
+      } else if (input === '') {
+        this.$message({
+          message: '输入内容不能为空',
+          type: "warning",
+        })
+      } else if (this.culCreationForm.culCreativityTags.length >= 5) {
+        this.$message({
+          message: '标签数量已达上限',
+          type: "warning",
+        })
+      }else if(this.culCreationForm.culCreativityTags.includes(input)){
+        this.$message({
+          message:'已经有该标签啦~',
+          type: "warning",
+        })
+      }
+    },
+      // this.inputVisible = f
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -186,5 +264,44 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+::v-deep.el-tag{
+  background-color: #ffffff;
+  color: #267dcc;
+  border: 1px solid rgba(38,125,204,.2);
+}
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.input{
+  position: relative;
+  padding: 10px;
+  .tagBox{
+    margin-top: 10px;
+    //columns: 4; // 默认列数
+    //column-gap: 10px; // 列间距
+    .item{
+      display: inline-block;
+      padding: 0 8px;
+      height: 30px;
+      background-color: #ebf2f7;
+      border-radius: 2px;
+      font-weight: 400;
+      color: #507999;
+      line-height: 30px;
+      cursor: pointer;
+      margin-right: 16px;
+      margin-bottom: 10px;
+      border: none;
+      font-size: 13px!important;
+    }
+  }
+  .text{
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+    font-size: 12px;
+    color: #999;
+  }
+}
 </style>

@@ -166,6 +166,15 @@
                   </li>
                 </div>
                 <el-empty description="这里暂时还没有文章哦"  v-else ></el-empty>
+                <div style="padding-bottom: 20px">
+                  <Pagination
+                      :total="articlePagination.total"
+                      :page.sync="articleQueryParams.pageNum"
+                      :limit.sync="articleQueryParams.pageSize"
+                      :auto-scroll="false"
+                      @pagination="getUerArticleList"
+                  ></Pagination>
+                </div>
               </el-tab-pane>
               <el-tab-pane  name="second">
                 <span slot="label"><i class="el-icon-s-opportunity"></i> 文创</span>
@@ -210,10 +219,18 @@
                   </li>
                 </div>
                 <el-empty description="这里暂时还没有文创哦"  v-else ></el-empty>
+                <div style="padding-bottom: 20px">
+                  <Pagination
+                      :total="culPagination.total"
+                      :page.sync="culQueryParams.pageNum"
+                      :limit.sync="culQueryParams.pageSize"
+                      :auto-scroll="false"
+                      @pagination="getCulList"
+                  ></Pagination>
+                </div>
               </el-tab-pane>
               <el-tab-pane  name="third">
                 <span slot="label"><i class="el-icon-star-on"></i> 收藏</span>
-
                 <favList></favList>
               </el-tab-pane>
               <el-tab-pane  name="fourth">
@@ -298,6 +315,22 @@ export default {
         ],
       },
       formLabelWidth: "80px",
+
+      articlePagination:{
+        total:0,
+      },
+      articleQueryParams:{
+        pageNum:1,
+        pageSize:10,
+      },
+
+      culPagination:{
+        total:0,
+      },
+      culQueryParams:{
+        pageNum:1,
+        pageSize:10,
+      }
     };
   },
   methods: {
@@ -393,16 +426,18 @@ export default {
       // if(this.flag===undefined){
       //   this.flag=-1;
       // }
-      getArticleList(this.flag).then((response) => {
+      getArticleList(this.flag,this.articleQueryParams).then((response) => {
         this.article = response.rows;
+        this.articlePagination.total=response.total;
       });
     },
     getCulList(){
       // if(this.flag===undefined){
       //   this.flag=-1;
       // }
-      getCulList(this.flag).then((response) => {
+      getCulList(this.flag,this.culQueryParams).then((response) => {
         this.cul = response.rows;
+        this.culPagination.total=response.total;
       });
     }
   },

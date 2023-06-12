@@ -71,6 +71,15 @@
         >一键删除</el-button
       >
     </div>
+    <div style="padding-bottom: 20px">
+      <Pagination
+          :total="pagination.total"
+          :page.sync="queryParams.pageNum"
+          :limit.sync="queryParams.pageSize"
+          :auto-scroll="false"
+          @pagination="getAll"
+      ></Pagination>
+    </div>
   </div>
 </template>
 
@@ -86,6 +95,13 @@ export default {
       passedList: [],
       multipleSelection: [],
       result: [],
+      pagination:{
+        total:0,
+      },
+      queryParams:{
+        pageNum:1,
+        pageSize:10,
+      }
     };
   },
   methods: {
@@ -144,9 +160,11 @@ export default {
       });
     },
     getAll() {
-      getUserAllComment(this.type).then((response) => {
+      this.loading = true;
+      getUserAllComment(this.type,this.queryParams).then((response) => {
         this.passedList = response.rows;
         console.log(response);
+        this.pagination.total=response.total;
         this.loading = false;
       });
     },

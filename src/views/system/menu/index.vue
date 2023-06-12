@@ -129,11 +129,13 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="菜单类型" prop="menuType">
+
               <el-radio-group v-model="form.menuType">
                 <el-radio label="M">目录</el-radio>
                 <el-radio label="C">菜单</el-radio>
                 <el-radio label="F">按钮</el-radio>
               </el-radio-group>
+
             </el-form-item>
           </el-col>
           <el-col :span="24" v-if="form.menuType != 'F'">

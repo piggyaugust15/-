@@ -16,7 +16,41 @@
       <el-form-item label="文章封面" prop="articleCover">
         <imageUpload v-model="ruleForm.articleCover" />
       </el-form-item>
-
+      <el-form-item label="文章标签" prop="articleTag">
+        <el-tag
+            :key="tag"
+            v-for="tag in ruleForm.articleTags"
+            closable
+            :disable-transitions="false"
+            @close="handleClose(tag)">
+          {{tag}}
+        </el-tag>
+        <el-popover
+            placement="right"
+            width="400"
+            trigger="click">
+          <div class="input">
+            <el-input
+                placeholder="请输入文字，Enter键入可添加自定义标签"
+                v-model="input"
+                @keyup.enter.native="handleInputConfirm"
+                clearable
+            >
+            </el-input>
+            <div class="tagBox" v-loading="tagsLoading">
+              <span class="item" v-for="(item,index) in suggestTags"
+                    @click="pushTags(item)"
+                    :key="index"
+              >{{item.tagsContent}}</span>
+            </div>
+            <button class="text random" @click="getRandomTags"><i :class="['el-icon-refresh',{go:'addRotate'}]" ></i> 换一换</button>
+            <span class="text">
+              还可以添加 {{ 5 - ruleForm.articleTags.length }} 个标签
+            </span>
+          </div>
+          <el-button slot="reference" icon="el-icon-plus" size="mini" style="margin-left: 10px">添加文章标签</el-button>
+        </el-popover>
+      </el-form-item>
       <el-form-item label="文章状态" prop="status">
         <el-radio-group v-model="ruleForm.status">
           <el-radio
@@ -38,6 +72,7 @@
           >
         </el-radio-group>
       </el-form-item>
+
       <el-form-item label="文章类型" prop="articleType">
         <el-radio-group v-model="ruleForm.articleType">
           <el-radio
@@ -48,6 +83,7 @@
           >
         </el-radio-group>
       </el-form-item>
+
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')"
           >立即创建</el-button
@@ -63,11 +99,15 @@ import {
   createArticle,
   getEditArticleDetail,
   editArticle,
+  getRandomTags
 } from "@/api/article/article.js";
 export default {
   dicts: ["article_state", "article_category", "article_type"],
   data() {
     return {
+      input:'',
+      suggestTags:[],
+      tagsLoading:true,
       ruleForm: {
         articleTitle: "",
         articleContent: "",
@@ -75,6 +115,7 @@ export default {
         status: "",
         articleCategory: "",
         articleType: "",
+        articleTags: [],
       },
       rules: {
         articleTitle: [
@@ -108,6 +149,45 @@ export default {
     };
   },
   methods: {
+    pushTags(item){
+      if(this.ruleForm.articleTags.includes(item)){
+        this.$message({
+          message:'已经有该标签啦~',
+          type: "warning",
+        })
+      }else if(this.ruleForm.articleTags.length<5){
+        this.ruleForm.articleTags.push(item);
+      }else if(this.ruleForm.articleTags.length>=5){
+        this.$message({
+          message:'标签数量已达上限',
+          type: "warning",
+        })
+      }
+    },
+    handleInputConfirm() {
+      let input = this.input.trim();
+      if (input && this.ruleForm.articleTags.length<5&&!this.ruleForm.articleTags.includes(input)) {
+        this.ruleForm.articleTags.push(input);
+        this.input = '';
+      }else if(input===''){
+        this.$message({
+          message:'输入内容不能为空',
+          type: "warning",
+      })}else if(this.ruleForm.articleTags.length>=5){
+        this.$message({
+          message:'标签数量已达上限',
+          type: "warning",
+        })}else if(this.ruleForm.articleTags.includes(input)){
+        this.$message({
+          message:'已经有该标签啦~',
+          type: "warning",
+        })
+      }
+      // this.inputVisible = false;
+    },
+    handleClose(tag) {
+      this.ruleForm.articleTags.splice(this.ruleForm.articleTags.indexOf(tag), 1);
+    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -154,22 +234,94 @@ export default {
         status: "",
         articleCategory: "",
         articleType: "",
+        articleTags: []
       };
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    getRandomTags(){
+      this.tagsLoading=true;
+      getRandomTags(2).then((res)=>{
+        console.log('tags',res)
+        this.suggestTags=res.data;
+        this.tagsLoading=false;
+      })
+    }
   },
   mounted() {
     if (this.$route.query.type === "edit"&&this.$route.query.arg ==="article") {
       getEditArticleDetail(this.$route.query.id).then((response) => {
         this.ruleForm = response.data;
-        console.log(response);
       });
     }
+    this.getRandomTags();
   },
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+@keyframes rotate{
+
+  0%{ transform: (0deg) }
+
+  100%{transform:(360deg)}
+
+}
+@keyframes light {
+  from{ background-color: #fff6e5}
+  to{background-color: #fff}
+}
+::v-deep.el-tag{
+  background-color: #ffffff;
+  color: #267dcc;
+  border: 1px solid rgba(38,125,204,.2);
+}
+.el-tag + .el-tag {
+  margin-left: 10px;
+}
+.input{
+  position: relative;
+  padding: 10px;
+  .tagBox{
+    margin-top: 10px;
+    //columns: 4; // 默认列数
+    //column-gap: 10px; // 列间距
+    .item{
+      display: inline-block;
+      padding: 0 8px;
+      height: 30px;
+      background-color: #ebf2f7;
+      border-radius: 2px;
+      font-weight: 400;
+      color: #507999;
+      line-height: 30px;
+      cursor: pointer;
+      margin-right: 16px;
+      margin-bottom: 10px;
+      border: none;
+      font-size: 13px!important;
+    }
+  }
+  .text{
+    display: block;
+    margin-top: 10px;
+    text-align: right;
+    font-size: 12px;
+    color: #999;
+  }
+  .random{
+    background-color: transparent;
+    border: none;
+    transition: all .3s ease-in;
+    &:hover{
+      color: #267dcc;
+      cursor:pointer;
+    }
+    &:active{
+      transform: scale(1.4);
+    }
+  }
+}
+
 </style>

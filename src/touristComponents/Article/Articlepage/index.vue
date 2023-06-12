@@ -22,6 +22,10 @@
               class="dicttag"
             ></dict-tag>
           </span>
+          <span>
+            文章标签:
+            <div class="tagItem" v-for="(item,index) in info.articleTags" :key="index" >{{item}}</div>
+          </span>
         </div>
         <a
           class="link"
@@ -320,6 +324,15 @@ li {
           display: inline-block;
           margin-right: 10px;
           color: #175199;
+        }
+        .tagItem{
+          display: inline-block;
+          padding: 1px 5px;
+          background-color: #ebf2f7;
+          margin-right: 5px;
+          border-radius: 3px;
+          text-align: center;
+          height: 20px;
         }
       }
       .time {

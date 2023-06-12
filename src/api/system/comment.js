@@ -76,9 +76,10 @@ export function getSecondComment(query) {
 }
 
 //创作中心获得用户所有的评论
-export function getUserAllComment(num) {
+export function getUserAllComment(num,query) {
   return request({
     url: "/permitAll/comment/person/" + num,
+    params:query,
     method: 'get',
   })
 }

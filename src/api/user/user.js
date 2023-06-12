@@ -36,16 +36,18 @@ export function handleSubscribe(id) {
     })
 }
 
-export function getFansList(id) {
+export function getFansList(id,query) {
     return request({
         url: '/inter/showFans/'+id,
+        params:query,
         method: 'get',
     })
 }
 
-export function getSubList(id) {
+export function getSubList(id,query) {
     return request({
         url: '/inter/showConcerns/'+id,
+        params:query,
         method: 'get',
     })
 }

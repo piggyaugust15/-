@@ -296,8 +296,12 @@
     >
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-card shadow="hover">
-          <div>内容:</div>
-          {{ form.articleContent }}
+<!--          后期要改回来-->
+            <el-form-item label="内容">
+              <editor v-model="form.articleContent" :min-height="192" />
+            </el-form-item>
+<!--          <div>内容:</div>-->
+<!--          {{ form.articleContent }}-->
         </el-card>
         <el-form-item label="缩略图">
           <image-preview :src="form.articleCover" :width="100" :height="100"/>

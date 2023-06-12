@@ -43,6 +43,15 @@
         </li>
       </div>
       <el-empty description="这里暂时还没有收藏的文章哦"  v-else ></el-empty>
+      <div style="padding-bottom: 20px">
+        <Pagination
+            :total="articlePagination.total"
+            :page.sync="articleQueryParams.pageNum"
+            :limit.sync="articleQueryParams.pageSize"
+            :auto-scroll="false"
+            @pagination="getFavArticle"
+        ></Pagination>
+      </div>
     </el-tab-pane>
     <el-tab-pane :label="'文创 '" name="second">
       <div v-if="this.cul.length>0">
@@ -86,6 +95,15 @@
         </li>
       </div>
       <el-empty description="这里暂时还没有收藏的文创哦"  v-else ></el-empty>
+      <div style="padding-bottom: 20px">
+        <Pagination
+            :total="culPagination.total"
+            :page.sync="culQueryParams.pageNum"
+            :limit.sync="culQueryParams.pageSize"
+            :auto-scroll="false"
+            @pagination="getFavCul"
+        ></Pagination>
+      </div>
     </el-tab-pane>
     <el-tab-pane :label="'景点 '" name="third">
       <div v-if="this.sights.length>0">
@@ -129,6 +147,15 @@
         </li>
       </div>
       <el-empty description="这里暂时还没有收藏的景点哦"  v-else ></el-empty>
+      <div style="padding-bottom: 20px">
+        <Pagination
+            :total="sightsPagination.total"
+            :page.sync="sightsQueryParams.pageNum"
+            :limit.sync="sightsQueryParams.pageSize"
+            :auto-scroll="false"
+            @pagination="getFavSights"
+        ></Pagination>
+      </div>
     </el-tab-pane>
   </el-tabs>
 </div>
@@ -147,6 +174,29 @@ export default {
       cul:[],
       sights:[],
       activeName: "first",
+      articlePagination:{
+        total:0,
+      },
+      articleQueryParams:{
+        pageNum:1,
+        pageSize:10,
+      },
+
+      culPagination:{
+        total:0,
+      },
+      culQueryParams:{
+        pageNum:1,
+        pageSize:10,
+      },
+
+      sightsPagination:{
+        total:0,
+      },
+      sightsQueryParams:{
+        pageNum:1,
+        pageSize:10,
+      },
     };
   },
   methods:{
@@ -177,16 +227,19 @@ export default {
     getFavSights(){
       getAttractionFav().then((res)=>{
         this.sights=res.rows;
+        this.sightsPagination.total=res.total;
       })
     },
     getFavArticle(){
-      getFavArticle(this.$route.query.id).then((res)=>{
+      getFavArticle(this.$route.query.id,this.articleQueryParams).then((res)=>{
         this.article=res.rows;
+        this.articlePagination.total=res.total;
       })
     },
     getFavCul(){
-      getFavCul().then((res)=>{
+      getFavCul(this.culQueryParams).then((res)=>{
         this.cul=res.rows;
+        this.culPagination.total=res.total;
       })
     }
   },

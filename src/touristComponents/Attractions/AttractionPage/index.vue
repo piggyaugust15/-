@@ -59,6 +59,55 @@
                     <li @click="gotonextpage('hotel')">酒店</li>
                   </ul>
                   <div class="ticket" @click="centerDialogVisible=true">购买门票</div>
+                    <el-popover
+                        placement="top-start"
+                        width="1000"
+                        trigger="hover"
+                        class="hotPopover"
+                    >
+                      <div class="forecastsList">
+                          <div class="item">
+                            <span>现在</span>
+                            <div class="icon">
+                              <span><i class="el-icon-cloudy" v-if="sights.weather.now.text==='多云'"></i></span>
+                              <span><i class="el-icon-sunny" v-if="sights.weather.now.text==='晴'"></i></span>
+                              <span><i class="el-icon-partly-cloudy" v-if="sights.weather.now.text==='阴'"></i></span>
+                              <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
+                              <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
+                              <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
+                            </div>
+                            <span>{{sights.weather.now.text}}</span>
+                            <span>体感温度: {{sights.weather.now.feelsLike}}</span>
+                            <span>气温: {{sights.weather.now.temp}}</span>
+                          </div>
+                          <div class="item" v-for="(item,index) in sights.weather.forecasts" :key="index">
+                            <span>{{item.date}}</span>
+                            <div class="icon">
+                              <span><i class="el-icon-cloudy" v-if="item.textDay==='多云'"></i></span>
+                              <span><i class="el-icon-sunny" v-if="item.textDay==='晴'"></i></span>
+                              <span><i class="el-icon-partly-cloudy" v-if="item.textDay==='阴'"></i></span>
+                              <span><i class="el-icon-light-rain" v-if="item.textDay==='阵雨'"></i></span>
+                              <span><i class="el-icon-light-rain" v-if="item.textDay==='阵雨'"></i></span>
+                              <span><i class="el-icon-light-rain" v-if="item.textDay==='阵雨'"></i></span>
+                            </div>
+                            <span>白天:{{item.textDay}}</span>
+                            <span>夜间:{{item.textNight}}</span>
+                            <span>最高气温:{{item.high}}</span>
+                            <span>最低气温:{{item.low}}</span>
+                          </div>
+                      </div>
+                      <div class="weather" slot="reference">
+                        <div class="icon">
+                          <span><i class="el-icon-cloudy" v-if="sights.weather.now.text==='多云'"></i></span>
+                          <span><i class="el-icon-sunny" v-if="sights.weather.now.text==='晴'"></i></span>
+                          <span><i class="el-icon-partly-cloudy" v-if="sights.weather.now.text==='阴'"></i></span>
+                          <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
+                          <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
+                          <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
+                        </div>
+                        <span>{{sights.weather.now.text}}</span>
+                      </div>
+                    </el-popover>
                   <div class="speak"><Speak :voice=speakInfo :lang="speakTTS"></Speak></div>
                 </div>
               </div>
@@ -93,6 +142,18 @@
                   <h1>介绍</h1>
                   <div class="info" v-html="sights.sightsDetail"></div>
                 </div>
+<!--                <video src="http://vjs.zencdn.net/v/oceans.mp4" autoplay></video>-->
+                <video-player class="vjs-custom-skin"
+                              ref="videoPlayer"
+                              :options="playerOptions"
+                              :playsinline="true"
+                              @play="onPlayerPlay($event)"
+                              @pause="onPlayerPause($event)"
+                              @canplay="playerCanplay($event)"
+                              @ready="playerReadied"
+                              v-if="sights.sightsVideo!==''"
+                >
+                </video-player>
                 <div class="para">
                   <h1>必看贴士</h1>
                     <div v-for="(item, index) in sights.bulletin" :key="index" v-html="item.bulletinContent" class="info">
@@ -203,6 +264,28 @@ export default {
   name: "Attractionspage",
   data() {
     return {
+      playerOptions: {
+        playbackRates: [0.7, 1.0, 1.5, 2.0], // 播放速度
+        autoplay: false, //如果true,浏览器准备好时开始回放。
+        muted: false, // 默认情况下将会消除任何音频。
+        loop: false, // 导致视频一结束就重新开始。
+        preload: 'auto', // 建议浏览器在<video>加载元素后是否应该开始下载视频数据。auto浏览器选择最佳行为,立即开始加载视频（如果浏览器支持）
+        language: 'zh-CN',
+        aspectRatio: '16:9', // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
+        fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
+        sources: [{
+          type: "video/mp4",// 这里的种类支持很多种：基本视频格式、直播、流媒体等，具体可以参看git网址项目
+          src: "" // url地址
+        }],
+        poster:'', // 你的封面地址
+        notSupportedMessage: '此视频暂无法播放，请稍后再试', // 允许覆盖Video.js无法播放媒体源时显示的默认信息。
+        controlBar: {
+          timeDivider: true,
+          durationDisplay: true,
+          remainingTimeDisplay: false,
+          fullscreenToggle: true  // 全屏按钮
+        }
+      },
       speakTTS:'zh-CN',
       speakInfo:'',
       texts:['1分', '2分', '3分', '4分', '5分'],
@@ -235,6 +318,11 @@ export default {
     CommentList,
     AttractionCommentDiv,Speak
   },
+  computed: {
+    player() {
+      return this.$refs.videoPlayer.player
+    }
+  },
   watch:{
     $route(to, from,next) {
       this.getSightsInfo();
@@ -261,28 +349,34 @@ export default {
         })
       }
     },
+
     handleChange(val) {
       console.log(val);
     },
+
     handleClick(tab, event) {
       this.BuyVisible=true;
       console.log(tab, event);
     },
+
     scoreChange(){
       this.handleScore();
     },
+
     handleScore(){
       this.sights.score=this.value;
       score(this.$route.query.id,this.value).then((res)=>{
         this.$message.success(res.msg);
       })
     },
+
     handleScoreClose(){
       if(this.sights.score!==-1){
         this.value=this.sights.score
       }
       this.ratingVisible = false;
     },
+
     gotonextpage(item, value) {
       switch (item) {
         case "food":
@@ -296,11 +390,16 @@ export default {
           break;
       }
     },
+
     getSightsInfo(){
       getSightsInfo(this.$route.query.id).then((response) => {
         addview(this.$route.query.id);
         hit(this.$route.query.id);
+        console.log(response,'attra')
         this.sights = response.data;
+        this.playerOptions['sources'][0].src=this.sights.sightsVideo;
+        this.playerOptions['poster']= this.$store.state.front.url+this.sights.sightsCover;
+        console.log(this.playerOptions.sources[0])
         if(this.sights.score!==-1){
           this.value=this.sights.score
         }
@@ -310,6 +409,7 @@ export default {
         }
       });
     },
+
     paraTranslate(){
       paraTranslate(0,this.$route.query.id,0).then((res)=>{
         this.sights.sightsDetail=res.data.sightsDetailOUT;;
@@ -317,10 +417,30 @@ export default {
         this.speakTTS=res.data.speakTTS;
       })
     },
+
+    onPlayerPlay(player) {
+      this.$emit('play');
+    },
+    onPlayerPause(player) {
+      player.pause();
+    },
+    playerReadied(player) {
+    },
+    playerCanplay(player){
+    },
+    currentVideoPause() {
+      this.$refs.videoPlayer.player.pause();
+
+    },
+    currentVideoPlay() {
+      this.$refs.videoPlayer.player.play();
+    },
   },
   mounted() {
     this.getSightsInfo();
     this.paraTranslate();
+    this.player.children_[0].style.borderTopRightRadius = '10px'
+    this.player.children_[0].style.borderTopLeftRadius = '10px'
   },
 };
 </script>
@@ -388,6 +508,17 @@ export default {
       transition: all ease .1s;
       &:hover{
         background-color: #0360b0;
+      }
+    }
+    .weather{
+      position:absolute ;
+      bottom: 0;
+      right: 0;
+      //width: 60px;
+      text-align: center;
+      color: #349eff;
+      .icon{
+        font-size: 40px;
       }
     }
     .mainText{
@@ -538,6 +669,26 @@ export default {
   }
   .code{
 
+  }
+}
+.forecastsList{
+  display: flex;
+  justify-content: flex-start;   /* 左对齐 */
+  flex-wrap: wrap;
+  .item{
+    text-align: center;
+    margin-right: 10px;   /* 每个元素右间距设置为20px */
+    width: calc((100% - 50px) / 6);
+    .icon{
+      font-size: 40px;
+    }
+    span{
+      display: block;
+      margin-top: 5px;
+    }
+  }
+  .item:nth-of-type(6n+0) {
+    margin-right: 0;
   }
 }
 </style>
