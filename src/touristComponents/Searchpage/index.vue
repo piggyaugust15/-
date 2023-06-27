@@ -10,7 +10,7 @@
             <div class="infobox">
               <div class="top">
                 <div class="tag article" v-if="item.multipleType == 'ARTICLE'">
-                  文章
+                  漫记
                 </div>
                 <div
                   class="tag creation"

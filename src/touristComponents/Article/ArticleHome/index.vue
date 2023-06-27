@@ -5,8 +5,8 @@
       <el-container>
         <el-header>
           <ComponentTitle>
-            <template v-slot:Chinese>文章</template>
-            <template v-slot:English>Article</template>
+            <template v-slot:Chinese>漫记</template>
+            <template v-slot:English>Travelogue</template>
           </ComponentTitle>
         </el-header>
         <el-main>

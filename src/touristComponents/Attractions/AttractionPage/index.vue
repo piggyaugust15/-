@@ -59,11 +59,14 @@
                     <li @click="gotonextpage('hotel')">酒店</li>
                   </ul>
                   <div class="ticket" @click="centerDialogVisible=true">购买门票</div>
+
+
                     <el-popover
                         placement="top-start"
                         width="1000"
                         trigger="hover"
                         class="hotPopover"
+                        v-if="sights.weather !==null"
                     >
                       <div class="forecastsList">
                           <div class="item">
@@ -73,12 +76,13 @@
                               <span><i class="el-icon-sunny" v-if="sights.weather.now.text==='晴'"></i></span>
                               <span><i class="el-icon-partly-cloudy" v-if="sights.weather.now.text==='阴'"></i></span>
                               <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
-                              <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
-                              <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
+                              <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='小雨'"></i></span>
+                              <span><i class="el-icon-heavy-rain" v-if="sights.weather.now.text==='大雨'"></i></span>
+                              <span><i class="el-icon-lightning" v-if="sights.weather.now.text==='雷阵雨'"></i></span>
                             </div>
                             <span>{{sights.weather.now.text}}</span>
-                            <span>体感温度: {{sights.weather.now.feelsLike}}</span>
-                            <span>气温: {{sights.weather.now.temp}}</span>
+                            <span>体感温度: {{sights.weather.now.feelsLike}} ℃</span>
+                            <span>气温: {{sights.weather.now.temp}} ℃</span>
                           </div>
                           <div class="item" v-for="(item,index) in sights.weather.forecasts" :key="index">
                             <span>{{item.date}}</span>
@@ -87,13 +91,13 @@
                               <span><i class="el-icon-sunny" v-if="item.textDay==='晴'"></i></span>
                               <span><i class="el-icon-partly-cloudy" v-if="item.textDay==='阴'"></i></span>
                               <span><i class="el-icon-light-rain" v-if="item.textDay==='阵雨'"></i></span>
-                              <span><i class="el-icon-light-rain" v-if="item.textDay==='阵雨'"></i></span>
-                              <span><i class="el-icon-light-rain" v-if="item.textDay==='阵雨'"></i></span>
+                              <span><i class="el-icon-light-rain" v-if="item.textDay==='小雨'"></i></span>
+                              <span><i class="el-icon-heavy-rain" v-if="item.textDay==='大雨'"></i></span>
+                              <span><i class="el-icon-lightning" v-if="item.textDay==='雷阵雨'"></i></span>
                             </div>
                             <span>白天:{{item.textDay}}</span>
                             <span>夜间:{{item.textNight}}</span>
-                            <span>最高气温:{{item.high}}</span>
-                            <span>最低气温:{{item.low}}</span>
+                            <span>{{item.low}} ℃ ~{{item.high}} ℃</span>
                           </div>
                       </div>
                       <div class="weather" slot="reference">
@@ -102,12 +106,17 @@
                           <span><i class="el-icon-sunny" v-if="sights.weather.now.text==='晴'"></i></span>
                           <span><i class="el-icon-partly-cloudy" v-if="sights.weather.now.text==='阴'"></i></span>
                           <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
-                          <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
-                          <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='阵雨'"></i></span>
+                          <span><i class="el-icon-light-rain" v-if="sights.weather.now.text==='小雨'"></i></span>
+                          <span><i class="el-icon-heavy-rain" v-if="sights.weather.now.text==='大雨'"></i></span>
+                          <span><i class="el-icon-lightning" v-if="sights.weather.now.text==='雷阵雨'"></i></span>
                         </div>
                         <span>{{sights.weather.now.text}}</span>
                       </div>
                     </el-popover>
+
+
+
+
                   <div class="speak"><Speak :voice=speakInfo :lang="speakTTS"></Speak></div>
                 </div>
               </div>
@@ -151,7 +160,7 @@
                               @pause="onPlayerPause($event)"
                               @canplay="playerCanplay($event)"
                               @ready="playerReadied"
-                              v-if="sights.sightsVideo!==''"
+                              v-if="sights.sightsVideo!==null"
                 >
                 </video-player>
                 <div class="para">

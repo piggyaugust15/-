@@ -16,7 +16,7 @@
           >文创</router-link
         >
         <router-link to="/frontHome/article" active-class="active"
-        >文章</router-link
+        >漫记</router-link
         >
         <router-link to="/frontHome/map">地图</router-link>
       </div>

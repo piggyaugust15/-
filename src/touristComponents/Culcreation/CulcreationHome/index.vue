@@ -6,7 +6,7 @@
         <el-header>
           <ComponentTitle>
             <template v-slot:Chinese>文创</template>
-            <template v-slot:English>Culcreation</template>
+            <template v-slot:English>Cultural creativity</template>
           </ComponentTitle>
         </el-header>
 <!--        <el-main>-->

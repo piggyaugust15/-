@@ -2,7 +2,7 @@
   <div id="main">
     <div class="block">
       <div class="search">
-        <h3>与《丝路畅行》一起发现更多美好的文旅体验</h3>
+        <h3>与"丝路畅行"一起发现更多美好的文旅体验</h3>
         <el-popover
           placement="bottom"
           width="600"

@@ -42,3 +42,18 @@ export function delAlbum(albumId) {
     method: 'delete'
   })
 }
+
+export function albumAddCul(albumId,culCreativityId) {
+  return request({
+    url: '/system/cul_creativity/addAlbum/' + albumId+'/'+culCreativityId,
+    method: 'get'
+  })
+}
+
+export function getAlbumCulList(albumId,sightsCulCreativity) {
+  return request({
+    url: '/system/cul_creativity/listCulAlbum/' + albumId,
+    params:sightsCulCreativity,
+    method: 'get'
+  })
+}

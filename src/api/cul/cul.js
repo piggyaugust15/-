@@ -36,3 +36,27 @@ export function getCulHome(query) {
     params:query
   })
 }
+
+export function getCulHomeSwiper() {
+  return request({
+    url: '/album/swiper',
+    method: 'get',
+  })
+}
+
+//获得专辑内文分页
+export function getCulAlbumList(query,id) {
+  return request({
+    url: '/album/info/'+id,
+    params:query,
+    method: 'get',
+  })
+}
+
+//获得专辑信息
+export function getCulAlbumInfo(id) {
+  return request({
+    url: '/album/albumInfo/'+id,
+    method: 'get',
+  })
+}

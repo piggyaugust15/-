@@ -196,7 +196,7 @@ export const constantRoutes = [
         path: 'culcreationHome',
         component: (resolve) => require(['@/touristComponents/Culcreation/CulcreationHome/index'], resolve),
         name: 'Culcreation',
-        meta: { title: '文创' }
+        meta: { title: '文创' },
       },
       {
         path: 'article',
@@ -222,6 +222,11 @@ export const constantRoutes = [
         path: '/frontHome/map',
         component: (resolve) => require(['@/touristComponents/Map/index.vue'], resolve),
         hidden: true,
+      },
+      {
+        path: 'culcreationAlbum',
+        component: (resolve) => require(['@/touristComponents/Culcreation/CulcreationAlbum/index'], resolve),
+        name: 'album',
       },
       {//文创
         path: 'creation',
