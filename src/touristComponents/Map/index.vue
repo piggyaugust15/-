@@ -57,8 +57,8 @@ export default {
           }
         }
       },
-      start: '南京',
-      end: '连云港',
+      start: '',
+      end: '',
       startinput:'',
       endinput:''
     }

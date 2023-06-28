@@ -99,13 +99,15 @@
       CenterLeft1Chart
     },
     mounted() {
-      this.Time()
-      this.changeTiming()
-      this.getLeftPie()
+      this.getLeftPie();
+      //this.Time()
+      //this.changeTiming()
+
     },
     methods: {
       getLeftPie(){
         getLeftPie().then((response)=>{
+          console.log(response,"sssssss")
           this.articlePie = response.data.articlePie
           this.culPie = response.data.culPie
           this.numberData[0].number.number=[parseInt(response.data.sum)]
@@ -120,16 +122,17 @@
         })
       },
       Time(){
+        this.getLeftPie();
         this.timer = setInterval(()=>{
           this.getLeftPie();
         },1000*60*5)
       }
       ,
-      changeTiming() {
-        setInterval(() => {
-          this.changeNumber()
-        }, 3000)
-      },
+      // changeTiming() {
+      //   setInterval(() => {
+      //     this.changeNumber()
+      //   }, 3000)
+      // },
       changeNumber() {
         let list = Array.prototype.slice.call(this.numberData);
         list.forEach((item, index) => {

@@ -41,7 +41,6 @@ export default {
   methods:{
     getSightsTop(){
       getCulTop().then((response)=>{
-        console.log("si",response)
         this.culList = response.data
         let data = []
         for (let i = 0; i < this.culList.length; i++) {

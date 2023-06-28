@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="speak标签" prop="speakLabel">
+      <el-form-item label="标签" prop="speakLabel">
         <el-input
           v-model="queryParams.speakLabel"
           placeholder="请输入speak标签"

@@ -151,11 +151,15 @@
           />
         </template>
       </el-table-column>
-      <el-table-column label="介绍" align="center" prop="typesetIntroduction" />
+      <el-table-column label="介绍" align="center"
+                       prop="typesetIntroduction"
+                       :show-overflow-tooltip="true"
+      />
       <el-table-column
         label="附加文字"
         align="center"
         prop="typesetAttachment"
+
       />
       <el-table-column label="路由" align="center" prop="typesetRoute" />
       <el-table-column label="是否打开" align="center" prop="flag">

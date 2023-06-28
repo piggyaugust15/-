@@ -229,7 +229,7 @@
         this.timer = setInterval(() => {
            this.getData();
            this.getMedium();
-        }, 5000)
+        }, 1000*60*5)
         this.getData();
         this.getMedium();
     },
@@ -265,10 +265,7 @@
       }
     },
     mounted() {
-      this.Time()
-      this.getData();
-      this.getData();
-      this.getMedium();
+      this.Time();
     },
     beforeDestroy() {
       clearInterval(this.timer);

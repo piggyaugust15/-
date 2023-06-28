@@ -1,8 +1,8 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="页面(字典类型记得)" prop="voicePage">
-        <el-select v-model="queryParams.voicePage" placeholder="请选择页面(字典类型记得)" clearable size="small">
+      <el-form-item label="页面" prop="voicePage">
+        <el-select v-model="queryParams.voicePage" placeholder="请选择页面" clearable size="small">
           <el-option
             v-for="dict in dict.type.typeset_page_type"
             :key="dict.value"
@@ -11,8 +11,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="页面定位(字典类型 上中下这类的)" prop="voicePosition">
-        <el-select v-model="queryParams.voicePosition" placeholder="请选择页面定位(字典类型 上中下这类的)" clearable size="small">
+      <el-form-item label="页面定位" prop="voicePosition">
+        <el-select v-model="queryParams.voicePosition" placeholder="请选择页面定位" clearable size="small">
           <el-option
             v-for="dict in dict.type.typeset_position_type"
             :key="dict.value"
@@ -39,10 +39,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="语言(默认中文)" prop="voiceLanguange">
+      <el-form-item label="语言" prop="voiceLanguange">
         <el-input
           v-model="queryParams.voiceLanguange"
-          placeholder="请输入语言(默认中文)"
+          placeholder="请输入语言"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
@@ -131,12 +131,12 @@
     <el-table v-loading="loading" :data="voiceList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="播报id" align="center" prop="voiceId" />
-      <el-table-column label="页面(字典类型记得)" align="center" prop="voicePage">
+      <el-table-column label="页面" align="center" prop="voicePage">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.typeset_page_type" :value="scope.row.voicePage"/>
         </template>
       </el-table-column>
-      <el-table-column label="页面定位(字典类型 上中下这类的)" align="center" prop="voicePosition">
+      <el-table-column label="页面定位" align="center" prop="voicePosition">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.typeset_position_type" :value="scope.row.voicePosition"/>
         </template>
@@ -144,7 +144,7 @@
       <el-table-column label="内容介绍" align="center" prop="voiceIntroduction" />
       <el-table-column label="播报内容" align="center" prop="voiceContent" />
       <el-table-column label="音高" align="center" prop="voiceVolume" />
-      <el-table-column label="语言(默认中文)" align="center" prop="voiceLanguange" />
+      <el-table-column label="语言" align="center" prop="voiceLanguange" />
       <el-table-column label="费率" align="center" prop="voiceRate" />
       <el-table-column label="音高" align="center" prop="voicePitch" />
       <el-table-column label="是否开启" align="center" prop="flag">
@@ -184,8 +184,8 @@
     <!-- 添加或修改动态播报对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="页面(字典类型记得)" prop="voicePage">
-          <el-select v-model="form.voicePage" placeholder="请选择页面(字典类型记得)">
+        <el-form-item label="页面" prop="voicePage">
+          <el-select v-model="form.voicePage" placeholder="请选择页面">
             <el-option
               v-for="dict in dict.type.typeset_page_type"
               :key="dict.value"
@@ -194,8 +194,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="页面定位(字典类型 上中下这类的)" prop="voicePosition">
-          <el-select v-model="form.voicePosition" placeholder="请选择页面定位(字典类型 上中下这类的)">
+        <el-form-item label="页面定位" prop="voicePosition">
+          <el-select v-model="form.voicePosition" placeholder="请选择页面定位">
             <el-option
               v-for="dict in dict.type.typeset_position_type"
               :key="dict.value"
@@ -213,8 +213,8 @@
         <el-form-item label="音高" prop="voiceVolume">
           <el-input v-model="form.voiceVolume" placeholder="请输入音高" />
         </el-form-item>
-        <el-form-item label="语言(默认中文)" prop="voiceLanguange">
-          <el-input v-model="form.voiceLanguange" placeholder="请输入语言(默认中文)" />
+        <el-form-item label="语言" prop="voiceLanguange">
+          <el-input v-model="form.voiceLanguange" placeholder="请输入语言" />
         </el-form-item>
         <el-form-item label="费率" prop="voiceRate">
           <el-input v-model="form.voiceRate" placeholder="请输入费率" />
