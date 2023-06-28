@@ -444,7 +444,7 @@
           </el-col>
           <el-col :span="24">
             <el-form-item label="景点图片">
-              <imageUpload v-model="form.sightsImage"  :file-size="10"/>
+              <imageUpload v-model="form.sightsImage"  :file-size="100"/>
             </el-form-item>
           </el-col>
 

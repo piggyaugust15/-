@@ -1,6 +1,7 @@
 <template>
   <div class="content">
-    <h1>欢迎来到‘丝路畅行’特色文化旅游信息服务平台！</h1>
+    <h1>欢迎来到“丝路畅行”特色文化旅游信息服务平台！</h1>
+    <h1 style="{text-align: center}">（点击右上角图标即可跳转前台页面）</h1>
     <img src="@/assets/images/LogoGreen.png" alt="">
   </div>
 </template>
@@ -58,6 +59,7 @@
 h1{
   text-align: center;
 }
+
 img{
   width: 80%;
   text-align: center;

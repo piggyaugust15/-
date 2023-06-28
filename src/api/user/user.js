@@ -72,3 +72,11 @@ export function hasReadMessage(id) {
         method: 'get',
     })
 }
+
+//用户稿件数据
+export function getUserManuscriptData() {
+    return request({
+        url: '/person/statistic',
+        method: 'get',
+    })
+}

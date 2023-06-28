@@ -1,6 +1,6 @@
 <template>
   <div id="culcreationmain">
-    <div class="box">
+    <div class="box" v-loading="totalLoading">
       <div class="item" v-for="(item,index) in List" :key="index" @click="$router.push({path:'/frontHome/culcreation',query:{id:item.culCreativityId}})">
           <img :src="$store.state.front.url+item.culCreativityImage.split(',')[0]" alt="">
           <span class="text">{{item.culCreativityTitle}}</span>
@@ -26,6 +26,7 @@ export default {
   name: "index",
   data(){
     return{
+      totalLoading:true,
       count:0,
       total:0,
       List:[],
@@ -40,10 +41,12 @@ export default {
       this.count += 2
     },
     getCulHome(){
+      this.totalLoading=true;
       getCulHome(this.pagination).then((res)=>{
         this.total=res.total;
         this.List=res.rows;
         console.log(res,'CulHome')
+        this.totalLoading=false;
       })
     }
   },

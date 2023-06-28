@@ -79,7 +79,7 @@
           <div class="intro">
             <span>{{listInfo[0].typesetIntroduction}}</span>
           </div>
-          <span class="read">阅读全文</span>
+          <span class="read" @click="gotoArticle(listInfo[0].typesetRoute)">阅读全文</span>
         </div>
         <img :src="$store.state.front.url+listInfo[0].typesetImage" alt="">
         <span class="icon" @click="go()"><i class="el-icon-arrow-down"></i></span>
@@ -165,6 +165,7 @@ export default {
   },
   mounted() {
     getPoster(3,10).then(response =>{
+      console.log(response)
       this.listInfo=response.data
     });
   },
@@ -276,6 +277,13 @@ export default {
           }
           .read{
             font-size: 25px;
+            padding-bottom: 4px;
+            border-bottom: 3px solid #fff;
+            transition: all ease-in-out .3s;
+            &:hover{
+              color: rgb(118, 183, 253);
+              cursor:pointer;
+            }
           }
 
           span{

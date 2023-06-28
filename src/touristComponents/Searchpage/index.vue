@@ -61,45 +61,21 @@
         ></el-empty>
       </div>
       <div class="right">
-        <h3>热榜</h3>
-        <div class="hotlist">
-          <ul>
-            <li>
-              <div class="number">1</div>
-              <div class="title">
-                如何看待人大代表建议「按家庭人均收入改革现行个税法，利于养老与多孩家庭」？
-              </div>
-            </li>
-            <li>
-              <div class="number">2</div>
-              <div class="title">
-                全国政协委员杨成长认为「应打破用『985 、 211
-                大学排序』作为硬手段的招聘方式」，如何看待此事？
-              </div>
-            </li>
-            <li>
-              <div class="number">3</div>
-              <div class="title">
-                董明珠称「退休前不会卖股票，鼓励员工『砸锅卖铁』
-                都要买格力股票，买不了我兜底」，如何看待这一发言？
-              </div>
-            </li>
-          </ul>
-        </div>
+        <h3 class="top">排行榜</h3>
+        <ul>
+          <li v-for="(item,index) in topList" :key="index" @click="gotoArticle(item.articleId)">
+            <div class="number">{{index+1}}</div>
+            <div class="text">{{item.articleTitle}}</div>
+          </li>
+        </ul>
       </div>
-      <!-- <pagination
-        v-show="total > 0"
-        :total="total"
-        :page.sync="queryParams.pageNum"
-        :limit.sync="queryParams.pageSize"
-        @pagination="search"
-      /> -->
     </div>
   </div>
 </template>
 
 <script>
 import { searchAll } from "@/api/search/search.js";
+import {getTopArticle} from "@/api/article/article";
 export default {
   data() {
     return {
@@ -112,6 +88,7 @@ export default {
       // },
       url: process.env.VUE_APP_BASE_API,
       list: [],
+      topList:[],
     };
   },
   methods: {
@@ -137,6 +114,14 @@ export default {
         query: { id: item.multipleItemId },
       });
     },
+    gotoArticle(id){
+      this.$router.push({path:'/frontHome/articlepage',query:{id:id}})
+    },
+    getTopArticle(){
+      getTopArticle().then((res)=>{
+        this.topList=res.data;
+      })
+    }
   },
   watch:{
     $route(to, from,next) {
@@ -146,19 +131,12 @@ export default {
       }
     }
   },
-  // beforeRouteUpdate(to, from, next) {
-  //   console.log(to)
-  //   console.info("==当前路由id==" + this.$route.query.keywords);
-  //   if (this.$route.query.keywords) {
-  //     console.info("加载页面数据");
-  //   }
-  //   next();
-  // },
   mounted() {},
   created() {
-    //this.queryParams.keywords = this.$route.query.keywords;
+    this.getTopArticle();
     this.search(this.$route.query.keywords);
   },
+
 };
 </script>
 
@@ -177,14 +155,16 @@ li {
     padding: 15px;
     // background-color: red;
     .list {
-      width: 1000px;
+      width: 950px;
       ul {
         li {
           border-bottom: 1px solid #d6d6d6;
-          padding: 5px;
-          padding-bottom: 15px;
+          //padding-bottom: 15px;
           .infobox {
             cursor: pointer;
+            //border-radius: 5px;
+            padding: 10px;
+            transition: all ease-in .2s;
             .top {
               display: flex;
               align-items: center;
@@ -287,6 +267,9 @@ li {
                 margin-right: 15px;
               }
             }
+            &:hover{
+              background-color: #e3e5e7;
+            }
           }
           .box:hover {
             + .top {
@@ -295,33 +278,48 @@ li {
               }
             }
           }
+
         }
       }
     }
-    .right {
-      flex: 1;
-      // background-color: #056de8;
-      height: 100%;
-      padding: 10px;
-      // text-align: center;
-      .hotlist {
-        li {
+    .right{
+      width: 350px;
+      margin-left: 70px;
+      .top{
+        display: block;
+        padding: 10px;
+        margin-bottom: 10px;
+        font: {
+          size: 25px;
+          family: "Noto Serif SC", serif;;
+        };
+      }
+      ul{
+        li{
+          padding: 10px;
           display: flex;
           align-items: center;
-          margin-bottom: 10px;
-          .number {
-            padding: 5px;
-            margin-right: 15px;
-            font-size: 18px;
-            font-weight: 700;
+          &:hover {
+            cursor: pointer;
           }
-          .title {
+          &:hover .text{
+            color: #007bff;
+          }
+          .number{
+            margin-right: 10px;
+            font: {
+              weight: 700;
+            };
+          }
+          .text{
+            line-height: 25px;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
-            font-size: 14px;
+            color: #666666;
+            transition: all ease-in-out .1s;
           }
         }
       }

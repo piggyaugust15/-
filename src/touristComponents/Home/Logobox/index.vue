@@ -7,7 +7,7 @@
       <h1>{{ info.typesetIntroduction }}</h1>
       <span>{{ info.typesetText }}</span>
       <button @click="$router.push({path:'/frontHome/map'})">
-        关于丝路畅行指南
+        关于"丝路畅行"指南
       </button>
     </div>
   </div>

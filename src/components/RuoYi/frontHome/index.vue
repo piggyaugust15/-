@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg-icon icon-class="eye" @click="goto()" />
+    <i class="el-icon-s-promotion" style="font-size: 21px" @click="goto()" />
   </div>
 </template>
 

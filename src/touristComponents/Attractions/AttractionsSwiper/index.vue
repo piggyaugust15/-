@@ -4,7 +4,7 @@
     <div class="swiperbox">
       <swiper ref="mySwiper" class="swiper" :options="options">
         <swiper-slide class="item" v-for="(item,index) in listInfo" :key="index">
-          <div>
+          <div @click="gotoAttraction(item.sightsId)">
             <div class="text" >
               <div class="time">
                 <span class="day">{{item.sightsName}}</span>
@@ -61,7 +61,6 @@ export default {
   },
   methods:{
     gotoAttraction(id){
-      alert()
       this.$router.push({ path: "/frontHome/attractions/attraction",query:{id:id}});
     }
   },
@@ -102,6 +101,9 @@ export default {
         height: 550px;
         margin: 0;
         padding: 0;
+        &:hover{
+          cursor: pointer;
+        }
         .text{
           position: absolute;
           top: 120px;

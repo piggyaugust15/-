@@ -63,11 +63,11 @@
         </div>
         <div class="tagbox">
           <li class="tag">Live updates</li>
-          <li class="tag">Live updates</li>
+          <li class="tag">旅行</li>
         </div>
       </div>
     </div>
-    <button @click="gotoRandomSights()">继续阅读</button>
+    <button @click="gotoRandomSights()">继续浏览</button>
   </div>
 </template>
 

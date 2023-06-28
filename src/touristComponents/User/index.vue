@@ -124,12 +124,12 @@
           <div class="tab">
             <el-tabs v-model="activeName">
               <el-tab-pane name="first">
-                <span slot="label"><i class="el-icon-s-order"></i> 文章</span>
+                <span slot="label"><i class="el-icon-s-order"></i>漫记</span>
                 <div v-if="this.article.length>0">
                   <li v-for="(item, index) in article" :key="index" >
                     <div class="infobox">
                       <div class="top" @click="gotoarticle(item)">
-                        <div class="tag article">文章</div>
+                        <div class="tag article">漫记</div>
                         <span class="title">{{ item.articleTitle }}</span>
                       </div>
                       <div class="box">
@@ -247,14 +247,14 @@
           <div class="data">
             <div class="box">
               <div class="todaylike item">
-                <p class="today">今日阅读数</p>
-                <p class="number">0</p>
-                <p class="yesterday">昨日数据</p>
+                <p class="today">阅读数</p>
+                <p class="number">{{manuscriptData.visitorView}}</p>
+                <p class="yesterday">总数据</p>
               </div>
               <div class="todayview item">
-                <p class="today">今日赞同数</p>
-                <p class="number">0</p>
-                <p class="yesterday">昨日数据</p>
+                <p class="today">收藏数</p>
+                <p class="number">{{manuscriptData.visitorCollect}}</p>
+                <p class="yesterday">总数据</p>
               </div>
             </div>
             <button @click="gotoCreation">
@@ -269,7 +269,14 @@
 
 <script>
 import { getArticleList } from "@/api/article/article";
-import { getUserInfo, changeBacImg,getUserProfile,changeUserProfile,handleSubscribe } from "@/api/user/user";
+import {
+  getUserInfo,
+  changeBacImg,
+  getUserProfile,
+  changeUserProfile,
+  handleSubscribe,
+  getUserManuscriptData
+} from "@/api/user/user";
 import { getDyTypeset } from "@/api/system/typeset.js";
 import {getCulList} from '@/api/sights/cul_creativity.js'
 import store from "@/store";
@@ -330,7 +337,8 @@ export default {
       culQueryParams:{
         pageNum:1,
         pageSize:10,
-      }
+      },
+      manuscriptData:{},
     };
   },
   methods: {
@@ -427,6 +435,7 @@ export default {
       //   this.flag=-1;
       // }
       getArticleList(this.flag,this.articleQueryParams).then((response) => {
+        console.log(response,'userarticle')
         this.article = response.rows;
         this.articlePagination.total=response.total;
       });
@@ -439,12 +448,19 @@ export default {
         this.cul = response.rows;
         this.culPagination.total=response.total;
       });
+    },
+    getUserManuscriptData(){
+      getUserManuscriptData().then(res=>{
+        this.manuscriptData=res.data;
+      })
     }
+
   },
   mounted() {
       this.getInfo();
       this.getUerArticleList();
       this.getCulList();
+      this.getUserManuscriptData();
   },
   components:{favList,fansList}
 };

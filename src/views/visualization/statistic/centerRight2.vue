@@ -17,38 +17,53 @@
 
 <script>
   import centerRight2Chart1 from '@/components/echart/centerRight/centerRightChart'
-
+  import {getCountryNum} from '@/api/visualization/visualization'
   export default {
     data() {
       return {
         config: {
-          data: [
+          data: [{
+            name:null,
+            value:null
+          },
             {
-              name: '中国',
-              value: 33
+              name:null,
+              value:null
             },
             {
-              name: '印度',
-              value: 1
+              name:null,
+              value:null
             },
             {
-              name: '德国',
-              value: 4
+              name:null,
+              value:null
             },
             {
-              name: '埃及',
-              value: 1
+              name:null,
+              value:null
             },
-            {
-              name: '俄罗斯',
-              value: 2
-            }
           ]
         }
       }
     },
-    components: { centerRight2Chart1 }
+    mounted(){
+      this.getCountryNum();
+    },
+    methods:{
+      getCountryNum(){
+        getCountryNum().then((res)=>{
+          for (let i = 0; i < 5; i++) {
+            this.config.data[i].name=res.data[i].name;
+            this.config.data[i].value=res.data[i].value;
+          }
+          this.config = {...this.config}
+        })
+
+      }
+    },
+    components: { centerRight2Chart1}
   }
+
 </script>
 
 <style lang="scss" scoped>

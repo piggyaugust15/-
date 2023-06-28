@@ -85,7 +85,7 @@ Vue.component('ImageUpload', ImageUpload)
 Vue.component('ImagePreview', ImagePreview)
 Vue.component('icon', Icon)
 
-
+Element.Dialog.props.lockScroll.default = false;
 Vue.use(dataV)
 Vue.use(directive)
 Vue.use(plugins)

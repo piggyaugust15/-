@@ -101,7 +101,7 @@
                   </div>
                 </div>
                 <div class="rightbox">
-                  <div class="name">{{ item.name }}</div>
+                  <div class="name" @click="$router.push({path:'/frontHome/articlepage',query:{id:item.articleId}})">{{ item.articleTitle }}</div>
                 </div>
               </div>
             </a>
@@ -115,6 +115,7 @@
 <script>
 import { getSubscriptionInfo} from '@/api/user/user.js'
 import {getSubscriptionList} from '@/api/subscription/subscription.js'
+import {getHotArticle} from "@/api/article/article";
 export default {
   data() {
     return {
@@ -136,23 +137,7 @@ export default {
       },
       currentList:[],
       subscriptionList: [],
-      topicList: [
-        {
-          name: "官宣！《黑神话：悟空》2024夏发售",
-        },
-        {
-          name: "爱奇艺被曝禁止HDMI连线播放",
-        },
-        {
-          name: "大陆输台螺蛳粉包装现“你是中国人”",
-        },
-        {
-          name: "尼泊尔空难副驾因丈夫坠机接力飞行梦",
-        },
-        {
-          name: "N95口罩血氧仪价格大跳水",
-        },
-      ],
+      topicList: [],
     };
   },
   methods: {
@@ -178,6 +163,11 @@ export default {
             }
           })
     },
+    getHotArticle(){
+      getHotArticle().then(res=>{
+        this.topicList=res.data;
+      })
+    }
   },
   watch: {
     "this.$route.path"() {
@@ -186,6 +176,7 @@ export default {
   },
   mounted(){
     this.getSubscriptionInfo();
+    this.getHotArticle();
   },
 };
 </script>

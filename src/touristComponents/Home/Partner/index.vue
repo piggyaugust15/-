@@ -16,7 +16,7 @@
         >
       </li>
     </div>
-    <button>了解所有合作伙伴</button>
+<!--    <button>合作伙伴</button>-->
   </div>
 </template>
   

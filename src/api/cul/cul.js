@@ -37,6 +37,13 @@ export function getCulHome(query) {
   })
 }
 
+export function getCulHasFaved(culCreativityId) {
+  return request({
+    url: '/creativity/ifCollect/'+culCreativityId,
+    method: 'get',
+  })
+}
+
 export function getCulHomeSwiper() {
   return request({
     url: '/album/swiper',

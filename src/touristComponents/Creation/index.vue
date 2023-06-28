@@ -41,12 +41,52 @@
         <el-tab-pane label="稿件数据" name="first">
           <div class="manuscriptData">
             <ul>
-              <li v-for="item in manuscriptTagList" :key="item.index">
+              <li>
                 <div class="data">
                   <span class="name"
-                    ><i :class="item.icon"></i>{{ item.name }}</span
+                    ><i class="el-icon-chat-line-round"> 评论</i></span
                   >
-                  <span class="number">{{ item.number }}</span>
+                  <span class="number">{{ manuscriptData.comments }}</span>
+                </div>
+              </li>
+              <li>
+                <div class="data">
+                  <span class="name"
+                  ><i class="el-icon-notebook-2"> 漫记发布数量</i></span
+                  >
+                  <span class="number">{{ manuscriptData.visitorArticle}}</span>
+                </div>
+              </li>
+              <li>
+                <div class="data">
+                  <span class="name"
+                  ><i class="el-icon-circle-check"> 关注数量</i></span
+                  >
+                  <span class="number">{{ manuscriptData.visitorConcerns }}</span>
+                </div>
+              </li>
+              <li>
+                <div class="data">
+                  <span class="name"
+                  ><i class="el-icon-goods"> 文创发布数量</i></span
+                  >
+                  <span class="number">{{ manuscriptData.visitorCul }}</span>
+                </div>
+              </li>
+              <li>
+                <div class="data">
+                  <span class="name"
+                  ><i class="el-icon-view"> 浏览量</i></span
+                  >
+                  <span class="number">{{ manuscriptData.visitorView }}</span>
+                </div>
+              </li>
+              <li>
+                <div class="data">
+                  <span class="name"
+                  ><i class="el-icon-cpu"> 原创数量</i></span
+                  >
+                  <span class="number">{{ manuscriptData.original }}</span>
                 </div>
               </li>
             </ul>
@@ -55,15 +95,28 @@
         <el-tab-pane label="专栏数据" name="second">
           <div class="columnData">
             <ul>
-              <li v-for="item in columnTagList" :key="item.index">
+              <li>
                 <div class="data">
-                  <span class="name">{{ item.name }}</span>
-                  <span class="number">{{ item.number }}</span>
-                  <span class="yesterday"
-                    >昨日
-                    <i v-if="item.yesterday != 0">{{ item.yesterday }}</i>
-                    <i v-else>--</i></span
+                  <span class="name"
+                  ><i class="el-icon-star-off"> 收藏数量</i></span
                   >
+                  <span class="number">{{ manuscriptData.visitorCollect }}</span>
+                </div>
+              </li>
+              <li>
+                <div class="data">
+                  <span class="name"
+                  ><i class="el-icon-user"> 粉丝数量</i></span
+                  >
+                  <span class="number">{{ manuscriptData.visitorFans }}</span>
+                </div>
+              </li>
+              <li>
+                <div class="data">
+                  <span class="name"
+                  ><i class="el-icon-thumb"> 点赞数量</i></span
+                  >
+                  <span class="number">{{ manuscriptData.visitorLike }}</span>
                 </div>
               </li>
             </ul>
@@ -71,101 +124,20 @@
         </el-tab-pane>
       </el-tabs>
     </div>
-<!--    <div class="bottom">-->
-<!--      <div class="title">-->
-<!--        <h3>评论</h3>-->
-<!--        <div class="more">-->
-<!--          <router-link to="/frontHome/Creation/comment"-->
-<!--            >更多<i class="el-icon-arrow-right"></i-->
-<!--          ></router-link>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="commentDiv">-->
-<!--        <ul>-->
-<!--          <li v-for="(item, index) in commentList" :key="index">-->
-<!--            <div class="leftbox"><img :src="item.avatar" alt="" /></div>-->
-<!--            <div class="rightbox">-->
-<!--              <span class="name">{{ item.name }} · </span>-->
-<!--              <span class="time">{{ item.time }}</span>-->
-<!--              <span class="content">{{ item.content }}</span>-->
-<!--              <span-->
-<!--                class="thumbsUp"-->
-<!--                @click="handleThumbsUp(item)"-->
-<!--                :class="[{ hasThumbup: item.ifThumb }]"-->
-<!--                ><i class="el-icon-thumb" aria-hidden="true"></i-->
-<!--                >{{ item.thumbsUp }}</span-->
-<!--              >-->
-<!--              <span class="reply"-->
-<!--                ><i class="el-icon-chat-dot-round" aria-hidden="true"></i-->
-<!--                >回复</span-->
-<!--              >-->
-<!--              <div class="line"></div>-->
-<!--              <span class="source">来源 : {{ item.source }}</span>-->
-<!--            </div>-->
-<!--          </li>-->
-<!--        </ul>-->
-<!--      </div>-->
-<!--    </div>-->
   </div>
 </template>
 
 <script>
 import {getActivityList, getActivityPic, getMoreActivity} from '@/api/activity/frontActivity'
+import {getUserManuscriptData} from "@/api/user/user";
 
 export default {
   data() {
     return {
       activeName: "first",
       carouselList: [],
+      manuscriptData:{},
       activityList: [],
-      manuscriptTagList: [
-        // { name: "浏览量", icon: "fa fa-eye ", number: 354 },
-        { name: "评论", icon: "fa fa-comment", number: 122 },
-        { name: "收藏", icon: "fa fa-star", number: 16 },
-        { name: "点赞", icon: "fa fa-thumbs-up", number: 22 },
-        // { name: "1", icon: "", number: 0 },
-        // { name: "1", icon: "", number: 0 },
-      ],
-      commentList: [
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          content: "城堡",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          content: "帅哥",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-        },
-        {
-          name: "Chas神",
-          avatar:
-            "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
-          content: "啊啊啊啊 啊",
-          time: "2022-04-03 22:27",
-          thumbsUp: 1,
-          source: "浪花一朵朵~",
-          ifThumb: false,
-        },
-      ],
-      columnTagList: [
-        { name: "浏览量", icon: "fa fa-eye ", number: 1, yesterday: 0 },
-        { name: "评论数", icon: "fa fa-comment", number: 122, yesterday: 0 },
-        { name: "收藏数", icon: "fa fa-star", number: 16, yesterday: 0 },
-        { name: "点赞数", icon: "fa fa-thumbs-up", number: 1, yesterday: 0 },
-        { name: "1", icon: "", number: 0, yesterday: 0 },
-        { name: "1", icon: "", number: 0, yesterday: 0 },
-      ],
       rightBottom:{
         typesetImage:''
       }
@@ -215,12 +187,18 @@ export default {
         this.activityList=res.data;
         console.log('more',res)
       })
+    },
+    getUserManuscriptData(){
+      getUserManuscriptData().then(res=>{
+        this.manuscriptData=res.data;
+      })
     }
   },
   created() {
     this.getActivityList();
     this.getActivityPic();
     this.getMoreActivity();
+    this.getUserManuscriptData();
   }
 };
 </script>

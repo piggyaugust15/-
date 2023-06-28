@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
-      <h3>探索丝路荟萃推荐文创作品</h3>
+      <h3>探索"丝路畅行"推荐文创作品</h3>
     </div>
     <div class="card">
       <div class="item" v-for="(item, index) in list" :key="index" @click="gotoCulcreation(item.typesetRoute)">

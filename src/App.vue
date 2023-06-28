@@ -38,7 +38,7 @@ export default {
   },
 };
 </script>
-<style>
+<style lang="scss">
 body {
   overflow: overlay;
   padding-right: 0 !important;
@@ -66,4 +66,5 @@ body {
 .fade-leave-to {
   opacity: 0;
 } */
+
 </style>

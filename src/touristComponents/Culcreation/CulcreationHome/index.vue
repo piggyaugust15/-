@@ -1,5 +1,5 @@
 <template>
-  <div id="CulHome">
+  <div id="CulHome" >
     <CulCreationSwiper></CulCreationSwiper>
     <div class="main">
       <el-container>

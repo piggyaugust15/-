@@ -99,14 +99,13 @@
       CenterLeft1Chart
     },
     mounted() {
-      // this.Time()
-      // this.changeTiming()
-      // this.getLeftPie()
+      this.Time()
+      this.changeTiming()
+      this.getLeftPie()
     },
     methods: {
       getLeftPie(){
         getLeftPie().then((response)=>{
-          console.log('left',response)
           this.articlePie = response.data.articlePie
           this.culPie = response.data.culPie
           this.numberData[0].number.number=[parseInt(response.data.sum)]
@@ -123,7 +122,7 @@
       Time(){
         this.timer = setInterval(()=>{
           this.getLeftPie();
-        },5000)
+        },1000*60*5)
       }
       ,
       changeTiming() {

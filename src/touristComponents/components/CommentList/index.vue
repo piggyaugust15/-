@@ -13,21 +13,6 @@
           <div class="right_box">
             <div class="mainBody">
               <span class="name">{{ item.user.nickName }}</span>
-              <!-- <div class="rating">
-                <div class="rating_img">
-                  <img
-                    src="@/assets/images/dianping-score-5.png"
-                    alt=""
-                    v-if="item.rating >= 5"
-                  />
-                  <img
-                    src="@/assets/images/dianping-score-4.png"
-                    alt=""
-                    v-else-if="item.rating < 5"
-                  />
-                </div>
-                {{ item.rating }}分&nbsp;&nbsp;超棒
-              </div> -->
               <div class="text" v-html="item.commentContent">
               </div>
               <div class="bottom_div">
@@ -60,18 +45,6 @@
                 :id="index"
                 @keyup.enter="submitReply(item)"
               />
-              <!-- <el-button
-                type="text"
-                size="mini"
-                @click.stop="showDialog = !showDialog"
-                >添加表情</el-button
-              >
-              <div class="emojibanner">
-                <VEmojiPicker
-                  v-show="showDialog"
-                  @select="selectEmoji(index, emoji)"
-                />
-              </div> -->
               <button class="replybtn" @click="submitReply(item)">发布</button>
             </div>
           </div>
@@ -95,8 +68,7 @@
       width="40%"
       class="dialog"
       :before-close="handleClose"
-      :lock-scroll="true"
-      :modal="true"
+      :append-to-body="true"
     >
       <div v-if="secondComment.length > 0" v-loading="dialogLoading" class="commentBox" id="second">
         <li
@@ -300,7 +272,7 @@ li {
   width: 100%;
   .Commentli {
     width: 100%;
-    // display: flex;
+    display: flex;
     margin-bottom: 20px;
     .content {
       width: 100%;
@@ -464,9 +436,159 @@ li {
     text-align: center;
     margin: 0 auto;
   }
-  .commentBox{
-    height: 400px;
-    overflow: auto;
-  }
+
+}
+.dialog{
+  .Commentli {
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+    .content {
+      width: 100%;
+      display: flex;
+      margin-bottom: 10px;
+      .left_box {
+        display: inline-block;
+        width: 10%;
+        height: 100%;
+        text-align: center;
+        .name {
+          display: block;
+          white-space: nowrap;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+      .right_box {
+        float: right;
+        width: 90%;
+        height: 100%;
+        position: relative;
+        .rating {
+          font-size: 12px;
+          line-height: 20px;
+          height: 20px;
+          margin-top: 13px;
+        }
+        .rating_img {
+          position: relative;
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          img {
+            width: 100%;
+            height: 100%;
+            vertical-align: middle;
+          }
+        }
+        .rating_img::after {
+          content: "";
+          position: absolute;
+          width: 55px;
+          height: 20px;
+          left: 20px;
+          top: 3px;
+          background-color: #fff2bf;
+          z-index: -1;
+        }
+        .mainBody {
+          padding-left: 15px;
+          margin-bottom: 10px;
+        }
+        .text {
+          margin-bottom: 10px;
+          margin-top: 15px;
+          font-size: 14px;
+        }
+        .bottom_div {
+          margin-top: 10px;
+          font-size: 12px;
+          .right {
+            float: right;
+            display: flex;
+            .reply {
+              // float: right;
+              color: #8590a6;
+              cursor: pointer;
+              display: none;
+            }
+            .secondComment {
+              // float: right;
+              color: #8590a6;
+              cursor: pointer;
+            }
+            .like {
+              // float: right;
+
+              &:hover {
+                color: $bcolor;
+                cursor: pointer;
+              }
+            }
+            .hasLiked {
+              color: $bcolor;
+            }
+
+            .tipOff {
+              // float: right;
+              &:hover {
+                color: $bcolor;
+                cursor: pointer;
+              }
+            }
+          }
+          span {
+            margin-right: 10px;
+          }
+        }
+        .replybox {
+          position: relative;
+          height: 80px;
+          box-sizing: border-box;
+          margin: 0px;
+          min-width: 0px;
+          border-radius: 4px;
+          border: 1px solid rgb(235, 235, 235);
+          // flex: 1 1 auto;
+          word-break: break-word;
+          padding: 8px 12px;
+          input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #ebebeb;
+            padding-bottom: 5px;
+            outline: none;
+            user-select: text;
+            white-space: nowrap;
+            overflow-wrap: break-word;
+            font-family: -apple-system, BlinkMacSystemFont, Helvetica Neue,
+            PingFang SC, Microsoft YaHei, Source Han Sans SC, Noto Sans CJK SC,
+            WenQuanYi Micro Hei, sans-serif;
+            font-size: 15px;
+          }
+          .replybtn{
+            position: absolute;
+            right: 10px;
+            bottom: 5px;
+            width: 70px;
+            height: 30px;
+            background-color: #7fd6f5;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            &:hover{
+              background-color: #00aeec;
+            }
+          }
+          .emojibanner {
+            position: absolute;
+            // bottom: 0;
+            z-index: 1;
+          }
+        }
+      }
+    }}
 }
 </style>

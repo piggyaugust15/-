@@ -34,3 +34,10 @@ export function getCulTop(){
     method:'get'
   })
 }
+
+export function getCountryNum(){
+  return request({
+    url:'/statistic/country',
+    method:'get'
+  })
+}

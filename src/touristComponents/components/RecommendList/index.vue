@@ -25,8 +25,8 @@
       </li>
     </ul>
     <div class="link">
-      <el-link type="primary">
-        <i class="fa fa-eye" aria-hidden="true"></i> 更多</el-link
+      <el-link type="primary" @click="$router.push('/frontHome/attractions')">
+        <i class="fa fa-eye" aria-hidden="true" ></i> 更多</el-link
       >
     </div>
   </div>

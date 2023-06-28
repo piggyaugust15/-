@@ -5,6 +5,13 @@
 #RecommendList li {
     margin-bottom: 10px;
     cursor:pointer;
+    padding: 10px;
+    border-radius: 5px;
+    transition: all ease-in .3s;
+}
+
+#RecommendList li:hover {
+    background-color: #e3e5e7;
 }
 
 #RecommendList .img_div {

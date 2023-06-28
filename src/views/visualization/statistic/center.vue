@@ -226,11 +226,11 @@
     },
     methods:{
       Time(){
-        // this.timer = setInterval(() => {
-        //    this.getData();
-        //    this.getMedium();
-        // }, 5000)
-        // this.getData();
+        this.timer = setInterval(() => {
+           this.getData();
+           this.getMedium();
+        }, 5000)
+        this.getData();
         this.getMedium();
     },
       getData(){
@@ -265,10 +265,10 @@
       }
     },
     mounted() {
-      // this.Time()
-      // this.getData();
-      // this.getData();
-      // this.getMedium();
+      this.Time()
+      this.getData();
+      this.getData();
+      this.getMedium();
     },
     beforeDestroy() {
       clearInterval(this.timer);

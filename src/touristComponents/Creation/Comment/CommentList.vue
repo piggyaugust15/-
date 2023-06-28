@@ -201,5 +201,11 @@ $bluecolor: #00aeec;
       }
     }
   }
+  .el-table .cell {
+    white-space: nowrap;   //强制不换行
+    overflow: hidden; //溢出隐藏
+    text-overflow: ellipsis  //替换为省略号
+  }
 }
+
 </style>

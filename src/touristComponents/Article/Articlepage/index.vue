@@ -1,6 +1,6 @@
 <template>
   <div id="articlepage">
-    <div class="container">
+    <div class="container" v-loading="totalLoading">
       <div class="text">
         <div class="title">
           <h1>{{ info.articleTitle }}</h1>
@@ -144,6 +144,7 @@ export default {
       showDialog: false,
       speakTTS:'zh-CN',
       speakInfo:'',
+      totalLoading:true,
     };
   },
   methods: {
@@ -248,35 +249,43 @@ export default {
         this.speakInfo=res.data.articleContentOUT;
         this.speakTTS=res.data.speakTTS;
       })
+    },
+    getArticleDetail(){
+      getArticleDetail(this.$route.query.id).then((response) => {
+        console.log('detail',response);
+        this.info = response.data;
+        this.user = response.data.user;
+        this.info.articleContent = marked(this.info.articleContent);
+        this.visitor = response.data.visitor;
+        if(this.info.ifCollect){
+          this.fav.active = "el-icon-star-on";
+        }
+        // 如果没有登录 就不用增加浏览量
+        if (this.$store.state.user.token === "") {
+          addArticleView(this.info.articleId);
+        } else {
+          addArticleViewByAnonymous(this.info.articleId);
+        }
+        this.totalLoading=false;
+      });
     }
   },
   watch:{
     '$store.state.front.lang'(){
       if(this.$store.state.front.lang!=='26'){
         this.paraTranslate();
+      }else{
+        this.getArticleDetail();
       }
     }
   },
   mounted() {
     //this.$route.query.id
-    getArticleDetail(this.$route.query.id).then((response) => {
-      console.log('detail',response);
-      this.info = response.data;
-      this.user = response.data.user;
-      this.info.articleContent = marked(this.info.articleContent);
-      this.visitor = response.data.visitor;
-      if(this.info.ifCollect){
-        this.fav.active = "el-icon-star-on";
-      }
-      // 如果没有登录 就不用增加浏览量
-      if (this.$store.state.user.token === "") {
-        addArticleView(this.info.articleId);
-      } else {
-        addArticleViewByAnonymous(this.info.articleId);
-      }
-    });
+    this.getArticleDetail();
     window.addEventListener("scroll", this.handleScroll);
-    // this.paraTranslate();
+    if(this.$store.state.front.lang!=='26'){
+      this.paraTranslate();
+    }
     // if (
     //   this.$route.path == "/Attractionspage" ||
     //   this.$route.path == "/Attractionspage"

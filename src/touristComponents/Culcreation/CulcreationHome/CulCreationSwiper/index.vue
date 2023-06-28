@@ -1,5 +1,5 @@
 <template>
-  <div id="culcreationswiper">
+  <div id="culcreationswiper" v-loading="totalLoading">
     <el-carousel :interval="4000" type="card" height="400px" :intervals="6000">
       <el-carousel-item v-for="(item,index) in List" :key="index" class="item" >
         <div class="total" @click="gotoAlbum(item.albumId)">
@@ -18,7 +18,8 @@ export default {
   name: "index",
   data(){
     return{
-      List:[]
+      List:[],
+      totalLoading:true,
     }
   },
   methods:{
@@ -29,6 +30,7 @@ export default {
   mounted() {
     getCulHomeSwiper().then(res=>{
       this.List=res.data;
+      this.totalLoading=false;
     })
   }
 }

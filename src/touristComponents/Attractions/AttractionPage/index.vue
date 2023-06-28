@@ -223,7 +223,7 @@
             :visible.sync="BuyVisible"
             width="50%"
             center
-            append-to-body
+            :append-to-body="true"
         >
           <div style="text-align: center">
             <img :src="$store.state.front.url+sights.sightsCode.split(',')[0]" alt="" style="width: 300px;
@@ -236,20 +236,6 @@
         <span slot="footer" class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="centerDialogVisible = false">确 定</el-button>
-        </span>
-      </el-dialog>
-      <el-dialog
-          title="评分"
-          :visible.sync="ratingVisible"
-          width="500px"
-          center>
-        <div class="block" style="text-align: center">
-<!--          <span class="demonstration">我的评分</span>-->
-
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="ratingVisible = false">取 消</el-button>
-          <el-button type="primary" @click="handleScore">确 定</el-button>
         </span>
       </el-dialog>
     </div>
@@ -406,7 +392,7 @@ export default {
         hit(this.$route.query.id);
         console.log(response,'attra')
         this.sights = response.data;
-        this.playerOptions['sources'][0].src=this.sights.sightsVideo;
+        this.playerOptions['sources'][0].src=this.$store.state.front.url+this.sights.sightsVideo;
         this.playerOptions['poster']= this.$store.state.front.url+this.sights.sightsCover;
         console.log(this.playerOptions.sources[0])
         if(this.sights.score!==-1){

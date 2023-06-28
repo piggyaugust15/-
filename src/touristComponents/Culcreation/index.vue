@@ -18,9 +18,9 @@
             {{ info.culCreativityIntro }}
           </p>
           <div v-if="this.info">
-            <div class="fav" v-if="this.info.culCreativityCollection">
+            <div class="fav" v-if="this.favTag">
               <img  src="@/assets/images/fav-on.svg" alt="" @click="handleFav">
-              <span v-if="this.info.culCreativityCollection">已收藏</span>
+              <span>已收藏</span>
             </div>
             <div class="fav" v-else>
               <img src="@/assets/images/fav-off.svg" alt="" @click="handleFav">
@@ -54,6 +54,7 @@ import { submitComment } from "@/api/system/comment.js";
 import CommentDiv from "@/touristComponents/components/CommentDiv";
 import Speak from "@/components/Speak";
 import {paraTranslate} from "@/api/system/translate";
+import {getCulHasFaved} from "@/api/cul/cul";
 export default {
   data() {
     return {
@@ -71,6 +72,7 @@ export default {
         parentId: -1,
         objectId: "",
       },
+      favTag:true,
     };
   },
   watch:{
@@ -81,7 +83,7 @@ export default {
   methods: {
     handleFav(){
       culFav(this.$route.query.id).then((res)=>{
-        this.info.culCreativityCollection=!this.info.culCreativityCollection
+        this.favTag=!this.favTag;
         this.$message.success(res.msg);
       })
     },
@@ -143,6 +145,12 @@ export default {
         this.speakInfo=res.data.culCreativityContentOUT;
         this.speakTTS=res.data.speakTTS;
       })
+    },
+    getCulHasFaved(){
+      getCulHasFaved(this.$route.query.id).then(res=>{
+        this.favTag=res.data;
+        console.log(res,'fav')
+      })
     }
   },
   components: {
@@ -159,6 +167,7 @@ export default {
       this.imgList = this.info.culCreativityImage.split(",");
     });
     // this.paraTranslate();
+    this.getCulHasFaved();
   },
   beforeDestroy() {
     window.removeEventListener("click", () => {}, true);

@@ -1,12 +1,12 @@
 <template>
 <div class="block">
   <el-tabs v-model="activeName" >
-    <el-tab-pane :label="'文章 '" name="first">
+    <el-tab-pane :label="'漫记 '" name="first">
       <div v-if="this.article.length>0">
         <li v-for="(item, index) in article" :key="index" >
           <div class="infobox">
             <div class="top" @click="gotoarticle(item)">
-              <div class="tag article">文章</div>
+              <div class="tag article">漫记</div>
               <span class="title">{{ item.articleTitle }}</span>
             </div>
             <div class="box">
