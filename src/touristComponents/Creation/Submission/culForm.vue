@@ -49,12 +49,13 @@
                 clearable
             >
             </el-input>
-            <div class="tagBox">
+            <div class="tagBox" v-loading="tagsLoading">
               <span class="item" v-for="(item,index) in suggestTags"
                     @click="pushTags(item)"
                     :key="index"
-              >{{item}}</span>
+              >{{item.tagsContent}}</span>
             </div>
+            <button class="text random" @click="getRandomTags"><i :class="['el-icon-refresh',{go:'addRotate'}]" ></i> 换一换</button>
             <span class="text">
               还可以添加 {{ 5 - culCreationForm.culCreativityTags.length }} 个标签
             </span>
@@ -107,6 +108,7 @@
 <script>
 import { createCul } from "@/api/sights/cul_creativity.js";
 import {getEditCulDetail} from "@/api/cul/cul";
+import {getRandomTags} from "@/api/article/article";
 export default {
   dicts: [
     "cul_creativity_type",
@@ -124,7 +126,8 @@ export default {
     return {
       loading:false,
       input:'',
-      suggestTags:['python','django','pygame','热门旅行','美味的食物','哈哈哈哈哈哈哈哈哈','12','12','12','12',],
+      tagsLoading:false,
+      suggestTags:[],
       culCreationForm: {
         culCreativityTitle: "",
         culCreativityContent: "",
@@ -174,13 +177,13 @@ export default {
       this.culCreationForm.culCreativityTags.splice(this.culCreationForm.culCreativityTags.indexOf(tag), 1);
     },
     pushTags(item){
-      if(this.culCreationForm.culCreativityTags.includes(item)){
+      if(this.culCreationForm.culCreativityTags.includes(item.tagsContent)){
         this.$message({
           message:'已经有该标签啦~',
           type: "warning",
         })
       }else if(this.culCreationForm.culCreativityTags.length<5){
-        this.culCreationForm.culCreativityTags.push(item);
+        this.culCreationForm.culCreativityTags.push(item.tagsContent);
       }else if(this.culCreationForm.culCreativityTags.length>=5){
         this.$message({
           message:'标签数量已达上限',
@@ -250,6 +253,14 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
+    getRandomTags(){
+      this.tagsLoading=true;
+      getRandomTags(1).then((res)=>{
+        console.log('tags',res)
+        this.suggestTags=res.data;
+        this.tagsLoading=false;
+      })
+    }
   },
   mounted() {
     if (this.$route.query.type === "edit"&&this.$route.query.arg ==="cul") {
@@ -260,6 +271,7 @@ export default {
         this.loading=false;
       });
     }
+    this.getRandomTags(1);
   },
 };
 </script>
@@ -302,6 +314,18 @@ export default {
     text-align: right;
     font-size: 12px;
     color: #999;
+  }
+  .random{
+    background-color: transparent;
+    border: none;
+    transition: all .3s ease-in;
+    &:hover{
+      color: #267dcc;
+      cursor:pointer;
+    }
+    &:active{
+      transform: scale(1.4);
+    }
   }
 }
 </style>

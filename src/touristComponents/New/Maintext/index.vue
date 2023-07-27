@@ -4,7 +4,7 @@
       <h1 class="title">{{ newsInformation.newsTitle }}</h1>
       <!-- 文章标题 -->
       <div class="newsbox">
-        <span class="newstext" v-html='newsInformation.newsContent'>{{ newsInformation.newsContent}} </span>
+        <div class="newstext" v-html='newsInformation.newsContent'>{{ newsInformation.newsContent}} </div>
       </div>
       <div class="linkList">
         <ul>
@@ -78,7 +78,14 @@
           display: block;
           font-size: 17px;
           text-indent: 2em;
+          line-height: 30px;
+          ::v-deep img{
+            display: block;
+            padding: 10px;
+            margin: 0 auto  ;
+          }
         }
+
       }
       .linkList {
         .relatedNews {

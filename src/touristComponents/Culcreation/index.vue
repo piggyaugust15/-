@@ -30,9 +30,9 @@
         </div>
         <div class="text">
           <h2 class="productiontitle">关于</h2>
-          <p class="text" v-html="info.culCreativityContent">
+          <div class="text" v-html="info.culCreativityContent">
 <!--            {{}}-->
-          </p>
+          </div>
         </div>
         <div class="speak"><Speak :voice=speakInfo :lang="speakTTS"></Speak></div>
         <CommentDiv :type="1"></CommentDiv>
@@ -275,12 +275,14 @@ p {
       }
       .text {
         .text{
+          width: 100%;
           text-indent: 2em;
           line-height: 30px;
           font-size: 17px;
-          //img{
-          //  width: 100%;
-          //}
+          ::v-deep img{
+            display: block;
+              width: 100%;
+          }
         }
         .productiontitle {
           font-family: "Noto Serif SC", serif !important;

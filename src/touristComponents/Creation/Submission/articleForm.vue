@@ -150,13 +150,13 @@ export default {
   },
   methods: {
     pushTags(item){
-      if(this.ruleForm.articleTags.includes(item)){
+      if(this.ruleForm.articleTags.includes(item.tagsContent)){
         this.$message({
           message:'已经有该标签啦~',
           type: "warning",
         })
       }else if(this.ruleForm.articleTags.length<5){
-        this.ruleForm.articleTags.push(item);
+        this.ruleForm.articleTags.push(item.tagsContent);
       }else if(this.ruleForm.articleTags.length>=5){
         this.$message({
           message:'标签数量已达上限',
